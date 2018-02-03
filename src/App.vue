@@ -1,78 +1,100 @@
 <template>
-  <div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-
-    <nav class="navbar is-transparent">
-      <div class="navbar-brand">
-        <a class="navbar-item" href="https://bulma.io">
-          <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
-        </a>
-        <div class="navbar-burger burger" data-target="navbarExampleTransparentExample">
-          <span></span>
-          <span></span>
-          <span></span>
+  <div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-header"  style="border: 2px solid #A26CD5;">
+    <!-- Main container -->
+    <nav class="level">
+      <!-- Left side -->
+      <div class="level-left">
+        <div class="level-item">
+          <img
+            src="static/img/Copyright-uncertain.png" alt="Demo of a microservice SPA PWA">
         </div>
       </div>
 
-      <div id="navbarExampleTransparentExample" class="navbar-menu">
-        <div class="navbar-start">
-          <a class="navbar-item" href="https://bulma.io/">
-            Home
+      <!-- Right side -->
+      <div class="level-right">
+        <div class="level-item">
+          <a class="button">
+            <span class="icon">
+              <i class="fas fa-edit"></i>
+            </span>
+            <span>Sign Up</span>
           </a>
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link" href="/documentation/overview/start/">
-              Docs
-            </a>
-            <div class="navbar-dropdown is-boxed">
-              <a class="navbar-item" href="/documentation/overview/start/">
-                Overview
-              </a>
-              <a class="navbar-item" href="https://bulma.io/documentation/modifiers/syntax/">
-                Modifiers
-              </a>
-              <a class="navbar-item" href="https://bulma.io/documentation/columns/basics/">
-                Columns
-              </a>
-              <a class="navbar-item" href="https://bulma.io/documentation/layout/container/">
-                Layout
-              </a>
-              <a class="navbar-item" href="https://bulma.io/documentation/form/general/">
-                Form
-              </a>
-              <hr class="navbar-divider">
-              <a class="navbar-item" href="https://bulma.io/documentation/elements/box/">
-                Elements
-              </a>
-              <a class="navbar-item is-active" href="https://bulma.io/documentation/components/breadcrumb/">
-                Components
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <div class="field is-grouped">
-              <p class="control">
-                <a class="button is-primary" href="https://yourself-yourorg.github.io/vuepwa/#/">
-                  <span class="icon">
-                    <i class="fa fa-pencil"></i>
-                  </span>
-                  <span>Sign Up</span>
-                </a>
-              </p>
-              <p class="control">
-                <a class="button is-primary" href="https://yourself-yourorg.github.io/vuepwa/#/">
-                  <span class="icon">
-                    <i class="fa fa-sign-in"></i>
-                  </span>
-                  <span>Sign In</span>
-                </a>
-              </p>
-            </div>
-          </div>
+          <a class="button">
+            <span class="icon">
+              <i class="fas fa-sign-in-alt"></i>
+            </span>
+            <span>Sign In</span>
+          </a>
         </div>
       </div>
     </nav>
+
+    <nav class="panel">
+      <p class="panel-heading">
+        repositories
+      </p>
+      <div class="panel-block">
+        <p class="control has-icons-left">
+          <input class="input is-small" type="text" placeholder="search">
+          <span class="icon is-small is-left">
+            <i class="fa fa-search"></i>
+          </span>
+        </p>
+      </div>
+      <p class="panel-tabs">
+        <a class="is-active">all</a>
+        <a>public</a>
+        <a>private</a>
+        <a>sources</a>
+        <a>forks</a>
+      </p>
+      <a class="panel-block is-active">
+        <span class="panel-icon">
+          <i class="fas fa-book"></i>
+        </span>
+        bulma
+      </a>
+      <a class="panel-block">
+        <span class="panel-icon">
+          <i class="fa fa-book"></i>
+        </span>
+        marksheet
+      </a>
+      <a class="panel-block">
+        <span class="panel-icon">
+          <i class="fa fa-book"></i>
+        </span>
+        minireset.css
+      </a>
+      <a class="panel-block">
+        <span class="panel-icon">
+          <i class="fa fa-book"></i>
+        </span>
+        jgthms.github.io
+      </a>
+      <a class="panel-block">
+        <span class="panel-icon">
+          <i class="fa fa-code-branch"></i>
+        </span>
+        daniellowtw/infboard
+      </a>
+      <a class="panel-block">
+        <span class="panel-icon">
+          <i class="fa fa-camera-retro"></i>
+        </span>
+        mojs
+      </a>
+      <label class="panel-block">
+        <input type="checkbox">
+        remember me
+      </label>
+      <div class="panel-block">
+        <button class="button is-link is-outlined is-fullwidth">
+          reset all filters
+        </button>
+      </div>
+    </nav>
+
 
     <div class="mdl-layout__drawer">
       <span class="mdl-layout-title">CropChat</span>
@@ -90,32 +112,5 @@
 </template>
 
 <style>
-  @import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css');
+  @import url('https://use.fontawesome.com/releases/v5.0.6/css/all.css');
 </style>
-
-<link rel="stylesheet" href="">
-
-<script type="text/babel">
-
-  document.addEventListener('DOMContentLoaded', () => {
-    // Get all "navbar-burger" elements
-    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-
-    // Check if there are any navbar burgers
-    if ($navbarBurgers.length > 0) {
-      // Add a click event on each of them
-      $navbarBurgers.forEach(($el) => {
-        $el.addEventListener('click', () => {
-          // Get the target from the "data-target" attribute
-          const target = $el.dataset.target;
-          const $target = document.getElementById(target);
-
-          // Toggle the class on both the "navbar-burger" and the "navbar-menu"
-          $el.classList.toggle('is-active');
-          $target.classList.toggle('is-active');
-        });
-      });
-    }
-  });
-
-</script>
