@@ -1,12 +1,14 @@
 <template>
-  <div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-header"  style="border: 2px solid #A26CD5;">
+  <div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-header"  style="border: 20px solid white;">
     <!-- Main container -->
     <nav class="level">
       <!-- Left side -->
       <div class="level-left">
         <div class="level-item">
           <img
-            src="static/img/Copyright-uncertain.png" alt="Demo of a microservice SPA PWA">
+            src="static/img/WaterDrop_50.jpg"
+            alt="Demo of a microservice SPA PWA">
+            <span style="font-family: 'Advent Pro'; font-size: 48px;">iridium blue</span>
         </div>
       </div>
 
@@ -17,13 +19,14 @@
             <span class="icon">
               <i class="fas fa-edit"></i>
             </span>
-            <span>Sign Up</span>
+            <span>{{ $t('label.signup') }}</span>
           </a>
+          &nbsp;
           <a class="button">
             <span class="icon">
               <i class="fas fa-sign-in-alt"></i>
             </span>
-            <span>Sign In</span>
+            <span>{{ $t('label.signin') }}</span>
           </a>
         </div>
       </div>
@@ -31,7 +34,7 @@
 
     <nav class="panel">
       <p class="panel-heading">
-        repositories
+        <p>{{ $t("message.damned") }}  --- </p>
       </p>
       <div class="panel-block">
         <p class="control has-icons-left">
@@ -113,4 +116,13 @@
 
 <style>
   @import url('https://use.fontawesome.com/releases/v5.0.6/css/all.css');
+  @import url('https://fonts.googleapis.com/css?family=Advent+Pro:thin|Open+Sans:light');
+
+  #app {
+    font-family: 'Open Sans', Open Sans, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #022442;
+  }
 </style>
