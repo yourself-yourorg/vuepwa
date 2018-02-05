@@ -124,5 +124,8 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #022442;
+
+    background-image: url("/static/img/WaterBgnd.png");
+    background-repeat: repeat;
   }
 </style>
