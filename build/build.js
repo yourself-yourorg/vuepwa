@@ -16,7 +16,9 @@ const webpackConfig = require('./webpack.prod.conf')
 const spinner = ora('building for production...')
 spinner.start()
 
-let bkgrnd = 'BodyBgnd*.png';
+let nameBkgrnd = 'BodyBgnd';
+let imgBkgrnd = `${nameBkgrnd}*.png`;
+let dupBkgrnd = `${nameBkgrnd}.png`;
 let src = 'docs/static/img';
 let trgt = 'docs/static/css/static/img';
 
@@ -34,8 +36,9 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
     }) + '\n\n')
 
     shell.echo('  Tweak background image location');
+    shell.rm(`${src}/${dupBkgrnd}`);
     shell.mkdir('-p', trgt);
-    shell.cp(`${src}/${bkgrnd}`, trgt);
+    shell.mv(`${src}/${imgBkgrnd}`, trgt);
 
     console.log(chalk.cyan('  Build complete.\n'))
     console.log(chalk.yellow(
