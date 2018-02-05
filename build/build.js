@@ -9,11 +9,16 @@ const rm = require('rimraf')
 const path = require('path')
 const chalk = require('chalk')
 const webpack = require('webpack')
+const shell = require('shelljs')
 const config = require('../config')
 const webpackConfig = require('./webpack.prod.conf')
 
 const spinner = ora('building for production...')
 spinner.start()
+
+let bkgrnd = 'BodyBgnd*.png';
+let src = 'docs/static/img';
+let trgt = 'docs/static/css/static/img';
 
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
   if (err) throw err
@@ -27,6 +32,10 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       chunks: false,
       chunkModules: false
     }) + '\n\n')
+
+    shell.echo('  Tweak background image location');
+    shell.mkdir('-p', trgt);
+    shell.cp(`${src}/${bkgrnd}`, trgt);
 
     console.log(chalk.cyan('  Build complete.\n'))
     console.log(chalk.yellow(
