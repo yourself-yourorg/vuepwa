@@ -126,5 +126,6 @@
     color: #022442;
 
     background-image: url(../static/img/BodyBgnd.png); background-repeat: repeat;
+    /* Only 'BodyBgnd.png' can be used, due to tricks in /build/build.js  */
   }
 </style>
