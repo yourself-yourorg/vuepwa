@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-header"  style="border: 20px solid white;">
+  <div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <!-- Main container -->
     <nav class="level">
       <!-- Left side -->
@@ -124,7 +124,9 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #022442;
-
+    border: 2px solid white;
+    padding-right: 10px;
+    padding-left: 10px;
     background-image: url(../static/img/BodyBgnd.png); background-repeat: repeat;
     /* Only 'BodyBgnd.png' can be used, due to tricks in /build/build.js  */
   }
