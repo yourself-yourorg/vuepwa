@@ -38,7 +38,7 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
     shell.echo('  Tweak background image location');
     shell.mkdir('-p', trgt);
     shell.mv(`${src}/${imgBkgrnd}`, trgt);
-    shell.rm(`${src}/${dupBkgrnd}`);
+    shell.rm(`${trgt}/${dupBkgrnd}`);
 
     console.log(chalk.cyan('  Build complete.\n'))
     console.log(chalk.yellow(
