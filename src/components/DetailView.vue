@@ -1,6 +1,9 @@
 <template>
   <div class="mdl-grid">
     <div class="mdl-cell mdl-cell--8-col">
+        <router-link class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" to="/">
+          Main Page
+        </router-link>
       <div class="picture">
         <img :src="this.pictures[$route.params.id].url" />
       </div>

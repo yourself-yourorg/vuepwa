@@ -14,5 +14,6 @@ export default {
   label: {
     signup: 'Join',
     signin: 'Log in',
+    signout: 'Log out',
   },
 };

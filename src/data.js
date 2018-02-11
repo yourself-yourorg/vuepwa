@@ -2,32 +2,20 @@ export default {
   pictures: [
     {
       id: 0,
-      url: 'https://25.media.tumblr.com/tumblr_m40h4ksiUa1qbyxr0o1_400.gif',
+      url: 'http://jannpaul.com/wp-content/uploads/2016/12/Cushion-Cut-Diamonds.jpeg',
       comment: 'A cat game',
       info: 'Posted by Kevin on Friday',
     },
     {
       id: 1,
-      url: 'https://25.media.tumblr.com/tumblr_lhd7n9Qec01qgnva2o1_500.jpg',
+      url: 'http://anzigems.com/wp-content/uploads/2012/03/diamond1.gif',
       comment: 'Tatoo & cat',
       info: 'Posted by Charles on Tuesday',
     },
     {
       id: 2,
-      url: 'https://24.media.tumblr.com/tumblr_m4j2atctRm1qejbiro1_1280.jpg',
+      url: 'https://www.jordanjewellery.com/wp-content/uploads/2017/07/elegant-flower-diamond-rings-large-blooming-beauty-flower-engagement-ring-laying-down-video-gdkdsds-11.jpg',
       comment: 'Santa cat',
-      info: 'Posted by Richard on Monday',
-    },
-    {
-      id: 3,
-      url: 'https://25.media.tumblr.com/tumblr_m3rmbwhVB51qhwmnpo1_1280.jpg',
-      comment: 'Mexico cat',
-      info: 'Posted by Richard on Monday',
-    },
-    {
-      id: 4,
-      url: 'https://24.media.tumblr.com/tumblr_mceknxs4Lo1qd477zo1_500.jpg',
-      comment: 'Curious cat',
       info: 'Posted by Richard on Monday',
     },
   ],

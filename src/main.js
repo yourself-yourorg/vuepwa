@@ -11,9 +11,20 @@ import router from './router';
 
 import xlate from './internationalization';
 
+import config from './config';
+
+import HomeView from './components/HomeView';
+
+
+const LG = console.log; // eslint-disable-line no-console, no-unused-vars
+
+LG(`config = ${config.server}`);
+
 Vue.use(VueI18n);
 Vue.use(Buefy);
 Vue.config.productionTip = false;
+
+Vue.component('home', HomeView);
 
 const messages = xlate; // Make it observable
 
@@ -34,8 +45,12 @@ const i18n = new VueI18n({
 
 /* eslint-disable no-new */
 new Vue({
+  el: '#app',
   i18n,
   router,
-  template: '<App/>',
-  components: { App },
-}).$mount('#app');
+  render: site => site(App),
+  // template: '<App/>',
+  // components: { App },
+});
+// .$mount('#app');
+

@@ -13,5 +13,6 @@ export default {
   label: {
     signup: 'Inscribirse',
     signin: 'Ingresar',
+    signout: 'Salir',
   },
 };
