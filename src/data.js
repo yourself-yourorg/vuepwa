@@ -2,13 +2,13 @@ export default {
   pictures: [
     {
       id: 0,
-      url: 'http://jannpaul.com/wp-content/uploads/2016/12/Cushion-Cut-Diamonds.jpeg',
+      url: 'https://i.kinja-img.com/gawker-media/image/upload/s--Fe5WsRl7--/c_fit,fl_progressive,q_80,w_320/18k2qthnfp8znjpg.jpg',
       comment: 'A cat game',
       info: 'Posted by Kevin on Friday',
     },
     {
       id: 1,
-      url: 'http://anzigems.com/wp-content/uploads/2012/03/diamond1.gif',
+      url: 'https://s.blogcdn.com/news.travel.aol.com/media/2010/10/wittelsbach-diamond-320lvg102910.jpg',
       comment: 'Tatoo & cat',
       info: 'Posted by Charles on Tuesday',
     },
