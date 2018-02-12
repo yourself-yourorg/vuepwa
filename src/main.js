@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
+import VueLocalStore from 'vue-ls';
 
 import Buefy from 'buefy';
 import 'buefy/lib/buefy.css';
@@ -21,6 +22,7 @@ const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 LG(`config = ${config.server}`);
 
 Vue.use(VueI18n);
+Vue.use(VueLocalStore, { namespace: 'vuesppwa' });
 Vue.use(Buefy);
 Vue.config.productionTip = false;
 

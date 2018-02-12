@@ -50,6 +50,6 @@
   ],
   "theme_color": "#022442",
   "background_color": "#000000",
-  "start_url": "tps://yourself-yourorg.github.io/vuepwa",
+  "start_url": "tps://fe.iridium.blue/",
   "display": "standalone"
 }

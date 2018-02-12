@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="authorized">
-      <a class="button" @click="changeUp">
+      <a class="button" @click="signOut">
         <span class="icon">
           <i class="fas fa-sign-out-alt"></i>
         </span>
@@ -9,14 +9,14 @@
       </a>
     </div>
     <div v-else="authorized">
-      <a class="button">
+      <a class="button" @click="signUp">
         <span class="icon">
           <i class="fas fa-edit"></i>
         </span>
         <span>{{ $t('label.signup') }}</span>
       </a>
       &nbsp;
-      <a class="button">
+      <a class="button" @click="signIn">
         <span class="icon">
           <i class="fas fa-sign-in-alt"></i>
         </span>
@@ -32,21 +32,42 @@
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
+
   export default {
-    name: 'hello',
-    // camelCase in JavaScript
-    props: ['somethinggood'],
+    name: 'auth',
+    data() {
+      return {
+        tkn: 'qqqq',
+      };
+    },
     methods: {
-      changeUp() {
-        this.who = 'changed up';
+      signOut() {
+        LG('sign out');
+        LG(this.tkn);
+        LG(this.$ls);
+        LG('~~~~~~~~~~~~  ~~~~~~~~~~~~~');
+        LG(this.$route);
+        auth.getAccessToken(this.tkn, this.$ls);
+        LG('~~~~~~~~~~~~~~~~~~~~~~~~~');
+      },
+      signUp() {
+        LG('sign up');
+        LG(this.$route);
+        LG('~~~~~~~~~~~~~~~~~~~~~~~~~|');
+        // this.$router.push({ name: 'detail', params: { id } });
+        auth.getAccessToken(this.tkn, this.$ls);
+      },
+      signIn() {
+        LG('sign in');
       },
     },
     computed: {
       authorized() {
-        const tkn = this.$route.query.tkn;
-        // LG(`Auth.vue...... ${tkn}`);
+        this.tkn = this.$route.query.tkn;
+        LG(this);
+        LG(`Auth.vue...... ${this}`);
         auth.getAccessToken();
-        return tkn;
+        return this.tkn;
       },
     },
   };
