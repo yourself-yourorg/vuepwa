@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <!-- Header container -->
-    <spaHeader></spaHeader>
+    <globalHeader></globalHeader>
 
     <main class="mdl-layout__content">
       <div class="page-content">
@@ -14,7 +14,7 @@
 
 <script>
   // import accessControl from './components/AccessControl';
-  import spaHeader from './components/Header';
+  import globalHeader from './components/Header';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
@@ -27,7 +27,7 @@
     }),
     components: {
       // accessControl: accessControl.Auth,
-      spaHeader,
+      globalHeader,
     },
   };
 </script>

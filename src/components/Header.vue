@@ -21,19 +21,12 @@
 
 <script>
 
-  import accessControl from './AccessControl';
-
-  const LG = console.log; // eslint-disable-line no-console, no-unused-vars
+  import authentication from './Auth';
 
   export default {
     components: {
-      accessControl: accessControl.Auth,
+      accessControl: authentication,
     },
-    // data() {
-    //   return {
-    //     scrap: 'Scrap',
-    //   };
-    // },
   };
 </script>
 
