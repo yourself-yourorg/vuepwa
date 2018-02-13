@@ -20,7 +20,7 @@ import HomeView from './components/HomeView';
 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
-LG(`config = ${config.server}`);
+LG(`microservice = ${config.server}`);
 
 Vue.use(VueLogger, config.logger);
 

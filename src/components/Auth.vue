@@ -28,7 +28,7 @@
 
 <script>
 
-  import cnf from '../../config';
+  import cnf from '../config';
 
   export default {
     name: 'auth',
