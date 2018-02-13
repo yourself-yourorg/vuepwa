@@ -25,7 +25,7 @@ LG(`microservice = ${config.server}`);
 Vue.use(VueLogger, config.logger);
 
 Vue.use(VueI18n);
-Vue.use(VueLocalStore, { namespace: 'vuesppwa' });
+Vue.use(VueLocalStore, { namespace: 'vuesppwa-' });
 Vue.use(Buefy);
 
 Vue.config.productionTip = config.productionTip;
