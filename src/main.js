@@ -49,6 +49,7 @@ const mainVue = new Vue({
   router,
   created() {
     window.lgr = this.$log;
+    window.ls = this.$ls;
   },
   render: site => site(App),
 });

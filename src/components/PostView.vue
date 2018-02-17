@@ -1,12 +1,26 @@
 <template>
   <div class="waiting">
     Not yet available
+    <AA></AA>
+    <BB></BB>
   </div>
 </template>
+
+
 <script>
-export default {
-};
+
+  import DumbA from './DumbA';
+  import DumbB from './DumbB';
+
+  export default {
+    components: {
+      AA: DumbA,
+      BB: DumbB,
+    },
+  };
 </script>
+
+
 <style scoped>
   .waiting {
     padding: 10px;

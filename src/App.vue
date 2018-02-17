@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <!-- Header container -->
-    <globalHeader></globalHeader>
+    <router-view name="hdr"></router-view>
 
     <main class="mdl-layout__content">
       <div class="page-content">
@@ -14,7 +14,7 @@
 
 <script>
   // import accessControl from './components/AccessControl';
-  import globalHeader from './components/Header';
+  // import globalHeader from './components/Header';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
@@ -25,10 +25,10 @@
       who: 'kkkk',
       what: 'What!',
     }),
-    components: {
-      // accessControl: accessControl.Auth,
-      globalHeader,
-    },
+    // components: {
+    //   // accessControl: accessControl.Auth,
+    //   globalHeader,
+    // },
   };
 </script>
 
