@@ -36,6 +36,7 @@
   @import url('https://use.fontawesome.com/releases/v5.0.6/css/all.css');
   @import url('https://fonts.googleapis.com/css?family=Advent+Pro:thin|Open+Sans:light');
 
+
   #app {
     font-family: 'Open Sans', Open Sans, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -45,7 +46,7 @@
     border: 2px solid white;
     padding-right: 10px;
     padding-left: 10px;
-    background-image: url(../static/img/BodyBgnd.png); background-repeat: repeat;
-    /* Only 'BodyBgnd.png' can be used, due to tricks in /build/build.js  */
+    background-image: url('../static/img/BodyBgnd.jpg'); background-repeat: repeat;
+    /* Only 'BodyBgnd.jpg' can be used, due to tricks in /build/build.js  */
   }
 </style>

@@ -17,8 +17,8 @@ const spinner = ora('building for production...')
 spinner.start()
 
 let nameBkgrnd = 'BodyBgnd';
-let imgBkgrnd = `${nameBkgrnd}*.png`;
-let dupBkgrnd = `${nameBkgrnd}.png`;
+let imgBkgrnd = `${nameBkgrnd}*.jpg`;
+let dupBkgrnd = `${nameBkgrnd}.jpg`;
 let src = 'docs/static/img';
 let trgt = 'docs/static/css/static/img';
 
