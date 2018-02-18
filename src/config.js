@@ -2,6 +2,8 @@ export default {
   server: 'https://wt-a0a68818c7b34a465e865e888dc419c9-0.run.webtask.io/webtasksso',
   tokenTimeToLive: 20000, // 10m * 60s * 1000ms
   tokenName: 'tkn',
+  reroutesCounterName: 'pageChangeCount',
+  localStorageNameSpace: 'vuesppwa-',
   productionTip: false,
   logger: {
     // required ['debug', 'info', 'warn', 'error', 'fatal']
