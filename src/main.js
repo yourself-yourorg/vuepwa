@@ -18,9 +18,7 @@ import config from './config';
 import HomeView from './components/HomeView';
 
 
-const LG = console.log; // eslint-disable-line no-console, no-unused-vars
-
-LG(`microservice = ${config.server}`);
+// const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
 Vue.use(VueLogger, config.logger);
 
@@ -50,6 +48,7 @@ const mainVue = new Vue({
   created() {
     window.lgr = this.$log;
     window.ls = this.$ls;
+    this.$log.info(`microservice = ${config.server}`);
   },
   render: site => site(App),
 });

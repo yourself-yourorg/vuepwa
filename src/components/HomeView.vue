@@ -25,7 +25,7 @@
 
   import data from '../data';
 
-  const LG = console.log; // eslint-disable-line no-console, no-unused-vars
+  // const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
   export default {
     methods: {

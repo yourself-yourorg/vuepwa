@@ -8,6 +8,7 @@ export default {
   productionTip: false,
   logger: {
     // required ['debug', 'info', 'warn', 'error', 'fatal']
+    // logLevel: 'debug',
     logLevel: 'info',
     // optional: defaults to false if not specified
     stringifyArguments: true,

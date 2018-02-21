@@ -30,7 +30,7 @@
 
   import cfg from '../config';
 
-  const LG = console.log; // eslint-disable-line no-console, no-unused-vars
+  // const LG = console.log; // eslint-disable-line no-console, no-unused-vars
   const ky = 'tkn';
   const actv = 'active';
   const ACTIVE = 1;
@@ -77,7 +77,7 @@
   };
 
   const doSignIn = (_accessToken, _storage) => {
-    window.lgr.info(`Do sign in ('${_accessToken}')`);
+    window.lgr.debug(`Do sign in ('${_accessToken}')`);
     const tkn = processAccessToken(_accessToken, _storage);
     if (tkn) {
       window.lgr.debug(`Signing in '${tkn}'.`);
@@ -123,6 +123,7 @@
           this.authentic = false;
           window.lgr.info(`Auth.vue : Inactive`);
         }
+        this.$forceUpdate;
       },
     },
     /* eslint-enable */
@@ -189,10 +190,16 @@
         window.lgr.debug('Signing out.');
         this.$ls.remove(ky);
         setActive(INACTIVE, this.$ls);
+        this.kickIt();
+        // this.counter = this.$ls.get(cfg.reroutesCounterName, 0);
+        // this.$ls.set(cfg.reroutesCounterName, this.counter += 1);
+        // this.sentinel = !this.sentinel;
+        this.$router.go({ name: '' });
+      },
+      kickIt() {
         this.counter = this.$ls.get(cfg.reroutesCounterName, 0);
         this.$ls.set(cfg.reroutesCounterName, this.counter += 1);
         this.sentinel = !this.sentinel;
-        this.$router.go({ name: '' });
       },
       // signUp() {
       //   setActive(ACTIVE, this.$ls);
@@ -202,6 +209,7 @@
       signIn() {
         setActive(ACTIVE, this.$ls);
         doSignIn(this.tkn, this.$ls);
+        this.kickIt();
       },
     },
   };

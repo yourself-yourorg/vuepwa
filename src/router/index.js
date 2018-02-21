@@ -14,7 +14,7 @@ import cfg from '../config';
 
 Vue.use(Router);
 
-const LG = console.log; // eslint-disable-line no-console, no-unused-vars
+// const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
 const router = new Router({
 
@@ -58,7 +58,7 @@ const router = new Router({
 });
 
 router.beforeEach((_to, _from, next) => {
-  LG(`Re-routing from '${_from.name}' to '${_to.name}'.`);
+  if (window.lgr) window.lgr.info(`Re-routing from '${_from.name}' to '${_to.name}'.`);
 
   if (_to.params.authParam > 0) {
     // LG.('>> Authentication detour completed ...');

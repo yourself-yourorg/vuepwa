@@ -13,22 +13,12 @@
 
 
 <script>
-  // import accessControl from './components/AccessControl';
-  // import globalHeader from './components/Header';
+  // const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
-  const LG = console.log; // eslint-disable-line no-console, no-unused-vars
-
-  // const rtr = this;
   export default {
     name: 'app',
     data: () => ({
-      who: 'kkkk',
-      what: 'What!',
     }),
-    // components: {
-    //   // accessControl: accessControl.Auth,
-    //   globalHeader,
-    // },
   };
 </script>
 
