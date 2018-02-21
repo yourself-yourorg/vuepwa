@@ -7,6 +7,9 @@
 </template>
 
 <script>
+
+  import cfg from '../config';
+
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
   export default {
@@ -18,13 +21,13 @@
     },
     watch: {
       counter(val) {
-        window.ls.set('counter', val);
+        window.ls.set(cfg.reroutesCounterName, val);
       },
     },
     created() {
-      this.counter = window.ls.get('counter', 0);
+      this.counter = window.ls.get(cfg.reroutesCounterName, 0);
       const self = this;
-      window.ls.on('counter', (val) => { self.counter = val; });
+      window.ls.on(cfg.reroutesCounterName, (val) => { self.counter = val; });
     },
     methods: {
       increment() {

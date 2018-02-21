@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="authorized">
+    <div v-if="authentic">
       <a class="button" @click="signOut">
         <span class="icon">
           <i class="fas fa-sign-out-alt"></i>
@@ -8,13 +8,13 @@
         <span>{{ $t('label.signout') }}</span>
       </a>
     </div>
-    <div v-else="authorized">
-      <a class="button" @click="signUp">
+    <div v-else="authentic">
+      <!-- a class="button" @click="signUp">
         <span class="icon">
           <i class="fas fa-edit"></i>
         </span>
         <span>{{ $t('label.signup') }}</span>
-      </a>
+      </a -->
       &nbsp;
       <a class="button" @click="signIn">
         <span class="icon">
@@ -23,49 +23,34 @@
         <span>{{ $t('label.signin') }}</span>
       </a>
     </div>
-
-    <section>
-      <div class="block">
-        <b-radio v-model="anonymity"
-          :checked="anonymity !== 'Known'"
-          native-value="Anonymous">
-          Anonymous
-        </b-radio>
-        <b-radio v-model="anonymity"
-          :checked="anonymity === 'Known'"
-          :native-value=ALLOWED>
-          Known
-        </b-radio>
-      </div>
-      <p class="content">
-        <b>Selection:</b>
-        {{ anonymity }}
-      </p>
-    </section>
   </div>
 </template>
 
 <script>
 
-  import cnf from '../config';
+  import cfg from '../config';
 
-  // const LG = console.log; // eslint-disable-line no-console, no-unused-vars
-  const LG = window.lgr; // eslint-disable-line no-console, no-unused-vars
+  const LG = console.log; // eslint-disable-line no-console, no-unused-vars
+  const ky = 'tkn';
+  const actv = 'active';
+  const ACTIVE = 1;
+  const INACTIVE = 0;
 
   const processAccessToken = (_accessToken, _storage) => {
-    const ky = 'tkn';
     let accessToken = _accessToken;
     if (typeof _storage !== 'undefined') {
       const storedToken = _storage.get(ky);
+      window.lgr.debug(`Inbound ${accessToken}.  Stored : ${storedToken}`);
       if (accessToken) {
-        _storage.set(ky, accessToken, cnf.tokenTimeToLive);
-        window.lgr.info(`URI query token saved to Local Storage '${accessToken}'`);
+        _storage.set(ky, accessToken, cfg.tokenTimeToLive);
+        window.lgr.info('URI query token saved to Local Storage.');
+        window.lgr.debug(`Query token :: '${accessToken}'`);
         const redir = window.location.href.replace(`?${ky}=${accessToken}`, '');
         location.assign(redir);
         window.lgr.debug('Redirected to same URI without token.');
       } else if (storedToken) {
         accessToken = storedToken;
-        _storage.set(ky, accessToken, cnf.tokenTimeToLive);
+        _storage.set(ky, accessToken, cfg.tokenTimeToLive);
         window.lgr.debug(`Using token from local storage '${accessToken}'.`);
       } else {
         window.lgr.info('Neither stored nor new token found.');
@@ -82,7 +67,7 @@
       // accessToken = token;
       // $('#accessToken').val(accessToken);
     };
-    window.location.assign(cnf.server + cnf.authPath);
+    window.location.assign(cfg.server + cfg.authPath);
   };
 
   // const doSignUp = (_storage) => {
@@ -103,27 +88,41 @@
     }
   };
 
-  // const KNOWN = 'Known';
-  // const UNKNOWN = 'Anonymous';
-  export default {
+  const isActive = (_storage) => {
+    const state = _storage.get(actv) === ACTIVE;
+    return state;
+  };
+
+  const setActive = (_state, _storage) => {
+    _storage.set(actv, _state); // eslint-disable-line no-console
+  };
+
+  const vm = {
     name: 'auth',
     data() {
       return {
         counter: 0,
         sentinel: false,
         tkn: null,
-        authorized: false,
-        anonymity: 'Anonymous',
-        ALLOWED: 'Known',
+        authentic: false,
       };
     },
     watch: {
       /* eslint-disable */
       sentinel: function() {
-        const self = this;
-        self.authorized = self.sentinel;
-        self.authorized = self.anonymity === 'Known';
-        window.lgr.info(`Auth.vue : ${self.authorized ? '' : 'NOT '}Authorized`);
+        if ( isActive(window.ls) ) {
+          this.tkn = processAccessToken(false, window.ls)
+          window.lgr.debug(this.tkn);
+          if ( this.tkn ) {
+            this.authentic = true;
+            window.lgr.info(`Auth.vue : Authenticated`);
+          } else {
+            authenticate();
+          }
+        } else {
+          this.authentic = false;
+          window.lgr.info(`Auth.vue : Inactive`);
+        }
       },
     },
     /* eslint-enable */
@@ -140,10 +139,11 @@
       window.lgr.debug('Auth.vue : created');
       const rt = this.$route;
 
-      if (rt.query[cnf.tokenName]) {
-        const accessToken = rt.query[cnf.tokenName];
+      if (rt.query[cfg.tokenName]) {
+        const accessToken = rt.query[cfg.tokenName];
         window.lgr.debug(`Got token  ${accessToken}`);
-        delete rt.query[cnf.tokenName];
+        this.tkn = processAccessToken(accessToken, window.ls);
+        delete rt.query[cfg.tokenName];
       }
 
       window.lgr.debug(`Created for '${rt.params.authParam}'`);
@@ -176,54 +176,38 @@
         this.sentinel = !this.sentinel;
       }
 
-      this.counter = window.ls.get('counter', 0);
+      this.counter = window.ls.get(cfg.reroutesCounterName, 0);
       const self = this;
       // window.lgr.debug(this.counter);
-      window.ls.on('counter', (val) => {
+      window.ls.on(cfg.reroutesCounterName, (val) => {
         self.sentinel = !self.sentinel;
         window.lgr.debug(`..... ${val} ..... ${self.sentinel}`);
       });
     },
     methods: {
       signOut() {
-        const tkn = processAccessToken(this.tkn, this.$ls);
-        window.lgr.debug(`Signing out '${tkn}'.`);
+        window.lgr.debug('Signing out.');
+        this.$ls.remove(ky);
+        setActive(INACTIVE, this.$ls);
+        this.counter = this.$ls.get(cfg.reroutesCounterName, 0);
+        this.$ls.set(cfg.reroutesCounterName, this.counter += 1);
+        this.sentinel = !this.sentinel;
+        this.$router.go({ name: '' });
       },
-      signUp() {
-        const tkn = processAccessToken(this.tkn, this.$ls);
-        window.lgr.debug(`Signing up '${tkn}'.`);
-      },
-      signIn() {
-        doSignIn(this.tkn, this.$ls);
-        // const tkn = this.processAccessToken(this.tkn, this.$ls);
-        // if (!tkn)
-        // window.lgr.debug(`Signing in '${tkn}'.`);
-      },
-      // processAccessToken: (_accessToken, _storage) => {
-      //   const ky = 'tkn';
-      //   let accessToken = _accessToken;
-      //   if (typeof _storage !== 'undefined') {
-      //     const storedToken = _storage.get(ky);
-      //     if (accessToken) {
-      //       _storage.set(ky, accessToken, cnf.tokenTimeToLive);
-      //       window.lgr.info(`URI query token saved to Local Storage '${accessToken}'`);
-      //       const redir = window.location.href.replace(`?${ky}=${accessToken}`, '');
-      //       location.assign(redir);
-      //       window.lgr.debug('Redirected to same URI without token.');
-      //     } else if (storedToken) {
-      //       accessToken = storedToken;
-      //       _storage.set(ky, accessToken, cnf.tokenTimeToLive);
-      //       window.lgr.debug(`Using token from local storage '${accessToken}'.`);
-      //     } else {
-      //       window.lgr.info('Neither stored nor new token found.');
-      //     }
-      //   } else {
-      //     window.lgr.warn('No local storage to use.');
-      //   }
-      //   return accessToken;
+      // signUp() {
+      //   setActive(ACTIVE, this.$ls);
+      //   const tkn = processAccessToken(this.tkn, this.$ls);
+      //   window.lgr.debug(`Signing up '${tkn}'.`);
       // },
+      signIn() {
+        setActive(ACTIVE, this.$ls);
+        doSignIn(this.tkn, this.$ls);
+      },
     },
   };
+
+export default vm;
+
 </script>
 
 <style>

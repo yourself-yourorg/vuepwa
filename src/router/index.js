@@ -10,6 +10,8 @@ import DumbB from '@/components/DumbB';
 import Header from '@/components/Header';
 import Auth from '@/components/Auth';
 
+import cfg from '../config';
+
 Vue.use(Router);
 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
@@ -56,24 +58,19 @@ const router = new Router({
 });
 
 router.beforeEach((_to, _from, next) => {
-  LG(`router.beforeEach => from: ${_from.name} to: ${_to.name} `);
-  // LG(_to);
-  // LG(_to.params);
-  // LG(_to.params.authParam);
-  // LG('...................');
+  LG(`Re-routing from '${_from.name}' to '${_to.name}'.`);
 
   if (_to.params.authParam > 0) {
-    LG('Transitioning >>>');
+    // LG.('>> Authentication detour completed ...');
     next();
   } else {
     let counter;
     if (window.ls) {
-      counter = window.ls.get('counter', 0);
-      window.ls.set('counter', counter += 1);
+      counter = window.ls.get(cfg.reroutesCounterName, 0);
+      window.ls.set(cfg.reroutesCounterName, counter += 1);
     }
 
-    // LG(`router.beforeEach => (${counter})`);
-    LG('....... re-route to check authorization .......');
+    // LG('>> Detour to check authentication...');
 
     router.replace({
       name: 'chkAuth',

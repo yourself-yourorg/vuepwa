@@ -5,8 +5,8 @@
 </template>
 
 <script>
-  // Import the EventBus.
-  // import EventBus from '../event-bus';
+
+  import cfg from '../config';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
@@ -18,9 +18,9 @@
       };
     },
     created() {
-      this.counter = window.ls.get('counter', 0);
+      this.counter = window.ls.get(cfg.reroutesCounterName, 0);
       const self = this;
-      window.ls.on('counter', (val) => { self.counter = val; });
+      window.ls.on(cfg.reroutesCounterName, (val) => { self.counter = val; });
     },
   };
 </script>
