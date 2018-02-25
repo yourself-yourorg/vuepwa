@@ -19,8 +19,9 @@ spinner.start()
 let nameBkgrnd = 'BodyBgnd';
 let imgBkgrnd = `${nameBkgrnd}*.jpg`;
 let dupBkgrnd = `${nameBkgrnd}.jpg`;
-let src = 'docs/static/img';
-let trgt = 'docs/static/css/static/img';
+let stc = 'docs/static';
+let src = `${stc}/img`;
+let trgt = `${stc}/css/static/img`;
 
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
   if (err) throw err
@@ -39,6 +40,7 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
     shell.mkdir('-p', trgt);
     shell.mv(`${src}/${imgBkgrnd}`, trgt);
     shell.rm(`${trgt}/${dupBkgrnd}`);
+    shell.mv(`${stc}/CNAME`, 'docs');
 
     console.log(chalk.cyan('  Build complete.\n'))
     console.log(chalk.yellow(
