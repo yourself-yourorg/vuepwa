@@ -10,11 +10,14 @@ import DumbB from '@/components/DumbB';
 import Header from '@/components/Header';
 import Auth from '@/components/Auth';
 
-import cfg from '../config';
+import { store } from '../store/store';
+
+// import cfg from '../config';
 
 Vue.use(Router);
 
-// const LG = console.log; // eslint-disable-line no-console, no-unused-vars
+
+const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
 const router = new Router({
 
@@ -58,31 +61,39 @@ const router = new Router({
 });
 
 router.beforeEach((_to, _from, next) => {
-  if (window.lgr) window.lgr.info(`Re-routing from '${_from.name}' to '${_to.name}'.`);
-
-  if (_to.params.authParam > 0) {
-    // LG.('>> Authentication detour completed ...');
-    next();
-  } else {
-    let counter;
-    if (window.ls) {
-      counter = window.ls.get(cfg.reroutesCounterName, 0);
-      window.ls.set(cfg.reroutesCounterName, counter += 1);
+  if (window.lgr) {
+    window.lgr.info(`Routing from '${_from.name}' to '${_to.name}'.`);
+    if (_to.query.tkn) {
+      window.lgr.info(`Query has '${_to.query.tkn}'.`);
+      store.dispatch('keepTkn', _to.query.tkn).then(() => next());
+    // } else {
+    //   store.dispatch('viewChange');
     }
-
-    // LG('>> Detour to check authentication...');
-
-    router.replace({
-      name: 'chkAuth',
-      params: {
-        name: _to.name,
-        path: _to.path,
-        authParam: 1,
-        forward: _to.params,
-      },
-      query: _to.query,
-    });
   }
+
+  //   if (_to.params.authParam > 0) {
+  //     // LG.('>> Authentication detour completed ...');
+  next();
+  //   } else {
+  //     let counter;
+  //     if (window.ls) {
+  //       counter = window.ls.get(cfg.reroutesCounterName, 0);
+  //       window.ls.set(cfg.reroutesCounterName, counter += 1);
+  //     }
+
+  //     // LG('>> Detour to check authentication...');
+
+  //     router.replace({
+  //       name: 'chkAuth',
+  //       params: {
+  //         name: _to.name,
+  //         path: _to.path,
+  //         authParam: 1,
+  //         forward: _to.params,
+  //       },
+  //       query: _to.query,
+  //     });
+  //   }
 });
 
 export default router;

@@ -3,7 +3,9 @@ export default {
   authPath: '/authentication/google/start',
   tokenTimeToLive: 20000, // 10m * 60s * 1000ms
   tokenName: 'tkn',
-  reroutesCounterName: 'pageChangeCount',
+  activityName: 'actv',
+  authName: 'authd',
+  // reroutesCounterName: 'pageChangeCount',
   localStorageNameSpace: 'vuesppwa-',
   productionTip: false,
   logger: {
