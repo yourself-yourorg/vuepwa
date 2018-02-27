@@ -3,7 +3,9 @@
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell--3-col mdl-cell mdl-cell--1-col-tablet mdl-cell--hide-phone"></div>
       <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-phone">
-        <a class="button" @click="testMethod">Test method</a> &nbsp; {{ status }}
+        <a class="button" data-cyp="logOutUser" @click="logOutUser">logOutUser</a>
+        <a class="button" data-cyp="purge" @click="purge">Purge</a>
+        <div data-cyp="status">{{ status }}</div>
         <div>{{ response }}</div>
         <div
           v-for="picture in this.pictures"
@@ -37,18 +39,37 @@
       displayDetails(id) {
         this.$router.push({ name: 'detail', params: { id } });
       },
-      testMethod() {
+      logOutUser() {
         const accessToken = this.jwt;
         const memb = jwt.decode(accessToken).id;
-        const url = `${cfg.server}/lgo`;
 
-        this.$log.info('  +++ DEBUG +++', url);
         const headers = {};
         if (accessToken) {
           headers.Authorization = `JWT ${accessToken}`;
         }
 
-        fetch(`${url}/${memb}`, { headers })
+        const url = `${cfg.server}/lgo/${memb}`;
+        this.$log.info(` +++ LOG OUT USER '${memb}' AT '${url}' +++ `);
+
+        fetch(`${url}`, { headers })
+          .then((response) => {
+            this.status = response.statusText;
+            response.text().then((text) => {
+              this.response = text;
+            });
+          });
+      },
+      purge() {
+        const accessToken = this.jwt;
+        const url = `${cfg.server}/purge`;
+
+        this.$log.info(`  +++ PURGE USERS AT '${url}' +++ `);
+        const headers = {};
+        if (accessToken) {
+          headers.Authorization = `JWT ${accessToken}`;
+        }
+
+        fetch(`${url}`, { headers })
           .then((response) => {
             this.status = response.statusText;
             response.text().then((text) => {

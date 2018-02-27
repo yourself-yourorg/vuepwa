@@ -11,7 +11,7 @@
     </div>
     <div v-else="isKnown && isHere">
       &nbsp;
-      <a class="button" @click="logIn">
+      <a class="button" data-cyp="logIn" @click="logIn">
         <span class="icon">
           <i class="fas fa-sign-in-alt"></i>
         </span>

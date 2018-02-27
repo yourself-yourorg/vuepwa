@@ -6,8 +6,8 @@
         <div class="level-item">
           <img
             src="static/img/WaterDrop_50.png"
-            alt="Demo of a microservice SPA PWA">
-            <span style="font-family: 'Advent Pro'; font-size: 48px;">iridium blue</span>
+            alt="Iridium Blue Logo">
+            <span data-cyp="appTitle" style="font-family: 'Advent Pro'; font-size: 48px;">iridium blue</span>
         </div>
       </router-link>
     </div>

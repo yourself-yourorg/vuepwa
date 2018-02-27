@@ -1,3 +1,10 @@
+/* eslint-disable */
+
+
+
+
+
+
 var products = [
   {id: 1, name: 'Angular', description: 'Superheroic JavaScript MVW Framework.', price: 100},
   {id: 2, name: 'Ember', description: 'A framework for creating ambitious web applications.', price: 100},
