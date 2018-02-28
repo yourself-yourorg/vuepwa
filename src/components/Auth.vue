@@ -2,11 +2,11 @@
   <div>
     <div> Token :: '{{ jwt.substring(0, 44) }}'</div>
     <div v-if="isKnown && isHere">
-      <a class="button" @click="logOut">
+      <a class="button" data-cyp="logOut" @click="logOut">
         <span class="icon">
           <i class="fas fa-sign-out-alt"></i>
         </span>
-        <span>{{ $t('label.signout') }}</span>
+        <span>{{ $t('label.signout') }}, {{  user}}</span>
       </a>
     </div>
     <div v-else="isKnown && isHere">
@@ -225,6 +225,7 @@
         jwt: 'axsToken',
         isHere: 'isActive',
         isKnown: 'isAuthenticated',
+        user: 'nameUser',
       }),
     },
     methods: {
@@ -250,6 +251,7 @@
       // //   const tkn = processAccessToken(this.tkn, this.$ls);
       // //   window.lgr.debug(`Signing up '${tkn}'.`);
       // },
+
       // // OLDsignIn() {
       // //   setActive(ACTIVE, this.$ls);
       // //   doSignIn(this.tkn, this.$ls);

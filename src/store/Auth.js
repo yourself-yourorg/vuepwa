@@ -10,14 +10,14 @@ const state = {
   accessToken: NULL_TOKEN,
   active: INACTIVE,
   authenticated: UNKNOWN,
-  // counter: 0,
+  nameUser: 'Doo',
 };
 
 const getters = {
   axsToken: vx => vx.accessToken,
   isActive: vx => vx.active,
   isAuthenticated: vx => vx.authenticated,
-  // cntViewChanges: vx => vx.counter,
+  nameUser: vx => vx.nameUser,
 };
 
 const mutations = {
