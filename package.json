@@ -12,7 +12,7 @@
     "e2e": "PORT=8088 node test/e2e/nw/runner.js",
     "e2ew": "./node_modules/nodemon/bin/nodemon.js --exec 'npm run e2e'",
     "test": "npm run unit && npm run e2e",
-    "lint": "eslint --fix --ext .js,.vue src test/unit/specs test/e2e/nw/specs test/e2e/cy/specs",
+    "lint": "eslint --fix --ext .js,.vue src test/unit/specs test/e2e/nw/specs test/e2e/cy/integration",
     "cyp": "cypress open",
     "ssi": "selenium-standalone install",
     "sss": "selenium-standalone start"
@@ -54,6 +54,7 @@
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-import-resolver-webpack": "^0.8.1",
     "eslint-loader": "^1.9.0",
+    "eslint-plugin-cypress": "^2.0.1",
     "eslint-plugin-html": "^3.2.2",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-node": "^5.2.0",
