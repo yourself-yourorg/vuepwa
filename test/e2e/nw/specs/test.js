@@ -10,6 +10,7 @@ const LOGIN_BUTTON = 'logIn'; ids[LOGIN_BUTTON] = 'a';
 const LOGOUT_BUTTON = 'logOut'; ids[LOGOUT_BUTTON] = 'a';
 const BTN_PURGE = 'purge'; ids[BTN_PURGE] = 'a';
 const DIV_STATUS = 'status'; ids[DIV_STATUS] = 'div';
+const DIV_ACTIVITY = 'activity'; ids[DIV_ACTIVITY] = 'div';
 
 
 const URL_GOOGLE_PERMISSIONS = 'https://myaccount.google.com/permissions';
@@ -43,8 +44,15 @@ const H2_ALLOW=`//h2[.="Allow webtask.io to do this?"]`;
 const BTN_ALLOW = `//div[@id="submit_approve_access"]`;
 
 module.exports = {
-  
+
   'Purge GOOGLE user permissions': function test(browser) {
+
+    if (!process.env.GOOGLE_USER_PWD) {
+      const msg = `Need
+      export GOOGLE_USER_PWD='xyz';`;
+      console.log(msg);
+      throw msg;
+    };
 
     browser
       .useXpath()
@@ -62,7 +70,7 @@ ${process.env.GOOGLE_USER_PWD}
     browser.waitForElementVisible(INP_USER_PWD, 5000);
     browser.setValue(INP_USER_PWD, process.env.GOOGLE_USER_PWD);
     browser.click(BTN_PWD_NEXT);
-    
+
     browser.waitForElementVisible(APP_LIST, 45000);
 
     browser.elements( 'xpath', APP_LIST_ITEM, function (elems) {
@@ -114,8 +122,6 @@ ${process.env.GOOGLE_USER_PWD}
     browser.waitForElementVisible(OAUTH_PROJ, 5000);
 
     browser.elements( 'xpath', USER_LIST_ITEM, function (elems) {
-      console.log(`SELECTOR :: ${USER_LIST_ITEM}`);
-      console.log(elems.value);
       if (elems.value.length > 0) {
         console.log(`Picking user '${CN.APP_NAME}' from list.`);
         browser.click(`${USER_LIST_ITEM}/../..`);
@@ -134,7 +140,6 @@ ${process.env.GOOGLE_USER_PWD}
     });
 
     // browser.pause(10000);
-    browser.screenshot('/home/you/Desktop/fail.jpg');
     browser.waitForElementVisible(H1_NOT_VERIFIED, 15000);
     browser.click(BTN_ADVANCED);
 
@@ -147,14 +152,22 @@ ${process.env.GOOGLE_USER_PWD}
     browser
       .waitForElementVisible(cy(APP_TITLE), 5000)
       .assert.containsText(cy(APP_TITLE), 'iridium blue');
+
+    // browser.saveScreenshot('/home/you/Desktop/fail.jpg');
+    browser.expect.element(cy(DIV_ACTIVITY)).text.to.contain('Activity 1').after(5000);
+
   },
 
   'Verify Log out Sequence': function test(browser) {
-    browser.expect.element(cy(LOGOUT_BUTTON)).to.be.visible;
+    browser.expect.element(cy(LOGOUT_BUTTON)).to.be.visible.after(5000);
     browser.click(cy(LOGOUT_BUTTON));
 
     browser.expect.element(cy(LOGOUT_BUTTON)).not.to.be.present.after(5000);
+    // console.log(`Activity '${cy(DIV_ACTIVITY)}'.`);
     // browser.pause(20000);
+    browser.expect.element(cy(DIV_ACTIVITY)).to.be.present.after(5000);
+    // browser.saveScreenshot('/home/you/Desktop/fail.jpg');
+    browser.expect.element(cy(DIV_ACTIVITY)).text.to.contain('Activity 0').after(5000);
 
     browser.end();
   },

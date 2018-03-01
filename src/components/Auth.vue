@@ -18,7 +18,7 @@
         <span>{{ $t('label.signin') }}</span>
       </a>
     </div>
-    <div> Activity {{ isHere }} </div>
+    <div data-cyp="activity"> Activity {{ isHere }} </div>
     <div> Authenticated {{ isKnown }} </div>
   </div>
 </template>
