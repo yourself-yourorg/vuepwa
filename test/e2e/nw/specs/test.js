@@ -75,7 +75,8 @@ ${process.env.GOOGLE_USER_PWD}
 
         browser.waitForElementVisible(OPTION_CONFIRM, 45000);
         browser.click('//content[contains(text(), "IridiumBlueClient")]/following::span[contains(text(), "OK")]/../..');
-        browser.pause(10000);
+        browser.expect.element(OPTION_CONFIRM).to.not.be.present.after(10000);
+        // browser.pause(10000);
 
       } else {
         console.log(`No test needed. App '${CN.APP_NAME}' was not authorized.`);
@@ -152,7 +153,8 @@ ${process.env.GOOGLE_USER_PWD}
     browser.expect.element(cy(LOGOUT_BUTTON)).to.be.visible;
     browser.click(cy(LOGOUT_BUTTON));
 
-    browser.pause(20000);
+    browser.expect.element(cy(LOGOUT_BUTTON)).not.to.be.present.after(5000);
+    // browser.pause(20000);
 
     browser.end();
   },

@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-// import _ from 'lodash';
 
 import HomeView from '@/components/HomeView';
 import DetailView from '@/components/DetailView';

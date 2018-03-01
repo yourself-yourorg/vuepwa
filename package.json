@@ -12,7 +12,8 @@
     "e2e": "PORT=8088 node test/e2e/nw/runner.js",
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --fix --ext .js,.vue src test/unit/specs test/e2e/nw/specs test/e2e/cy/specs",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "sss": "selenium-standalone start"
   },
   "dependencies": {
     "buefy": "^0.6.3",
