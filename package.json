@@ -13,7 +13,7 @@
     "e2ew": "./node_modules/nodemon/bin/nodemon.js --exec 'npm run e2e'",
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --fix --ext .js,.vue src test/unit/specs test/e2e/nw/specs test/e2e/cy/specs",
-    "cypress:open": "cypress open",
+    "cyp": "cypress open",
     "ssi": "selenium-standalone install",
     "sss": "selenium-standalone start"
   },

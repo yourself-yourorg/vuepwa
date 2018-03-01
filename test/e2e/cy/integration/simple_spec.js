@@ -16,7 +16,7 @@ describe('Iiridum Blue', function() {
     beforeEach(function () {
       // Visiting our app before each test removes any state build up from
       // previous tests. Visiting acts as if we closed a tab and opened a fresh one
-      cy.visit('/')
+      cy.visit('/');
     })
 
     // Let's query for some DOM elements and make assertions
@@ -24,7 +24,7 @@ describe('Iiridum Blue', function() {
     // think of this like the '$' in jQuery
 
     it('Log in', function () {
-      cy.get(`[data-cyp='logIn']`).click()
+      cy.get(`[data-cyp='logIn']`).click();
     })
   })
 

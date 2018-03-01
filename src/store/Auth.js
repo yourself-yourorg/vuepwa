@@ -70,7 +70,9 @@ const actions = {
   },
   authenticate: ({ commit, dispatch }) => {
     window.lgr.info('Auth(action) :: Authenticating...');
-    window.location.assign(cfg.server + cfg.authPath);
+    const url = 'http://wtdev:8080/#/?tkn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiRG9vd2EgRGlkZGVlIiwiZW1haWwiOiJkb293YS5kaWRkZWVAZ21haWwuY29tIiwiaWQiOiJNVFV4T1RreU9ERTRNemMwTnciLCJpYXQiOjE1MTk5Mjk1OTUsImV4cCI6MTUxOTkzMzE5NSwiYXVkIjoid2VidGFza3NzbyIsImlzcyI6IklyaWRpdW0gQmx1ZSBXYXRlciIsInN1YiI6Ik1UVXhPVGt5T0RFNE16YzBOdyJ9.jgb3SthHK94hvhKlhwZeOjVxEo7jFFaB4n-re10AP44';
+    // const url = cfg.server + cfg.authPath;
+    window.location.assign(url);
   },
   logOut: ({ commit, dispatch }) => {
     dispatch('setActivity', INACTIVE);
