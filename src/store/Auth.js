@@ -1,3 +1,5 @@
+import jwt from 'jsonwebtoken';
+
 import cfg from '../config';
 
 const ACTIVE = 1;
@@ -12,7 +14,7 @@ const state = {
   accessToken: NULL_TOKEN,
   active: INACTIVE,
   authenticated: UNKNOWN,
-  nameUser: 'Doo',
+  nameUser: '',
 };
 
 const getters = {
@@ -28,6 +30,7 @@ const mutations = {
     window.lgr.info('Auth(mutation) :: Saving token');
     window.ls.set(cfg.tokenName, payload);
     vx.accessToken = payload;
+    vx.nameUser = jwt.decode(payload).name;
     window.ls.set(cfg.authName, KNOWN);
     vx.authenticated = KNOWN;
     window.ls.set(cfg.activityName, KNOWN);
@@ -71,11 +74,13 @@ const actions = {
     dispatch('authenticate');
   },
   authenticate: ({ commit, dispatch }) => {
-    window.lgr.info('Auth(action) :: Authenticating...');
-    let url = cfg.server + cfg.authPath;
-    const testAuthUrlEnvVar = process.env[cfg.testAuthUrlEnvVar];
-    // const testAuthUrlEnvVar = process.env.AUTH_TEST_URL;
-    if (testAuthUrlEnvVar) url = testAuthUrlEnvVar;
+    const mode = process.env.STATIC_MODE;
+    window.lgr.info(`Auth(action) :: Authenticating... ${mode}`);
+    let url = '';
+    url = cfg.server + cfg.authPath;
+    // const testAuthUrlEnvVar = process.env[cfg.testAuthUrlEnvVar];
+    // if (testAuthUrlEnvVar) url = testAuthUrlEnvVar;
+    url += `?mode=${mode}`;
     window.location.assign(url);
   },
   logOut: ({ commit, dispatch }) => {
