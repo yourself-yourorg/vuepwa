@@ -48,7 +48,7 @@ const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 module.exports = {
 
   'Purge GOOGLE user permissions': function test(browser) {
-    if (!process.env.GOOGLE_USER_PWD) {
+    if (!process.env[CN.GOOGLE_USER_PWD]) {
       const msg = `Need
       export GOOGLE_USER_PWD='xyz';`;
       LG(msg);
@@ -66,10 +66,10 @@ module.exports = {
     browser.click(BTN_ID_NEXT);
 
     LG(` Is present?   ${chalk.blue(CN.GOOGLE_USER)}
-${process.env.GOOGLE_USER_PWD}
+${process.env[CN.GOOGLE_USER_PWD]}
                 `);
     browser.waitForElementVisible(INP_USER_PWD, 5000);
-    browser.setValue(INP_USER_PWD, process.env.GOOGLE_USER_PWD);
+    browser.setValue(INP_USER_PWD, process.env[CN.GOOGLE_USER_PWD]);
     browser.click(BTN_PWD_NEXT);
 
     browser.waitForElementVisible(APP_LIST, 45000);
@@ -129,7 +129,7 @@ ${process.env.GOOGLE_USER_PWD}
         browser.click(BTN_ID_NEXT);
 
         browser.waitForElementVisible(INP_USER_PWD, 5000);
-        browser.setValue(INP_USER_PWD, process.env.GOOGLE_USER_PWD);
+        browser.setValue(INP_USER_PWD, process.env[CN.GOOGLE_USER_PWD]);
         browser.click(BTN_PWD_NEXT);
       }
     });

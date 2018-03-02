@@ -6,6 +6,8 @@ const KNOWN = 1;
 const UNKNOWN = 0;
 const NULL_TOKEN = 'no token';
 
+const LG = console.log; // eslint-disable-line no-console, no-unused-vars
+
 const state = {
   accessToken: NULL_TOKEN,
   active: INACTIVE,
@@ -70,7 +72,10 @@ const actions = {
   },
   authenticate: ({ commit, dispatch }) => {
     window.lgr.info('Auth(action) :: Authenticating...');
-    const url = cfg.server + cfg.authPath;
+    let url = cfg.server + cfg.authPath;
+    const testAuthUrlEnvVar = process.env[cfg.testAuthUrlEnvVar];
+    // const testAuthUrlEnvVar = process.env.AUTH_TEST_URL;
+    if (testAuthUrlEnvVar) url = testAuthUrlEnvVar;
     window.location.assign(url);
   },
   logOut: ({ commit, dispatch }) => {

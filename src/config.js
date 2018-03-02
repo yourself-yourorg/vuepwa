@@ -5,9 +5,9 @@ export default {
   tokenName: 'tkn',
   activityName: 'actv',
   authName: 'authd',
-  // reroutesCounterName: 'pageChangeCount',
   localStorageNameSpace: 'vuesppwa-',
   productionTip: false,
+  testAuthUrlEnvVar: 'AUTH_TEST_URL', // 'env.process.TEST_TOKEN'
   logger: {
     // required ['debug', 'info', 'warn', 'error', 'fatal']
     // logLevel: 'debug',
