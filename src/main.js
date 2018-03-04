@@ -5,6 +5,8 @@ import VueI18n from 'vue-i18n';
 import VueLocalStore from 'vue-ls';
 import VueLogger from 'vuejs-logger';
 
+import { sync } from 'vuex-router-sync';
+
 import Buefy from 'buefy';
 import 'buefy/lib/buefy.css';
 
@@ -41,6 +43,8 @@ const i18n = new VueI18n({
   // fallbackLocale: locale.split('-')[0] || 'en',
   messages,
 });
+
+sync(store, router);
 
 /* eslint-disable no-new */
 const mainVue = new Vue({

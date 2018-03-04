@@ -75,12 +75,12 @@ const actions = {
   },
   authenticate: ({ commit, dispatch }) => {
     const mode = process.env.STATIC_MODE;
-    window.lgr.info(`Auth(action) :: Authenticating... ${mode}`);
     let url = '';
-    url = cfg.server + cfg.authPath;
-    // const testAuthUrlEnvVar = process.env[cfg.testAuthUrlEnvVar];
-    // if (testAuthUrlEnvVar) url = testAuthUrlEnvVar;
-    url += `?mode=${mode}`;
+    window.lgr.info(`Auth(action) :: Authenticating... ${mode}`);
+    url = `${cfg.server}${cfg.authPath}?mode=${mode}`;
+    const testAuthUrlEnvVar = process.env[cfg.testAuthUrlEnvVar];
+    window.lgr.info(`Auth(action) :: Authenticating... ${testAuthUrlEnvVar}`);
+    if (testAuthUrlEnvVar) url = testAuthUrlEnvVar;
     window.location.assign(url);
   },
   logOut: ({ commit, dispatch }) => {

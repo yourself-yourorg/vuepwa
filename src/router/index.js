@@ -11,7 +11,9 @@ import Auth from '@/components/Auth';
 
 import { store } from '../store/store';
 
-// import cfg from '../config';
+import Blog from '../components/Blog';
+import Article from '../components/Article';
+
 
 Vue.use(Router);
 
@@ -21,6 +23,16 @@ const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 const router = new Router({
 
   routes: [
+    {
+      path: '/blog',
+      name: 'blog',
+      component: Blog,
+    },
+    {
+      path: '/articles/:id',
+      name: 'article',
+      component: Article,
+    },
     {
       path: '',
       name: 'home',

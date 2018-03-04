@@ -15,7 +15,9 @@
             <img :src="picture.url" />
           </div>
         </div>
-
+      <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" to="/blog">
+        <i class="material-icons">blog</i>
+      </router-link>
       </div>
     </div>
     <router-link class="add-picture-button mdl-button mdl-js-button mdl-button--fab mdl-button--colored" to="/post">

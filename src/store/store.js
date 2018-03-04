@@ -1,6 +1,8 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
 
+import articles from './articles';
+
 import Auth from './Auth';
 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
@@ -31,6 +33,7 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
   },
   modules: {
     Auth,
+    articles,
   },
 });
 
