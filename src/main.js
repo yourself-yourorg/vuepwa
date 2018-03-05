@@ -39,7 +39,7 @@ Vue.component('home', HomeView);
 
 // Vue.use(VueAxios, axios);
 
-const messages = xlate; // Make it observable
+const messages = xlate; //  Make it observable
 
 const locale = navigator.languages[0] || 'en';
 const i18n = new VueI18n({
@@ -63,6 +63,8 @@ const mainVue = new Vue({
     this.$log.info(`microservice = ${config.server}`);
     if (this.$route.query.tkn) {
       this.$store.dispatch('keepTkn', this.$route.query.tkn);
+    } else {
+      this.$store.dispatch('logOut');
     }
   },
   render: site => site(App),
