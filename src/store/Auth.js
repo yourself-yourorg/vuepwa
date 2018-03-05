@@ -27,7 +27,7 @@ const getters = {
 const mutations = {
   /* eslint-disable no-param-reassign, no-unused-vars */
   saveToken: (vx, payload) => {
-    window.lgr.info('Auth(mutation) :: Saving token');
+    // window.lgr.info('Auth(mutation) :: Saving token');
     window.ls.set(cfg.tokenName, payload);
     vx.accessToken = payload;
     vx.nameUser = jwt.decode(payload).name;
@@ -41,6 +41,8 @@ const mutations = {
   // },
   toSignedOut: (vx) => {
     window.lgr.warn('Auth(mutation) :: Requesting to sign out here');
+    window.ls.set(cfg.tokenName, null);
+    vx.accessToken = '';
   },
   activity: (vx, payload) => {
     window.lgr.warn('Auth(mutation) :: Changing activity state');
@@ -79,12 +81,13 @@ const actions = {
     window.lgr.info(`Auth(action) :: Authenticating... ${mode}`);
     url = `${cfg.server}${cfg.authPath}?mode=${mode}`;
     const testAuthUrlEnvVar = process.env[cfg.testAuthUrlEnvVar];
-    window.lgr.info(`Auth(action) :: Authenticating... ${testAuthUrlEnvVar}`);
+    window.lgr.info(`Auth(action) :: Faked authentication URL :: ${testAuthUrlEnvVar}`);
     if (testAuthUrlEnvVar) url = testAuthUrlEnvVar;
     window.location.assign(url);
   },
   logOut: ({ commit, dispatch }) => {
     dispatch('setActivity', INACTIVE);
+    dispatch('setAuth', UNKNOWN);
     commit('toSignedOut');
   },
   setActivity: ({ commit }, payload) => {

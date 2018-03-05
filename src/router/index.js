@@ -9,14 +9,14 @@ import DumbB from '@/components/DumbB';
 import Header from '@/components/Header';
 import Auth from '@/components/Auth';
 
+// import Blog from '@/components/Blog';
+// import Article from '@/components/Article';
+
+import { Blog, Article } from '@/components/Blog';
+
 import { store } from '../store/store';
 
-import Blog from '../components/Blog';
-import Article from '../components/Article';
-
-
 Vue.use(Router);
-
 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
@@ -26,12 +26,12 @@ const router = new Router({
     {
       path: '/blog',
       name: 'blog',
-      component: Blog,
+      components: { default: Blog, hdr: Header },
     },
     {
       path: '/articles/:id',
       name: 'article',
-      component: Article,
+      components: { default: Article, hdr: Header },
     },
     {
       path: '',
@@ -72,6 +72,8 @@ const router = new Router({
 });
 
 router.beforeEach((_to, _from, next) => {
+  LG(`Routing from '${_from.name}' to '${_to.name}'. (WITH TOKEN :: Query '${_to.query.tkn}').`);
+
   if (window.lgr) {
     window.lgr.info(`Routing from '${_from.name}' to '${_to.name}'.`);
     if (_to.query.tkn) {

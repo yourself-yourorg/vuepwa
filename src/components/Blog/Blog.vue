@@ -1,6 +1,6 @@
 <template>
   <main>
-    <button class="fetch-articles" @click="onFetchArticles">Fetch Articles</button>
+    <button data-cyp="fetch-articles" class="fetch-articles" @click="onFetchArticles">Fetch Articles</button>
     <button class="create-article" @click="onCreateArticle">Create New Article</button>
 
     <div id="articles" v-if="articles.length">
@@ -22,6 +22,7 @@
   const ipsum = new Ipsum();
 
   export default {
+    name: 'Blog',
     components: {
       'blog-article': ArticleDetail,
     },

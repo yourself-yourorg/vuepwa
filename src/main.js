@@ -5,6 +5,9 @@ import VueI18n from 'vue-i18n';
 import VueLocalStore from 'vue-ls';
 import VueLogger from 'vuejs-logger';
 
+// import axios from 'axios';
+// import VueAxios from 'vue-axios';
+
 import { sync } from 'vuex-router-sync';
 
 import Buefy from 'buefy';
@@ -33,6 +36,8 @@ Vue.use(Buefy);
 Vue.config.productionTip = config.productionTip;
 
 Vue.component('home', HomeView);
+
+// Vue.use(VueAxios, axios);
 
 const messages = xlate; // Make it observable
 
