@@ -1,12 +1,15 @@
 <template>
   <div>
-    <button type="button" @click="increment()">Increment</button>
-    <button type="button" @click="decrement()">Decrement</button>
-    <div> Dumb #B -- count {{ counter }} </div>
+    <button type="button" @click="increment">Increment</button>
+    <button type="button" @click="decrement">Decrement</button>
+    <div> Dumb #B -- count {{ counter.other }}</div>
+    <div> Token {{ token }}</div>
   </div>
 </template>
 
 <script>
+
+  import { mapGetters, mapActions } from 'vuex';
 
   import cfg from '../config';
 
@@ -16,27 +19,31 @@
     name: 'B',
     data() {
       return {
-        counter: 0,
+        old_counter: 0,
+        axStkn: 'unused',
       };
     },
-    watch: {
-      counter(val) {
-        window.ls.set(cfg.reroutesCounterName, val);
-      },
-    },
+    // watch: {
+    //   counter(val) {
+    //     window.ls.set(cfg.reroutesCounterName, val);
+    //   },
+    // },
     created() {
-      this.counter = window.ls.get(cfg.reroutesCounterName, 0);
+      this.axStkn = window.ls.get(cfg.tokenName, 0);
       const self = this;
-      window.ls.on(cfg.reroutesCounterName, (val) => { self.counter = val; });
+      window.ls.on(cfg.tokenName, (lsToken) => {
+        window.lgr.warn(`New token value in local store :: ${lsToken}`);
+        self.keepTkn(lsToken);
+      });
+    },
+    computed: {
+      ...mapGetters({
+        counter: 'theCounter',
+        token: 'axsToken',
+      }),
     },
     methods: {
-      increment() {
-        this.counter += 1;
-      },
-
-      decrement() {
-        this.counter -= 1;
-      },
+      ...mapActions(['increment', 'decrement', 'keepTkn']),
     },
   };
 </script>

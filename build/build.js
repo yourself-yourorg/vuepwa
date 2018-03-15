@@ -2,7 +2,7 @@
 
 require('./check-versions')()
 
-process.env.NODE_ENV = 'production'
+// process.env.NODE_ENV = 'production'
 
 const ora = require('ora')
 const rm = require('rimraf')
@@ -13,14 +13,15 @@ const shell = require('shelljs')
 const config = require('../config')
 const webpackConfig = require('./webpack.prod.conf')
 
-const spinner = ora('building for production...')
+const spinner = ora(`building for ${process.env.NODE_ENV}...`);
 spinner.start()
 
 let nameBkgrnd = 'BodyBgnd';
 let imgBkgrnd = `${nameBkgrnd}*.jpg`;
 let dupBkgrnd = `${nameBkgrnd}.jpg`;
-let src = 'docs/static/img';
-let trgt = 'docs/static/css/static/img';
+let stc = 'docs/static';
+let src = `${stc}/img`;
+let trgt = `${stc}/css/static/img`;
 
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
   if (err) throw err
@@ -37,8 +38,9 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
 
     shell.echo('  Tweak background image location');
     shell.mkdir('-p', trgt);
-    shell.mv(`${src}/${imgBkgrnd}`, trgt);
-    shell.rm(`${trgt}/${dupBkgrnd}`);
+    shell.cp(`${src}/${imgBkgrnd}`, trgt);
+    // shell.rm(`${trgt}/${dupBkgrnd}`);
+    shell.mv(`${stc}/CNAME`, 'docs');
 
     console.log(chalk.cyan('  Build complete.\n'))
     console.log(chalk.yellow(

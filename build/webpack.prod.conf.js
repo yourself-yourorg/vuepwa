@@ -18,6 +18,9 @@ const env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
   : config.build.env
 
+console.log(`========== ${env} =========`);
+console.log(env);
+
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({

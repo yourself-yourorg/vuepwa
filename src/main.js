@@ -5,17 +5,24 @@ import VueI18n from 'vue-i18n';
 import VueLocalStore from 'vue-ls';
 import VueLogger from 'vuejs-logger';
 
+// import axios from 'axios';
+// import VueAxios from 'vue-axios';
+
+import { sync } from 'vuex-router-sync';
+
 import Buefy from 'buefy';
 import 'buefy/lib/buefy.css';
 
 import App from './App';
-import router from './router';
+import { store } from './store/store';
 
 import xlate from './internationalization';
 
 import config from './config';
 
 import HomeView from './components/HomeView';
+
+import router from './router';
 
 
 // const LG = console.log; // eslint-disable-line no-console, no-unused-vars
@@ -30,6 +37,8 @@ Vue.config.productionTip = config.productionTip;
 
 Vue.component('home', HomeView);
 
+// Vue.use(VueAxios, axios);
+
 const messages = xlate; // Make it observable
 
 const locale = navigator.languages[0] || 'en';
@@ -40,15 +49,21 @@ const i18n = new VueI18n({
   messages,
 });
 
+sync(store, router);
+
 /* eslint-disable no-new */
 const mainVue = new Vue({
   el: '#app',
   i18n,
   router,
+  store,
   created() {
     window.lgr = this.$log;
     window.ls = this.$ls;
     this.$log.info(`microservice = ${config.server}`);
+    if (this.$route.query.tkn) {
+      this.$store.dispatch('keepTkn', this.$route.query.tkn);
+    }
   },
   render: site => site(App),
 });
