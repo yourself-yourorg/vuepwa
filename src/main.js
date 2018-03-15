@@ -63,6 +63,8 @@ const mainVue = new Vue({
     this.$log.info(`microservice = ${config.server}`);
     if (this.$route.query.tkn) {
       this.$store.dispatch('keepTkn', this.$route.query.tkn);
+    } else {
+      this.$store.dispatch('logOut');
     }
   },
   render: site => site(App),

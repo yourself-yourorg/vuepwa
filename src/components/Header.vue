@@ -15,7 +15,7 @@
     <!-- Right side -->
     <div class="level-right">
       <div class="level-item">
-        m1e
+        m1g
       </div>
       <div class="level-item">
         <accessControl></accessControl>

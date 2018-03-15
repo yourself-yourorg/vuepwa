@@ -1,5 +1,6 @@
 import createCrudModule, { client } from 'vuex-crud';
 
+import { store } from './store';
 import cfg from '../config';
 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
@@ -24,5 +25,23 @@ export default createCrudModule({
   idAttribute: 'id', // What should be used as ID
   urlRoot: `${cfg.server}/api/${RESOURCE}`, // The url to fetch the resource
   client,
-  // onFetchListError: (state, err) => {  }, // Callback for collection GET error
+  onFetchListError: () => {
+    // LG(`*******  ?? 401 ?? ******\n${err}`);
+    store.dispatch('logIn');
+  },
+  onFetchSingleError: () => {
+    store.dispatch('logIn');
+  },
+  onCreateError: () => {
+    store.dispatch('logIn');
+  },
+  onUpdateError: () => {
+    store.dispatch('logIn');
+  },
+  onReplaceError: () => {
+    store.dispatch('logIn');
+  },
+  onDestroyError: () => {
+    store.dispatch('logIn');
+  },
 });
