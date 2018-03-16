@@ -5,6 +5,8 @@ import VueI18n from 'vue-i18n';
 import VueLocalStore from 'vue-ls';
 import VueLogger from 'vuejs-logger';
 
+import formulate from 'vue-formulate';
+
 // import axios from 'axios';
 // import VueAxios from 'vue-axios';
 
@@ -24,7 +26,6 @@ import HomeView from './components/HomeView';
 
 import router from './router';
 
-
 // const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
 Vue.use(VueLogger, config.logger);
@@ -33,11 +34,11 @@ Vue.use(VueI18n);
 Vue.use(VueLocalStore, { namespace: 'vuesppwa-' });
 Vue.use(Buefy);
 
-Vue.config.productionTip = config.productionTip;
+Vue.use(formulate, { namespace: 'vuesppwa-' });
 
 Vue.component('home', HomeView);
 
-// Vue.use(VueAxios, axios);
+Vue.config.productionTip = config.productionTip;
 
 const messages = xlate; // Make it observable
 

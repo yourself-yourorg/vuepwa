@@ -18,6 +18,9 @@
         <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" to="/blog">
           <i class="material-icons">blog</i>
         </router-link>
+        <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" to="/form">
+          <i class="material-icons">form</i>
+        </router-link>
       </div>
     </div>
     <router-link class="add-picture-button mdl-button mdl-js-button mdl-button--fab mdl-button--colored" to="/post">

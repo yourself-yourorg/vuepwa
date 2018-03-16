@@ -15,7 +15,7 @@
     <!-- Right side -->
     <div class="level-right">
       <div class="level-item">
-        v0.0.3
+        v0.0.5
       </div>
       <div class="level-item">
         <accessControl></accessControl>

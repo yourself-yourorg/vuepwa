@@ -7,6 +7,7 @@ import PostView from '@/components/PostView';
 import DumbA from '@/components/DumbA';
 import DumbB from '@/components/DumbB';
 import Header from '@/components/Header';
+import Form from '@/components/Form';
 
 import { Blog, Article } from '@/components/Blog';
 
@@ -58,6 +59,11 @@ const router = new Router({
       path: '/db',
       name: 'DB',
       components: { default: DumbB, hdr: Header },
+    },
+    {
+      path: '/form',
+      name: 'form',
+      components: { default: Form, hdr: Header },
     },
   ],
 });

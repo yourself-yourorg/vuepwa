@@ -1,5 +1,7 @@
 # vuepwa
 
+[![Dependency Status](https://david-dm.org/yourself-yourorg/vuepwa/master/status.svg)](https://david-dm.org/yourself-yourorg/vuepwa/master)  [![devDependency Status](https://david-dm.org/yourself-yourorg/vuepwa/master/dev-status.svg)](https://david-dm.org/yourself-yourorg/vuepwa/master?type=dev)
+
 > A Vue.js Progresive Web App
 
 ## Build Setup
