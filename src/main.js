@@ -34,7 +34,7 @@ Vue.use(VueI18n);
 Vue.use(VueLocalStore, { namespace: 'vuesppwa-' });
 Vue.use(Buefy);
 
-Vue.use(formulate, { namespace: 'vuesppwa-' });
+Vue.use(formulate);
 
 Vue.component('home', HomeView);
 
