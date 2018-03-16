@@ -6,7 +6,7 @@
       v-if="!values"
       @submit="useFormData"
     >
-      <button type="button" @click="fillForm">Fill</button>
+      <button class="Fill" type="button" @click="fillForm">Fill</button>
       <formulate-element
         name="email"
         type="email"
@@ -67,13 +67,21 @@ html,
 body {
   min-height: 100%;
 }
-body {
+/*body {
   background: linear-gradient(to top left, #35495e, #41b883);
   background-repeat: no-repeat;
   padding: 0;
   border: 0;
+  text-align: center;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+
+*/
+
+button.Fill {
+    margin-bottom: 25px;
 }
 
 code {
@@ -95,15 +103,16 @@ code {
 .my-form {
   box-sizing: border-box;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, .2);
-  max-width: 300px;
+  /*max-width: 300px;*/
   background-color: white;
   border-radius: .25em;
   padding: 2em;
-  position: absolute;
+  margin: auto;
+  /*position: absolute;*/
   min-width: 100px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  /*left: 50%;*/
+  /*top: 50%;*/
+  /*transform: translate(-50%, -50%);*/
 }
 
 .formulate-element {
@@ -160,11 +169,11 @@ button {
   background-color: #41b883;
   color: white;
   font-size: 1em;
-  width: 100%;
+  /*width: 30%;*/
   padding: .75em;
   text-transform: uppercase;
   text-align: center;
-  min-width: 100%;
+  min-width: 30%;
 }
 
 button:focus {

@@ -3,8 +3,9 @@
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell--3-col mdl-cell mdl-cell--1-col-tablet mdl-cell--hide-phone"></div>
       <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-phone">
-        <a class="button" data-cyp="logOutUser" @click="logOutUser">logOutUser</a>
-        <a class="button" data-cyp="purge" @click="purge">Purge</a>
+        <a class="button" data-cyp="qiktst" @click="qiktst">Quick Test</a>
+        <a class="button" data-cyp="logOutUser" @click="logOutUser">Purge User</a>
+        <a class="button" data-cyp="purge" @click="purge">Purge All</a>
         <div data-cyp="status">{{ status }}</div>
         <div>{{ response }}</div>
         <div
@@ -43,6 +44,24 @@
     methods: {
       displayDetails(id) {
         this.$router.push({ name: 'detail', params: { id } });
+      },
+      qiktst() {
+        const accessToken = this.jwt;
+        const url = `${cfg.server}/api/person?s=1&c=3`;
+
+        this.$log.info(`  +++ Quick Test '${url}' +++ `);
+        const headers = {};
+        if (accessToken) {
+          headers.Authorization = `JWT ${accessToken}`;
+        }
+
+        fetch(`${url}`, { headers })
+          .then((response) => {
+            this.status = response.statusText;
+            response.text().then((text) => {
+              this.response = text;
+            });
+          });
       },
       logOutUser() {
         const accessToken = this.jwt;
