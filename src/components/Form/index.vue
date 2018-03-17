@@ -5,34 +5,83 @@
       class="my-form"
       v-if="!values"
       @submit="useFormData"
+
+      :initial="formData"
     >
-      <button class="Fill" type="button" @click="fillForm">Fill</button>
-      <formulate-element
-        name="email"
-        type="email"
-        label="Email address"
-        placeholder="you@example.com"
-        validation="required|email"
-      />
-      <formulate-element
-        name="password_confirmation"
-        type="password"
-        label="Password"
-        placeholder="Choose a password"
-        validation="required"
-      />
-      <formulate-element
-        name="password"
-        type="password"
-        label="Confirm Password"
-        placeholder="Confirm your password"
-        validation-label="Password"
-        validation="required|confirmed"
-      />
-      <formulate-element
-        type="submit"
-        name="Save"
-      />
+        <article class="tile is-child box">
+          <h2 class="title">Person</h2>
+
+          <button class="button is-info" type="button" @click="fillForm">Fill</button>
+
+
+          <div class="columns">
+            <div class="column">
+              <div class="control">
+                <label class="label">Email Address</label>
+
+                <formulate-element
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  validation="required|email"
+                />
+
+              </div>
+              <div class="control">
+                <label class="label">Password</label>
+
+                <formulate-element
+                  name="password_confirmation"
+                  type="password"
+                  placeholder="Choose a password"
+                  validation="required"
+                />
+              </div>
+              <div class="control">
+                <label class="label">Confirm Password</label>
+
+                <formulate-element
+                  name="password"
+                  type="password"
+                  placeholder="Confirm your password"
+                  validation-label="Password"
+                  validation="required|confirmed"
+                />
+
+              </div>
+            </div>
+            <div class="column">
+              <div class="control">
+                <label class="label">Date</label>
+                <cleave class="input" placeholder="YYYY/MM/DD" :value="'20160901'" :options="{ date: true, datePattern: ['Y', 'm', 'd'] }"></cleave>
+              </div>
+              <div class="control">
+                <cleave class="input" placeholder="MM/YY" :options="{ date: true, datePattern: ['m', 'y'] }"></cleave>
+              </div>
+              <div class="control">
+
+                <formulate-element
+                  type="submit"
+                  name="Save"
+                  class="button is-info"
+                />
+
+              </div>
+            </div>
+            <div class="column">
+              <div class="control">
+                <label class="label">Custom options</label>
+                <cleave class="input" placeholder="Blocks: [4, 3, 3, 4]" :options="{ blocks: [4, 3, 3, 4], uppercase: true }"></cleave>
+              </div>
+              <div class="control">
+                <cleave class="input" placeholder="Delimiter: '·'" :options="{ delimiter: '·', blocks: [3, 3, 3, 3], uppercase: true }"></cleave>
+              </div>
+              <div class="control">
+                <cleave class="input" :options="{ prefix: 'PREFIX', delimiter: '-', blocks: [6, 4, 4, 4], uppercase: true }"></cleave>
+              </div>
+            </div>
+          </div>
+        </article>
     </formulate>
     <code
       v-else
@@ -44,13 +93,18 @@
 
 <script>
 
-import { mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
     return {
       values: false,
     };
+  },
+  computed: {
+    ...mapGetters({
+      formData: 'theFormData',
+    }),
   },
   methods: {
     useFormData(vals) {
@@ -63,10 +117,14 @@ export default {
 </script>
 
 <style>
+
+/*
 html,
 body {
   min-height: 100%;
 }
+*/
+
 /*body {
   background: linear-gradient(to top left, #35495e, #41b883);
   background-repeat: no-repeat;
@@ -99,21 +157,17 @@ code {
 :-moz-placeholder {
   color: lightgray;
 }
-
+/*
 .my-form {
   box-sizing: border-box;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, .2);
-  /*max-width: 300px;*/
   background-color: white;
   border-radius: .25em;
   padding: 2em;
   margin: auto;
-  /*position: absolute;*/
   min-width: 100px;
-  /*left: 50%;*/
-  /*top: 50%;*/
-  /*transform: translate(-50%, -50%);*/
 }
+*/
 
 .formulate-element {
   font-size: 1em;
@@ -136,6 +190,24 @@ code {
   color: red;
   font-style: italic;
 }
+
+div[class="formulate-element-input-wrapper"] button {
+  box-sizing: inherit;
+  border: inherit;
+  border-radius: inherit;
+  background-color: inherit;
+  color: inherit;
+  font-size: inherit;
+  padding: .75em;
+  text-transform: inherit;
+  text-align: inherit;
+  width: inherit;
+  min-width: inherit;
+}
+/*
+*/
+
+/*
 
 label {
   display: block;
@@ -161,7 +233,9 @@ input[type="email"]:focus {
   outline: 0;
   border-color: #41b883;
 }
+*/
 
+/*
 button {
   box-sizing: border-box;
   border: 1px solid #41b883;
@@ -169,7 +243,6 @@ button {
   background-color: #41b883;
   color: white;
   font-size: 1em;
-  /*width: 30%;*/
   padding: .75em;
   text-transform: uppercase;
   text-align: center;
@@ -180,4 +253,5 @@ button:focus {
   outline: 0;
   border-color: #35495e;
 }
+*/
 </style>

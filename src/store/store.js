@@ -19,6 +19,7 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
 
   getters: {
     theCounter: state => ({ cntr: state.counter, other: 'okok' }),
+    theFormData: () => ({ email: 'a@b.ca', password_confirmation: 'qwer', password: 'qwer' }),
     ...formulateGetters(),
   },
 
