@@ -27,6 +27,8 @@
                 />
 
               </div>
+            </div>
+            <div class="column">
               <div class="control">
                 <label class="label">Password</label>
 
@@ -37,6 +39,8 @@
                   validation="required"
                 />
               </div>
+            </div>
+            <div class="column">
               <div class="control">
                 <label class="label">Confirm Password</label>
 
@@ -49,15 +53,6 @@
                 />
 
               </div>
-            </div>
-            <div class="column">
-              <div class="control">
-                <label class="label">Date</label>
-                <cleave class="input" placeholder="YYYY/MM/DD" :value="'20160901'" :options="{ date: true, datePattern: ['Y', 'm', 'd'] }"></cleave>
-              </div>
-              <div class="control">
-                <cleave class="input" placeholder="MM/YY" :options="{ date: true, datePattern: ['m', 'y'] }"></cleave>
-              </div>
               <div class="control">
 
                 <formulate-element
@@ -66,18 +61,6 @@
                   class="button is-info"
                 />
 
-              </div>
-            </div>
-            <div class="column">
-              <div class="control">
-                <label class="label">Custom options</label>
-                <cleave class="input" placeholder="Blocks: [4, 3, 3, 4]" :options="{ blocks: [4, 3, 3, 4], uppercase: true }"></cleave>
-              </div>
-              <div class="control">
-                <cleave class="input" placeholder="Delimiter: '·'" :options="{ delimiter: '·', blocks: [3, 3, 3, 3], uppercase: true }"></cleave>
-              </div>
-              <div class="control">
-                <cleave class="input" :options="{ prefix: 'PREFIX', delimiter: '-', blocks: [6, 4, 4, 4], uppercase: true }"></cleave>
               </div>
             </div>
           </div>

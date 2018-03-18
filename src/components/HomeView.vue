@@ -22,6 +22,9 @@
         <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" to="/form">
           <i class="material-icons">form</i>
         </router-link>
+        <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" :to="{ name: 'persons' }">
+          <i class="material-icons">Persons</i>
+        </router-link>
       </div>
     </div>
     <router-link class="add-picture-button mdl-button mdl-js-button mdl-button--fab mdl-button--colored" to="/post">

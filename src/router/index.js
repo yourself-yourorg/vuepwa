@@ -10,6 +10,7 @@ import Header from '@/components/Header';
 import Form from '@/components/Form';
 
 import { Blog, Article } from '@/components/Blog';
+import personRoutes from '@/components/Person';
 
 import { store } from '../store/store';
 
@@ -17,55 +18,59 @@ Vue.use(Router);
 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
-const router = new Router({
+const baseRoutes = [
 
-  routes: [
-    {
-      path: '/blog',
-      name: 'blog',
-      components: { default: Blog, hdr: Header },
-    },
-    {
-      path: '/articles/:id',
-      name: 'article',
-      components: { default: Article, hdr: Header },
-    },
-    {
-      path: '',
-      name: 'home',
-      components: { default: HomeView, hdr: Header },
-    },
-    {
-      path: '/',
-      name: 'root',
-      components: { default: HomeView, hdr: Header },
-    },
-    {
-      path: '/detail/:id',
-      name: 'detail',
-      components: { default: DetailView, hdr: Header },
-    },
-    {
-      path: '/post',
-      name: 'post',
-      components: { default: PostView, hdr: Header },
-    },
-    {
-      path: '/dc',
-      name: 'DA',
-      components: { default: DumbA, hdr: Header },
-    },
-    {
-      path: '/db',
-      name: 'DB',
-      components: { default: DumbB, hdr: Header },
-    },
-    {
-      path: '/form',
-      name: 'form',
-      components: { default: Form, hdr: Header },
-    },
-  ],
+  {
+    path: '/blog',
+    name: 'blog',
+    components: { default: Blog, hdr: Header },
+  },
+  {
+    path: '/articles/:id',
+    name: 'article',
+    components: { default: Article, hdr: Header },
+  },
+  {
+    path: '',
+    name: 'home',
+    components: { default: HomeView, hdr: Header },
+  },
+  {
+    path: '/',
+    name: 'root',
+    components: { default: HomeView, hdr: Header },
+  },
+  {
+    path: '/detail/:id',
+    name: 'detail',
+    components: { default: DetailView, hdr: Header },
+  },
+  {
+    path: '/post',
+    name: 'post',
+    components: { default: PostView, hdr: Header },
+  },
+  {
+    path: '/dc',
+    name: 'DA',
+    components: { default: DumbA, hdr: Header },
+  },
+  {
+    path: '/db',
+    name: 'DB',
+    components: { default: DumbB, hdr: Header },
+  },
+  {
+    path: '/form',
+    name: 'form',
+    components: { default: Form, hdr: Header },
+  },
+];
+
+const routes = baseRoutes.concat(personRoutes);
+
+const router = new Router({
+  routes,
 });
 
 router.beforeEach((_to, _from, next) => {
