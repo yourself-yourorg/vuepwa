@@ -2,7 +2,6 @@
   <div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <!-- Header container -->
     <router-view name="hdr"></router-view>
-
     <main class="mdl-layout__content">
       <div class="page-content">
         <router-view></router-view>
@@ -29,7 +28,7 @@
 </script>
 
 <style>
-  @import url('https://use.fontawesome.com/releases/v5.0.6/css/all.css');
+  /** @import url('https://use.fontawesome.com/releases/v5.0.6/css/all.css'); */
   @import url('https://fonts.googleapis.com/css?family=Advent+Pro:thin|Open+Sans:light');
 
 

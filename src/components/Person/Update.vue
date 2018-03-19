@@ -14,9 +14,23 @@
         <label for="edit-price">Price, <span class="glyphicon glyphicon-euro"></span></label>
         <input type="number" class="form-control" id="edit-price" v-model="person.price"/>
       </div>
-      <button type="submit" class="btn btn-primary">Save</button>
-      <router-link class="btn btn-default" v-bind:to="{ name: 'persons' }">Cancel</router-link>
+
+      <button type="submit" class="button is-small is-success is-outlined">
+        <icon name="thumbs-o-up" />&nbsp;Save
+      </button>
+      <router-link class="button is-small is-black is-outlined" v-bind:to="{ name: 'persons' }">
+        <icon name="hand-stop-o" />&nbsp;Cancel
+      </router-link>
     </form>
+    <hr />
+    <router-link class="button is-small is-primary is-outlined" v-bind:to="{name: 'home'}">
+      <icon name="home" />
+      &nbsp;Home
+    </router-link>
+    <router-link class="button is-small is-link is-outlined" v-bind:to="{name: 'persons'}">
+      <icon name="arrow-circle-left" />
+      &nbsp;Persons
+    </router-link>
   </div>
 </template>
 

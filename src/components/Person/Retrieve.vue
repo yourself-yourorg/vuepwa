@@ -7,9 +7,17 @@
     <div>{{ person.price }}<span class="glyphicon glyphicon-euro"></span></div>
     <br/>
     <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-    <router-link v-bind:to="{ name: 'persons' }">Back to person list</router-link>
+    <router-link class="button is-small is-link is-outlined" v-bind:to="{name: 'home'}">
+      <icon name="home" />
+      &nbsp;Home
+    </router-link>
+    <router-link class="button is-small is-link is-outlined" v-bind:to="{name: 'persons'}">
+      <icon name="arrow-circle-left" />
+      &nbsp;Persons
+    </router-link>
   </div>
 </template>
+
 
 
 <script>

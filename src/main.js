@@ -4,6 +4,8 @@ import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import VueLocalStore from 'vue-ls';
 import VueLogger from 'vuejs-logger';
+import 'vue-awesome/icons';
+import Icon from 'vue-awesome/components/Icon';
 
 import formulate from 'vue-formulate';
 
@@ -37,6 +39,7 @@ Vue.use(Buefy);
 Vue.use(formulate);
 
 Vue.component('home', HomeView);
+Vue.component('icon', Icon);
 
 Vue.config.productionTip = config.productionTip;
 

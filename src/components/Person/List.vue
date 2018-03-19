@@ -1,9 +1,8 @@
 <template id="person-list">
   <div>
     <div class="actions">
-      <router-link class="btn btn-default" v-bind:to="{ name: 'person-add'}">
-        <span class="glyphicon glyphicon-plus"></span>
-        Add person
+      <router-link class="button is-primary is-outlined" v-bind:to="{ name: 'person-add'}">
+        <icon name="plus" />&nbsp;Add person
       </router-link>
     </div>
     <div class="filters row">
@@ -29,15 +28,23 @@
         <td>{{ person.description }}</td>
         <td>
           {{ person.price }}
-          <span class="glyphicon glyphicon-euro" aria-hidden="true"></span>
+          <i class="glyphicon glyphicon-euro" aria-hidden="true"></i>
         </td>
         <td>
-          <router-link class="btn btn-warning btn-xs" v-bind:to="{name: 'person-edit', params: {person_id: person.id}}">Edit</router-link>
-          <router-link class="btn btn-danger btn-xs" v-bind:to="{name: 'person-delete', params: {person_id: person.id}}">Delete</router-link>
+          <router-link class="button is-small is-info is-outlined" v-bind:to="{name: 'person-edit', params: {person_id: person.id}}">
+            <icon name="pencil" />
+          </router-link>
+          <router-link class="button is-small is-danger is-outlined" v-bind:to="{name: 'person-delete', params: {person_id: person.id}}">
+            <icon name="trash"></icon>
+          </router-link>
         </td>
       </tr>
       </tbody>
     </table>
+    <router-link class="button is-small is-link is-outlined" v-bind:to="{name: 'home'}">
+      <icon name="arrow-circle-left" />
+      &nbsp;Home
+    </router-link>
   </div>
 </template>
 
