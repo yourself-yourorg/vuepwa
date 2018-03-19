@@ -3,19 +3,13 @@
     <div> Token signature :: '{{ jwt.split(".")[2] }}'</div>
     <div v-if="isKnown && isHere">
       <a class="button" data-cyp="logOut" @click="logOut">
-        <span class="icon">
-          <i class="fas fa-sign-out-alt"></i>
-        </span>
-        <span>{{ $t('label.signout') }}, {{ user }}</span>
+        <span name="icon"><icon name="sign-out" /></icon></span>&nbsp;{{ $t('label.signout') }}, {{ user }}
       </a>
     </div>
     <div v-else="isKnown && isHere">
       &nbsp;
       <a class="button" data-cyp="logIn" @click="logIn">
-        <span class="icon">
-          <i class="fas fa-sign-in-alt"></i>
-        </span>
-        <span>{{ $t('label.signin') }}</span>
+        <icon name="sign-in" />&nbsp;{{ $t('label.signin') }}
       </a>
     </div>
     <div data-cyp="activity"> Activity {{ isHere }} </div>
@@ -265,5 +259,9 @@ export default vm;
 </script>
 
 <style>
+
+span[name="icon"] {
+  font-size: 200%;
+}
 
 </style>

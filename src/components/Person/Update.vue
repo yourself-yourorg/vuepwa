@@ -45,7 +45,8 @@ export default {
     return { person: findPerson(this.$route.params.person_id) };
   },
   methods: {
-    updatePerson() {
+    updatePerson(e) {
+      e.preventDefault();
       const { person } = this;
       persons[findPersonKey(person.id)] = {
         id: person.id,

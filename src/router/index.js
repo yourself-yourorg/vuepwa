@@ -87,4 +87,9 @@ router.beforeEach((_to, _from, next) => {
   next();
 });
 
+// router.afterEach((_to, _from) => {
+//   LG(`Have rerouted from '${_from.name}' to '${_to.name}'.`);
+//   LG(_to);
+// });
+
 export default router;

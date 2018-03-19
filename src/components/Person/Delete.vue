@@ -34,7 +34,8 @@ export default {
     return { person: findPerson(this.$route.params.person_id) };
   },
   methods: {
-    deletePerson() {
+    deletePerson(e) {
+      e.preventDefault();
       persons.splice(findPersonKey(this.$route.params.person_id), 1);
       this.$router.push({ name: 'persons' });
     },

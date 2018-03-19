@@ -35,7 +35,6 @@
 
 <script>
 
-// import { persons, findPerson, findPersonKey, } from './index';
 import { persons } from './utils';
 
 export default {
@@ -44,7 +43,8 @@ export default {
     return { person: { name: '', description: '', price: '' } };
   },
   methods: {
-    createPerson() {
+    createPerson(e) {
+      e.preventDefault();
       const { person } = this;
       persons.push({
         id: Math.random().toString().split('.')[1],
@@ -52,7 +52,15 @@ export default {
         description: person.description,
         price: person.price,
       });
-      this.$router.push({ name: 'persons' });
+      this.$router.push(
+        { name: 'persons' },
+        () => {
+          window.lgr.info('this.$router.push completed ok.');
+        },
+        (error) => {
+          window.lgr.error(`completed with error : ${error}.`);
+        },
+      );
     },
   },
 };
