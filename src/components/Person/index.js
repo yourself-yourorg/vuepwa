@@ -44,11 +44,41 @@ export const store = createCrudModule({
   // urlRoot: `${cfg.server}/api/${RESOURCE}`, // The url to fetch the resource
   urlRoot: `${cfg.server}`, // The url to fetch the resource person?s=1&c=3
   client,
-  customUrlFn(id, pgntr) {
+  customUrlFn(_id, _pgntr) {
     LG(cfg.server);
     // LG(this.resource);
-    LG(`customUrlFn(${id}, ${pgntr} )`);
-    return `${cfg.server}/api/${RESOURCE}?s=${pgntr.s}&c=${pgntr.c}`;
+
+    LG(`using paginator --> ${_pgntr}`);
+    const id = _id ? `/${_id}` : '';
+    const pgntr = _pgntr ? `s=${_pgntr.s}&c=${_pgntr.c}` : 's=0&c=0';
+    LG(`using customUrlFn( ${id}, ${pgntr} )`);
+    LG(`URI :: ${cfg.server}/api/${RESOURCE}${id}?${pgntr}`);
+    const URI = `${cfg.server}/api/${RESOURCE}${id}?${pgntr}`;
+    return URI;
+  },
+  parseSingle(response) {
+    const { data, titles } = response.data[RESOURCE];
+    const vars = variablizeTitles(titles);
+    LG('parseSingle');
+    LG(vars);
+
+    // const mapped = [];
+    const result = data.map((itm) => {
+      // LG(`${itm[0]} -- ${idx} `);
+      const mapping = {};
+      itm.forEach((vl, ix) => {
+        // LG(`  ${vl} -->> ${vars[ix]} `);
+        mapping[vars[ix]] = vl;
+        return vl;
+      });
+      // mapped[idx] = mapping;
+      // LG(mapped[idx]);
+      return mapping;
+    });
+    LG(result);
+    return Object.assign({}, response, {
+      data: result, // expecting array of objects with IDs
+    });
   },
   parseList(response) {
     const { data, titles } = response.data[RESOURCE];
@@ -74,27 +104,5 @@ export const store = createCrudModule({
       data: result, // expecting array of objects with IDs
     });
   },
-  // onFetchListError: (err) => {
-  //   LG(`*******  ?? 401 ?? ******\n${err}`);
-  //   // store.dispatch('logIn');
-  // },
-  // onFetchSingleError: () => {
-  //   store.dispatch('logIn');
-  // },
-  // onCreateError: () => {
-  //   store.dispatch('logIn');
-  // },
-  // onUpdateError: () => {
-  //   store.dispatch('logIn');
-  // },
-  // onReplaceError: () => {
-  //   store.dispatch('logIn');
-  // },
-  // onDestroyError: () => {
-  //   store.dispatch('logIn');
-  // },
 });
-
-// export { default as Retrieve } from './Retrieve';
-// export { default as Person } from './Person';
 
