@@ -3,7 +3,10 @@ import Vue from 'vue';
 
 import { formulateState, formulateGetters, formulateMutations } from 'vue-formulate';
 
-import articles from './articles';
+import { store as person } from '@/components/Person';
+import { store as articles } from '@/components/Blog';
+
+// import articles from './articles';
 
 import Auth from './Auth';
 
@@ -33,6 +36,15 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
       LG('DD');
       state.counter -= 1;
     },
+    fillFormPerX: (state) => {
+      LG('QQQQQ GG QQQQQQ');
+      LG(state);
+      state.values.person = {
+        email: 'a@b.es',
+        description: 'qwer',
+        name: 'qwer',
+      };
+    },
     fillForm: (state) => {
       LG('QQQQQQQQQQQ');
       LG(state);
@@ -54,6 +66,7 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
   modules: {
     Auth,
     articles,
+    person,
   },
 });
 

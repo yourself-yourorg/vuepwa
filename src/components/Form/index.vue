@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <formulate
-      name="registration"
+      name="person"
       class="my-form"
       v-if="!values"
       @submit="useFormData"
@@ -58,7 +58,7 @@
                 <formulate-element
                   type="submit"
                   name="Save"
-                  class="button is-info"
+                  elementClasses="button is-info"
                 />
 
               </div>
@@ -80,9 +80,7 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   data() {
-    return {
-      values: false,
-    };
+    return { values: false };
   },
   computed: {
     ...mapGetters({
@@ -173,7 +171,7 @@ code {
   color: red;
   font-style: italic;
 }
-
+/*
 div[class="formulate-element-input-wrapper"] button {
   box-sizing: inherit;
   border: inherit;
@@ -187,7 +185,6 @@ div[class="formulate-element-input-wrapper"] button {
   width: inherit;
   min-width: inherit;
 }
-/*
 */
 
 /*

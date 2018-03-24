@@ -68,7 +68,7 @@ const mainVue = new Vue({
     if (this.$route.query.tkn) {
       this.$store.dispatch('keepTkn', this.$route.query.tkn);
     } else {
-      this.$store.dispatch('logOut');
+      // this.$store.dispatch('logOut');
     }
   },
   render: site => site(App),

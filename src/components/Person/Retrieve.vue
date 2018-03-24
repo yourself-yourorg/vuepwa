@@ -1,39 +1,55 @@
-<template id="person">
-  <div>
-    <h2>{{ person.name }}</h2>
-    <b>Description: </b>
-    <div>{{ person.description }}</div>
-    <b>Price:</b>
-    <div>{{ person.price }}<span class="glyphicon glyphicon-euro"></span></div>
-    <br/>
-    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-    <router-link class="button is-small is-link is-outlined" v-bind:to="{name: 'home'}">
-      <icon name="home" />
-      &nbsp;Home
-    </router-link>
-    <router-link class="button is-small is-link is-outlined" v-bind:to="{name: 'persons'}">
-      <icon name="arrow-circle-left" />
-      &nbsp;Persons
-    </router-link>
-  </div>
+<template>
+  <main id="person">
+    <p class="back">
+      <router-link :to="{ name: 'persons' }">Back to Persons</router-link>
+    </p>
+    <person-record v-if="currentPerson" :person="currentPerson" />
+  </main>
 </template>
 
-
-
 <script>
-// import { persons, findPerson, findPersonKey, } from './index';
-import { findPerson } from './utils';
+  /* eslint-disable import/no-extraneous-dependencies */
+  import { mapState, mapGetters, mapActions } from 'vuex';
+  /* eslint-enable */
+  import Detail from './Detail';
 
-export default {
-  template: '#person',
-  data() {
-    return { person: findPerson(this.$route.params.person_id) };
-  },
-};
+  export default {
+    components: {
+      'person-record': Detail,
+    },
+
+    computed: {
+      ...mapGetters('person', {
+        personById: 'byId',
+      }),
+
+      ...mapState([
+        'route',
+      ]),
+
+      currentPerson() {
+        return this.personById(this.route.params.id);
+      },
+    },
+
+    methods: {
+      ...mapActions('person', {
+        fetchPerson: 'fetchSingle',
+      }),
+
+      fetchData() {
+        return this.fetchPerson({
+          id: this.route.params.id,
+        });
+      },
+    },
+
+    watch: {
+      $route: 'fetchData',
+    },
+
+    created() {
+      this.fetchData();
+    },
+  };
 </script>
-<style scoped>
-  .waiting {
-    padding: 10px;
-    color: #555;
-  }
-</style>

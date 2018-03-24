@@ -9,8 +9,9 @@ import DumbB from '@/components/DumbB';
 import Header from '@/components/Header';
 import Form from '@/components/Form';
 
-import { Blog, Article } from '@/components/Blog';
-import personRoutes from '@/components/Person';
+// import { Blog, Article } from '@/components/Blog';
+import { routes as blog } from '@/components/Blog';
+import { routes as person } from '@/components/Person';
 
 import { store } from '../store/store';
 
@@ -20,16 +21,6 @@ const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
 const baseRoutes = [
 
-  {
-    path: '/blog',
-    name: 'blog',
-    components: { default: Blog, hdr: Header },
-  },
-  {
-    path: '/articles/:id',
-    name: 'article',
-    components: { default: Article, hdr: Header },
-  },
   {
     path: '',
     name: 'home',
@@ -41,14 +32,14 @@ const baseRoutes = [
     components: { default: HomeView, hdr: Header },
   },
   {
-    path: '/detail/:id',
-    name: 'detail',
-    components: { default: DetailView, hdr: Header },
-  },
-  {
     path: '/post',
     name: 'post',
     components: { default: PostView, hdr: Header },
+  },
+  {
+    path: '/detail/:id',
+    name: 'detail',
+    components: { default: DetailView, hdr: Header },
   },
   {
     path: '/dc',
@@ -67,14 +58,15 @@ const baseRoutes = [
   },
 ];
 
-const routes = baseRoutes.concat(personRoutes);
+const routes = baseRoutes.concat(blog).concat(person);
 
 const router = new Router({
   routes,
 });
 
 router.beforeEach((_to, _from, next) => {
-  LG(`Routing from '${_from.name}' to '${_to.name}'. (WITH TOKEN :: Query '${_to.query.tkn}').`);
+  LG(`Routing from '${_from.name}' to '${_to.name}'. Params '${_to.params}').`);
+  LG(_to.params);
 
   if (window.lgr) {
     window.lgr.info(`Routing from '${_from.name}' to '${_to.name}'.`);
