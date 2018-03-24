@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-// import _ from 'lodash';
 
 import HomeView from '@/components/HomeView';
 import DetailView from '@/components/DetailView';
@@ -8,17 +7,29 @@ import PostView from '@/components/PostView';
 import DumbA from '@/components/DumbA';
 import DumbB from '@/components/DumbB';
 import Header from '@/components/Header';
-import Auth from '@/components/Auth';
+import Form from '@/components/Form';
 
-import cfg from '../config';
+import { Blog, Article } from '@/components/Blog';
+
+import { store } from '../store/store';
 
 Vue.use(Router);
 
-// const LG = console.log; // eslint-disable-line no-console, no-unused-vars
+const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
 const router = new Router({
 
   routes: [
+    {
+      path: '/blog',
+      name: 'blog',
+      components: { default: Blog, hdr: Header },
+    },
+    {
+      path: '/articles/:id',
+      name: 'article',
+      components: { default: Article, hdr: Header },
+    },
     {
       path: '',
       name: 'home',
@@ -50,39 +61,25 @@ const router = new Router({
       components: { default: DumbB, hdr: Header },
     },
     {
-      path: '/ac',
-      name: 'chkAuth',
-      component: Auth,
+      path: '/form',
+      name: 'form',
+      components: { default: Form, hdr: Header },
     },
   ],
 });
 
 router.beforeEach((_to, _from, next) => {
-  if (window.lgr) window.lgr.info(`Re-routing from '${_from.name}' to '${_to.name}'.`);
+  LG(`Routing from '${_from.name}' to '${_to.name}'. (WITH TOKEN :: Query '${_to.query.tkn}').`);
 
-  if (_to.params.authParam > 0) {
-    // LG.('>> Authentication detour completed ...');
-    next();
-  } else {
-    let counter;
-    if (window.ls) {
-      counter = window.ls.get(cfg.reroutesCounterName, 0);
-      window.ls.set(cfg.reroutesCounterName, counter += 1);
+  if (window.lgr) {
+    window.lgr.info(`Routing from '${_from.name}' to '${_to.name}'.`);
+    if (_to.query.tkn) {
+      window.lgr.info(`Query has '${_to.query.tkn}'.`);
+      store.dispatch('keepTkn', _to.query.tkn).then(() => next());
     }
-
-    // LG('>> Detour to check authentication...');
-
-    router.replace({
-      name: 'chkAuth',
-      params: {
-        name: _to.name,
-        path: _to.path,
-        authParam: 1,
-        forward: _to.params,
-      },
-      query: _to.query,
-    });
   }
+
+  next();
 });
 
 export default router;

@@ -2,16 +2,21 @@
   <nav class="level">
     <!-- Left side -->
     <div class="level-left">
-      <div class="level-item">
-        <img
-          src="static/img/WaterDrop_50.png"
-          alt="Demo of a microservice SPA PWA">
-          <span style="font-family: 'Advent Pro'; font-size: 48px;">iridium blue</span>
-      </div>
+      <router-link to="/">
+        <div class="level-item">
+          <img
+            src="static/img/WaterDrop_50.png"
+            alt="Iridium Blue Logo">
+            <span data-cyp="appTitle" style="font-family: 'Advent Pro'; font-size: 48px;">iridium blue</span>
+        </div>
+      </router-link>
     </div>
 
     <!-- Right side -->
     <div class="level-right">
+      <div class="level-item">
+        v0.0.6
+      </div>
       <div class="level-item">
         <accessControl></accessControl>
       </div>

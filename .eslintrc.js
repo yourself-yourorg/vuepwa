@@ -8,11 +8,13 @@ module.exports = {
   },
   env: {
     browser: true,
+    "cypress/globals": true
   },
   extends: 'airbnb-base',
   // required to lint *.vue files
   plugins: [
-    'html'
+    'html',
+    'cypress'
   ],
   // check if imports actually resolve
   'settings': {

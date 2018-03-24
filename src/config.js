@@ -3,9 +3,11 @@ export default {
   authPath: '/authentication/google/start',
   tokenTimeToLive: 20000, // 10m * 60s * 1000ms
   tokenName: 'tkn',
-  reroutesCounterName: 'pageChangeCount',
+  activityName: 'actv',
+  authName: 'authd',
   localStorageNameSpace: 'vuesppwa-',
   productionTip: false,
+  testAuthUrlEnvVar: 'AUTH_TEST_URL', // 'env.process.TEST_TOKEN'
   logger: {
     // required ['debug', 'info', 'warn', 'error', 'fatal']
     // logLevel: 'debug',

@@ -13,12 +13,18 @@
 
 
 <script>
+
+  // import cfg from './config';
+
   // const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
   export default {
     name: 'app',
     data: () => ({
     }),
+    // created() {
+    //   window.ls.set(cfg.tokenName, 'Created in App');
+    // },
   };
 </script>
 
