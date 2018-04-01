@@ -12,8 +12,9 @@ import Form from '@/components/Form';
 // import { Blog, Article } from '@/components/Blog';
 import { routes as blog } from '@/components/Blog';
 import { routes as person } from '@/components/Person';
+import { routes as poison } from '@/components/Poison';
 
-import { store } from '../store/store';
+import { store } from '../store';
 
 Vue.use(Router);
 
@@ -58,7 +59,7 @@ const baseRoutes = [
   },
 ];
 
-const routes = baseRoutes.concat(blog).concat(person);
+const routes = baseRoutes.concat(blog).concat(person).concat(poison);
 
 const router = new Router({
   routes,

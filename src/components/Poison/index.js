@@ -75,28 +75,28 @@ export const store = createCrudModule({
 
 export const routes = [
   {
-    path: '/person/add',
-    name: 'person-add',
+    path: '/poison/add',
+    name: 'poison-add',
     components: { default: PersonAdd, hdr: Header },
   },
   {
-    path: '/person/:person_id/edit',
-    name: 'person-edit',
+    path: '/poison/:person_id/edit',
+    name: 'poison-edit',
     components: { default: PersonEdit, hdr: Header },
   },
   {
-    path: '/person/:person_id/delete',
-    name: 'person-delete',
+    path: '/poison/:person_id/delete',
+    name: 'poison-delete',
     components: { default: PersonDelete, hdr: Header },
   },
   {
-    path: '/person/:person_id',
-    name: 'person',
+    path: '/poison/:person_id',
+    name: 'poison',
     components: { default: Person, hdr: Header },
   },
   {
-    path: '/person/',
-    name: 'persons',
+    path: '/poison/',
+    name: 'poisons',
     components: { default: PersonList, hdr: Header },
   },
 ];

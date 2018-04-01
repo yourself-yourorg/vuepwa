@@ -18,7 +18,7 @@ import Buefy from 'buefy';
 import 'buefy/lib/buefy.css';
 
 import App from './App';
-import { store } from './store/store';
+import { store } from './store';
 
 import xlate from './internationalization';
 
@@ -34,7 +34,9 @@ Vue.use(VueLogger, config.logger);
 
 Vue.use(VueI18n);
 Vue.use(VueLocalStore, { namespace: 'vuesppwa-' });
-Vue.use(Buefy);
+Vue.use(Buefy, {
+  defaultIconPack: 'fa',
+});
 
 Vue.use(formulate);
 

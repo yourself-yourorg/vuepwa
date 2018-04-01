@@ -4,6 +4,24 @@
       <h1>{{ person.nombre }}</h1>
     </router-link>
 
+
+        <td>
+          <router-link v-bind:to="{name: 'poison', params: {person_id: person.id}}">{{ person.name }}</router-link>
+        </td>
+        <td>{{ person.description }}</td>
+        <td>
+          {{ person.email }}
+          <i class="glyphicon glyphicon-euro" aria-hidden="true"></i>
+        </td>
+        <td>
+          <router-link class="button is-small is-info is-outlined" v-bind:to="{name: 'poison-edit', params: {person_id: person.id}}">
+            <icon name="pencil" />
+          </router-link>
+          <router-link class="button is-small is-danger is-outlined" v-bind:to="{name: 'poison-delete', params: {person_id: person.id}}">
+            <icon name="trash"></icon>
+          </router-link>
+        </td>
+
     <p>
       <a class="edit-person" href="javascript:void(0);" @click="onEdit">Edit (PATCH)</a>
       |

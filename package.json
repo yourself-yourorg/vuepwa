@@ -23,7 +23,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bavaria-ipsum": "^1.0.3",
-    "buefy": "^0.6.3",
+    "buefy": "^0.6.5",
     "jsonwebtoken": "^8.1.1",
     "selenium-standalone": "^6.12.0",
     "vue": "^2.5.2",

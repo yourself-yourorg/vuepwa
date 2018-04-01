@@ -1,7 +1,7 @@
 <template id="person-list">
   <div>
     <div class="actions">
-      <router-link class="button is-primary is-outlined" v-bind:to="{ name: 'person-add'}">
+      <router-link class="button is-primary is-outlined" v-bind:to="{ name: 'poison-add'}">
         <icon name="plus" />&nbsp;Add person
       </router-link>
     </div>
@@ -23,7 +23,7 @@
       <tbody>
       <tr v-for="person in filteredPersons">
         <td>
-          <router-link v-bind:to="{name: 'person', params: {person_id: person.id}}">{{ person.name }}</router-link>
+          <router-link v-bind:to="{name: 'poison', params: {person_id: person.id}}">{{ person.name }}</router-link>
         </td>
         <td>{{ person.description }}</td>
         <td>
@@ -31,10 +31,10 @@
           <i class="glyphicon glyphicon-euro" aria-hidden="true"></i>
         </td>
         <td>
-          <router-link class="button is-small is-info is-outlined" v-bind:to="{name: 'person-edit', params: {person_id: person.id}}">
+          <router-link class="button is-small is-info is-outlined" v-bind:to="{name: 'poison-edit', params: {person_id: person.id}}">
             <icon name="pencil" />
           </router-link>
-          <router-link class="button is-small is-danger is-outlined" v-bind:to="{name: 'person-delete', params: {person_id: person.id}}">
+          <router-link class="button is-small is-danger is-outlined" v-bind:to="{name: 'poison-delete', params: {person_id: person.id}}">
             <icon name="trash"></icon>
           </router-link>
         </td>

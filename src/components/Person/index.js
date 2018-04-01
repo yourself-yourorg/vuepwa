@@ -44,6 +44,30 @@ export const store = createCrudModule({
   // urlRoot: `${cfg.server}/api/${RESOURCE}`, // The url to fetch the resource
   urlRoot: `${cfg.server}`, // The url to fetch the resource person?s=1&c=3
   client,
+  state: {
+    columns: [{ label: 'dummy' }],
+  },
+  actions: {
+    /* eslint-disable no-unused-vars */
+    setColumns: ({ commit }, columns) => {
+      window.lgr.info('Person.index --> actions.setColumns');
+      LG(columns);
+      commit('tableColumns', columns);
+    },
+    /* eslint-enable no-unused-vars */
+  },
+  getters: {
+    getColumns: vx => vx.columns,
+    getPersons: vx => vx.list,
+  },
+  mutations: {
+    /* eslint-disable no-param-reassign */
+    tableColumns: (vx, columns) => {
+      window.lgr.info('Person.index --> mutation.tableColumns');
+      vx.columns = columns;
+    },
+    /* eslint-enable no-param-reassign */
+  },
   customUrlFn(_id, _pgntr) {
     LG(cfg.server);
     // LG(this.resource);
@@ -56,37 +80,42 @@ export const store = createCrudModule({
     const URI = `${cfg.server}/api/${RESOURCE}${id}?${pgntr}`;
     return URI;
   },
+  // onFetchListStart(vx) {
+  //   LG('onFetchListStart');
+  //   baseStore.$dispatch('setLoading')(true);
+  // },
+  // onFetchListSuccess() {
+  //   LG('onFetchListSuccess');
+  // },
+  // onFetchListError() {
+  //   LG('onFetchListError');
+  // },
   parseSingle(response) {
     const { data, titles } = response.data[RESOURCE];
     const vars = variablizeTitles(titles);
     LG('parseSingle');
     LG(vars);
 
-    // const mapped = [];
-    const result = data.map((itm) => {
-      // LG(`${itm[0]} -- ${idx} `);
-      const mapping = {};
-      itm.forEach((vl, ix) => {
-        // LG(`  ${vl} -->> ${vars[ix]} `);
-        mapping[vars[ix]] = vl;
-        return vl;
-      });
-      // mapped[idx] = mapping;
-      // LG(mapped[idx]);
-      return mapping;
+    const mapping = {};
+    const result = data.forEach((vl, ix) => {
+      LG(`  ${vl} -->> ${vars[ix]} `);
+      mapping[vars[ix]] = vl;
+      return vl;
     });
+    LG(' * * Parsed single person data * *');
+    LG(mapping);
     LG(result);
     return Object.assign({}, response, {
-      data: result, // expecting array of objects with IDs
+      data: mapping, // expecting object with ID
     });
   },
+
   parseList(response) {
-    const { data, titles } = response.data[RESOURCE];
+    const { data, titles, meta } = response.data[RESOURCE];
     const vars = variablizeTitles(titles);
     // LG('parseList');
     // LG(vars);
 
-    // const mapped = [];
     const result = data.map((itm) => {
       // LG(`${itm[0]} -- ${idx} `);
       const mapping = {};
@@ -95,13 +124,15 @@ export const store = createCrudModule({
         mapping[vars[ix]] = vl;
         return vl;
       });
-      // mapped[idx] = mapping;
-      // LG(mapped[idx]);
       return mapping;
     });
+    LG(' * * Parsed persons data * * ');
+    LG(store);
     LG(result);
+    LG(meta);
     return Object.assign({}, response, {
       data: result, // expecting array of objects with IDs
+      columns: meta,
     });
   },
 });
