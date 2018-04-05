@@ -3,8 +3,8 @@ import Vue from 'vue';
 
 import { formulateState, formulateGetters, formulateMutations } from 'vue-formulate';
 
-import { store as person } from '@/components/Person';
-import { store as articles } from '@/components/Blog';
+import { store as person } from '@/components/Admin/Person';
+import { store as articles } from '@/components/Attic/Blog';
 
 // import articles from './articles';
 

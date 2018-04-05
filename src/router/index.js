@@ -1,18 +1,20 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import HomeView from '@/components/HomeView';
-import DetailView from '@/components/DetailView';
-import PostView from '@/components/PostView';
-import DumbA from '@/components/DumbA';
-import DumbB from '@/components/DumbB';
+import { routes as person } from '@/components/Admin/Person';
 import Header from '@/components/Header';
-import Form from '@/components/Form';
+
+import HomeView from '@/components/HomeView';
+import OldHomeView from '@/components/Attic/OldHomeView';
+import DetailView from '@/components/Attic/DetailView';
+import PostView from '@/components/Attic/PostView';
+import DumbA from '@/components/Attic/DumbA';
+import DumbB from '@/components/Attic/DumbB';
+import Form from '@/components/Attic/Form';
 
 // import { Blog, Article } from '@/components/Blog';
-import { routes as blog } from '@/components/Blog';
-import { routes as person } from '@/components/Person';
-import { routes as poison } from '@/components/Poison';
+import { routes as blog } from '@/components/Attic/Blog';
+import { routes as poison } from '@/components/Attic/Poison';
 
 import { store } from '../store';
 
@@ -26,36 +28,49 @@ const baseRoutes = [
     path: '',
     name: 'home',
     components: { default: HomeView, hdr: Header },
+    meta: { permission: 'visitor' },
   },
   {
     path: '/',
     name: 'root',
     components: { default: HomeView, hdr: Header },
+    meta: { permission: 'visitor' },
+  },
+  {
+    path: '/ohv',
+    name: 'ohv',
+    components: { default: OldHomeView, hdr: Header },
+    meta: { permission: 'visitor' },
   },
   {
     path: '/post',
     name: 'post',
     components: { default: PostView, hdr: Header },
+    meta: { permission: 'visitor' },
   },
   {
     path: '/detail/:id',
     name: 'detail',
     components: { default: DetailView, hdr: Header },
+    meta: { permission: 'visitor' },
   },
   {
     path: '/dc',
     name: 'DA',
     components: { default: DumbA, hdr: Header },
+    meta: { permission: 'visitor' },
   },
   {
     path: '/db',
     name: 'DB',
     components: { default: DumbB, hdr: Header },
+    meta: { permission: 'visitor' },
   },
   {
     path: '/form',
     name: 'form',
     components: { default: Form, hdr: Header },
+    meta: { permission: 'visitor' },
   },
 ];
 

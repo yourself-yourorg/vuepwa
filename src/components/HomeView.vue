@@ -1,39 +1,53 @@
 <template>
-  <div>
+  <section>
+    <div class="block">
+      <button class="button" @click="activeTab = 1">Set Bottles</button>
+    </div>
+
+    <b-tabs v-model="activeTab">
+      <b-tab-item label="Pictures">
+        Lorem ipsum dolor sit amet.
+      </b-tab-item>
+
+      <b-tab-item label="Bottles">
+        Lorem <br>
+        ipsum <br>
+        dolor <br>
+        sit <br>
+        amet.
+      </b-tab-item>
+
+      <b-tab-item :visible="showAdmin" label="Admin">
+        What light is light, if Silvia be not seen? <br>
+        What joy is joy, if Silvia be not by— <br>
+        Unless it be to think that she is by <br>
+        And feed upon the shadow of perfection? <br>
+        Except I be by Silvia in the night, <br>
+        There is no music in the nightingale.
+      </b-tab-item>
+
+      <b-tab-item label="Orders" disabled>
+        Nunc nec velit nec libero vestibulum eleifend.
+        Curabitur pulvinar congue luctus.
+        Nullam hendrerit iaculis augue vitae ornare.
+        Maecenas vehicula pulvinar tellus, id sodales felis lobortis eget.
+      </b-tab-item>
+    </b-tabs>
     <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--3-col mdl-cell mdl-cell--1-col-tablet mdl-cell--hide-phone"></div>
-      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-phone">
-        <a class="button" data-cyp="qiktst" @click="qiktst">Quick Test</a>
-        <a class="button" data-cyp="logOutUser" @click="logOutUser">Purge User</a>
-        <a class="button" data-cyp="purge" @click="purge">Purge All</a>
-        <div data-cyp="status">{{ status }}</div>
-        <div>{{ response }}</div>
-        <div
-          v-for="picture in this.pictures"
-          class="image-card"
-          @click="displayDetails(picture.id)">
-          <div class="image-card__picture">
-            <img :src="picture.url" />
-          </div>
-        </div>
-        <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" to="/blog">
-          <i class="material-icons">blog</i>
-        </router-link>
-        <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" to="/form">
-          <i class="material-icons">form</i>
-        </router-link>
-        <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" :to="{ name: 'persons' }">
-          <i class="material-icons">Persons</i>
-        </router-link>
-        <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" :to="{ name: 'poisons' }">
-          <i class="material-icons">Persons (old)</i>
-        </router-link>
+      <div class="mdl-cell mdl-cell--3-col mdl-cell mdl-cell--1-col-tablet mdl-cell--hide-phone">
+
+      <!--/div>
+      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-phone" -->
+      <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" :to="{ name: 'persons' }">
+        <i class="material-icons">Persons</i>
+      </router-link>
+      <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" :to="{ name: 'ohv' }">
+        <i class="material-icons">Old Home </i>
+      </router-link>
       </div>
     </div>
-    <router-link class="add-picture-button mdl-button mdl-js-button mdl-button--fab mdl-button--colored" to="/post">
-      <i class="material-icons">add</i>
-    </router-link>
-  </div>
+    <div class="is-large">v0.0.15</div>
+  </section>
 </template>
 
 <script>
@@ -42,11 +56,24 @@
   import { mapGetters } from 'vuex';
 
   import cfg from '../config';
-  import data from '../data';
+  // import data from '../data';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
   export default {
+    data() {
+      return {
+        activeTab: 0,
+      };
+    },
+    computed: {
+      showAdmin() {
+        return this.$store.getters.accessLevel.toString() === 'admin';
+      },
+      ...mapGetters({
+        jwt: 'axsToken',
+      }),
+    },
     methods: {
       displayDetails(id) {
         this.$router.push({ name: 'detail', params: { id } });
@@ -107,18 +134,6 @@
             });
           });
       },
-    },
-    data() {
-      return {
-        pictures: data.pictures,
-        status: '',
-        response: '',
-      };
-    },
-    computed: {
-      ...mapGetters({
-        jwt: 'axsToken',
-      }),
     },
   };
 </script>

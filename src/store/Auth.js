@@ -15,6 +15,7 @@ const state = {
   active: INACTIVE,
   authenticated: UNKNOWN,
   nameUser: '',
+  accessLevel: '',
 };
 
 const getters = {
@@ -22,6 +23,7 @@ const getters = {
   isActive: vx => vx.active,
   isAuthenticated: vx => vx.authenticated,
   nameUser: vx => vx.nameUser,
+  accessLevel: vx => vx.accessLevel,
 };
 
 const mutations = {
@@ -31,6 +33,7 @@ const mutations = {
     window.ls.set(cfg.tokenName, payload);
     vx.accessToken = payload;
     vx.nameUser = jwt.decode(payload).name;
+    vx.accessLevel = vx.nameUser === 'Iridium Blue' ? 'admin' : 'user';
     window.ls.set(cfg.authName, KNOWN);
     vx.authenticated = KNOWN;
     window.ls.set(cfg.activityName, KNOWN);

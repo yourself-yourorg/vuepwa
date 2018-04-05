@@ -1,19 +1,20 @@
 <template>
   <div>
-    <div> Token signature :: '{{ jwt.split(".")[2] }}'</div>
     <div v-if="isKnown && isHere">
-      <a class="button" data-cyp="logOut" @click="logOut">
+      <a class="button is-small" v-bind:class="highLightAdmin" data-cyp="logOut" @click="logOut">
         <span name="icon"><icon name="sign-out" /></icon></span>&nbsp;{{ $t('label.signout') }}, {{ user }}
       </a>
     </div>
     <div v-else="isKnown && isHere">
       &nbsp;
-      <a class="button" data-cyp="logIn" @click="logIn">
+      <a class="button is-small" data-cyp="logIn" @click="logIn">
         <icon name="sign-in" />&nbsp;{{ $t('label.signin') }}
       </a>
     </div>
-    <div data-cyp="activity"> Activity {{ isHere }} </div>
-    <div> Authenticated {{ isKnown }} </div>
+    <div class="is-invisible"> Token signature :: '{{ jwt.split(".")[2] }}'
+      <div data-cyp="activity"> Activity {{ isHere }} </div>
+      <div> Authenticated {{ isKnown }} </div>
+    </div>
   </div>
 </template>
 
@@ -22,6 +23,8 @@
   import { mapGetters, mapActions } from 'vuex';
 
   import cfg from '../config';
+
+  const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
   const vm = {
     name: 'auth',
@@ -60,11 +63,15 @@
       window.lgr.debug('Auth.vue :: created');
     },
     computed: {
+      highLightAdmin() {
+        return this.$store.getters.accessLevel.toString() === 'admin' ? 'is-warning' : '';
+      },
       ...mapGetters({
         jwt: 'axsToken',
         isHere: 'isActive',
         isKnown: 'isAuthenticated',
         user: 'nameUser',
+        priv: 'accessLevel',
       }),
     },
     methods: {

@@ -3,6 +3,7 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import VueLocalStore from 'vue-ls';
+import Acl from 'vue-acl';
 import VueLogger from 'vuejs-logger';
 import 'vue-awesome/icons';
 import Icon from 'vue-awesome/components/Icon';
@@ -34,6 +35,8 @@ Vue.use(VueLogger, config.logger);
 
 Vue.use(VueI18n);
 Vue.use(VueLocalStore, { namespace: 'vuesppwa-' });
+Vue.use(Acl, { router, init: 'visitor' });
+
 Vue.use(Buefy, {
   defaultIconPack: 'fa',
 });
