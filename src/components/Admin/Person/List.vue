@@ -39,7 +39,7 @@
           </template>
 
           <template slot="detail" slot-scope="{ row }">
-            <person-detail :row="row" />
+            <person-detail :id="row.codigo" />
           </template>
 
         </b-table>

@@ -62,6 +62,7 @@ export const store = createCrudModule({
   getters: {
     getColumns: vx => vx.columns,
     getPersons: vx => vx.list,
+    getPerson: vx => id => vx.entities[id],
   },
   mutations: {
     /* eslint-disable no-param-reassign */
