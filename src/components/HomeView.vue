@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="block">
-      <button class="button" @click="activeTab = 1">Set Bottles</button>
+      <button class="button" @click="activeTab = 0">Set Pictures</button>
     </div>
 
     <b-tabs v-model="activeTab">
@@ -10,11 +10,7 @@
       </b-tab-item>
 
       <b-tab-item label="Bottles">
-        Lorem <br>
-        ipsum <br>
-        dolor <br>
-        sit <br>
-        amet.
+          <person-detail :id="128" />
       </b-tab-item>
 
       <b-tab-item :visible="showAdmin" label="Admin">
@@ -46,7 +42,7 @@
       </router-link>
       </div>
     </div>
-    <div class="is-large">v0.0.15</div>
+    <div class="is-large">v0.0.18</div>
   </section>
 </template>
 
@@ -54,6 +50,8 @@
 
   import jwt from 'jsonwebtoken';
   import { mapGetters } from 'vuex';
+
+  import PersonDetail from './Admin/Person/Detail';
 
   import cfg from '../config';
   // import data from '../data';
@@ -63,7 +61,7 @@
   export default {
     data() {
       return {
-        activeTab: 0,
+        activeTab: 1,
       };
     },
     computed: {
@@ -73,6 +71,9 @@
       ...mapGetters({
         jwt: 'axsToken',
       }),
+    },
+    components: {
+      'person-detail': PersonDetail, // eslint-disable-line no-undef
     },
     methods: {
       displayDetails(id) {

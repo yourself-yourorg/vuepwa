@@ -24,7 +24,6 @@
           :striped="true"
           paginated
           :per-page="5"
-          :selected.sync="selected"
           :current-page="1"
           :opened-detailed="defaultOpenedDetails"
           detailed
