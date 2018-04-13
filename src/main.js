@@ -35,7 +35,7 @@ Vue.use(VueLogger, config.logger);
 
 Vue.use(VueI18n);
 Vue.use(VueLocalStore, { namespace: 'vuesppwa-' });
-Vue.use(Acl, { router, init: 'visitor' });
+Vue.use(Acl, { router, init: ['visitor', 'member'] });
 
 Vue.use(Buefy, {
   defaultIconPack: 'fa',

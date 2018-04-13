@@ -11,10 +11,6 @@
         <icon name="sign-in" />&nbsp;{{ $t('label.signin') }}
       </a>
     </div>
-    <div class="is-invisible"> Token signature :: '{{ jwt.split(".")[2] }}'
-      <div data-cyp="activity"> Activity {{ isHere }} </div>
-      <div> Authenticated {{ isKnown }} </div>
-    </div>
   </div>
 </template>
 
@@ -60,7 +56,10 @@
         // self.sentinel = !self.sentinel;
       });
 
-      window.lgr.debug('Auth.vue :: created');
+      this.access = this.$store.getters.permissions;
+
+      window.lgr.debug(`Auth.vue :: created ${this.access}`);
+      LG(this.$route.meta.permission);
     },
     computed: {
       highLightAdmin() {
@@ -71,6 +70,7 @@
         isHere: 'isActive',
         isKnown: 'isAuthenticated',
         user: 'nameUser',
+        roles: 'permissions',
         priv: 'accessLevel',
       }),
     },

@@ -1,25 +1,14 @@
 <template>
   <main>
-    <button data-cyp="fetch-persons" class="fetch-persons" @click="onFetchPersons">Fetch Persons</button>
 <!--
+    <button data-cyp="fetch-persons" class="fetch-persons" @click="onFetchPersons">Fetch Persons</button>
     <button class="create-person" @click="onCreatePerson">Add Person</button>
 -->
 
     <b-loading :is-full-page="false" :active.sync="isLoadingList" :canCancel="true"></b-loading>
 
-    <b-field grouped group-multiline>
-      <div v-for="(column, index) in columns" 
-        :key="index"
-        class="control">
-        <b-checkbox v-model="column.visible">
-          {{ column.meta }}
-        </b-checkbox>
-      </div>
-    </b-field>
-
     <b-tabs>
-  
-      <b-tab-item label="Table">
+      <b-tab-item label="Persons">
         <b-table :data="persons" :columns="columns"
           :striped="true"
           paginated
@@ -42,6 +31,33 @@
           </template>
 
         </b-table>
+
+        <div class="block">
+            <button class="button is-small is-primary"
+                @click="columnSelectorOpen = !columnSelectorOpen">
+                Column Selection
+            </button>
+        </div>
+
+        <b-collapse class="panel" :open.sync="columnSelectorOpen">
+          <ul>
+            <b-field grouped group-multiline>
+              <div v-for="(column, index) in columns"
+                :key="index"
+                class="control">
+                <li>
+                  <b-checkbox v-model="column.visible">
+                    {{ column.meta }}
+                  </b-checkbox>
+                </li>
+              </div>
+            </b-field>
+          </ul>
+        </b-collapse>
+
+      </b-tab-item>
+      <b-tab-item label="Add Person">
+        Add a new person here.
       </b-tab-item>
     </b-tabs>
 
@@ -60,6 +76,10 @@
 
   export default {
     name: 'Person',
+    beforeMount() {
+      LG('\n * * Ready to fetch persons * * \n');
+      this.onFetchPersons();
+    },
     props: {
       // anObj: { tst: 'passed in' },
       tst: 'passed in with props',
@@ -72,6 +92,7 @@
         isFullPage: false,
         defaultOpenedDetails: [124],
         selected: persons[1],
+        columnSelectorOpen: false,
       };
     },
     components: {

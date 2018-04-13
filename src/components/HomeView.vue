@@ -1,48 +1,82 @@
 <template>
   <section>
+<!--                   ******  HOW TO SET A SPECIFIC TAB ********
     <div class="block">
-      <button class="button" @click="activeTab = 0">Set Pictures</button>
+      <button class="button" @click="activeTab = 1">Set Pictures</button>
     </div>
-
+ -->
     <b-tabs v-model="activeTab">
-      <b-tab-item label="Pictures">
-        Lorem ipsum dolor sit amet.
+      <b-tab-item :visible="showTab(['visitor', 'member', 'distributor', 'staff', 'manager', 'owner', 'legalRepresentative'])" label="Shop">
+        <h3>Online Shop tasks</h3>
+        <ul is-pulled-left>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Water sales</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Bottle sales</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Bottle inventory outgoing</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Bottle inventory incoming</li>
+        </ul>
+        <a href="/static/privacypolicy.html" target="_blank">Our privacy policy</a>
       </b-tab-item>
 
-      <b-tab-item label="Bottles">
-          <person-detail :id="128" />
+      <b-tab-item :visible="showTab(['distributor', 'staff', 'manager', 'owner', 'legalRepresentative'])" label="Distributors">
+        <h3>Distributor Tasks</h3>
+        <ul >
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Sales</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Bonus</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Bottle inventory</li>
+        </ul>
       </b-tab-item>
 
-      <b-tab-item :visible="showAdmin" label="Admin">
-        What light is light, if Silvia be not seen? <br>
-        What joy is joy, if Silvia be not by— <br>
-        Unless it be to think that she is by <br>
-        And feed upon the shadow of perfection? <br>
-        Except I be by Silvia in the night, <br>
-        There is no music in the nightingale.
+      <b-tab-item :visible="showTab(['manager', 'owner', 'legalRepresentative'])" label="Admin">
+        Administrative tasks.
+        <ul is-pulled-left>
+          <li><b-icon size="is-small" icon="hand-point-right" />
+            <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" :to="{ name: 'persons' }">
+              <i class="material-icons">User Management</i>
+            </router-link>
+          </li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Accounts Payable</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Accounts Receivable</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Banking</li>
+        </ul>
       </b-tab-item>
 
-      <b-tab-item label="Orders" disabled>
+      <b-tab-item :visible="showTab(['member', 'distributor', 'staff', 'manager', 'owner', 'legalRepresentative'])" label="Orders" disabled>
         Nunc nec velit nec libero vestibulum eleifend.
         Curabitur pulvinar congue luctus.
         Nullam hendrerit iaculis augue vitae ornare.
         Maecenas vehicula pulvinar tellus, id sodales felis lobortis eget.
       </b-tab-item>
     </b-tabs>
-    <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--3-col mdl-cell mdl-cell--1-col-tablet mdl-cell--hide-phone">
+    <div class="control">
+      <b-switch v-model="aclDebug" type="is-danger">
+        Debug
+      </b-switch>
+    </div>
 
-      <!--/div>
-      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-phone" -->
-      <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" :to="{ name: 'persons' }">
-        <i class="material-icons">Persons</i>
-      </router-link>
-      <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" :to="{ name: 'ohv' }">
-        <i class="material-icons">Old Home </i>
-      </router-link>
+    <div v-if="aclDebug">
+      <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--3-col mdl-cell mdl-cell--1-col-tablet mdl-cell--hide-phone">
+
+        <!--/div>
+        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-phone" -->
+        <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" :to="{ name: 'persons' }">
+          <i class="material-icons">Persons</i>
+        </router-link>
+        <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" :to="{ name: 'ohv' }">
+          <i class="material-icons">Old Home </i>
+        </router-link>
+        </div>
+      </div>
+      <a class="button is-small">{{ isHere }}</a><a class="button is-small">{{ isKnown }}</a>
+      <p class="content">
+        <b>Privileges:</b>
+        {{ access }}
+      </p>
+      <div class="is-invisible">
+        Token signature :: '{{ jwt.split(".")[2] }}'
       </div>
     </div>
-    <div class="is-large">v0.0.18</div>
+    <div v-else class="is-small">Version :: v0.0.19</div>
   </section>
 </template>
 
@@ -61,21 +95,34 @@
   export default {
     data() {
       return {
-        activeTab: 1,
+        activeTab: 0,
+        aclDebug: false,
       };
     },
     computed: {
-      showAdmin() {
-        return this.$store.getters.accessLevel.toString() === 'admin';
+      axsRights() {
+        // return this.$store.getters.theRoles;
+        return this.access;
       },
       ...mapGetters({
         jwt: 'axsToken',
+        isHere: 'isActive',
+        isKnown: 'isAuthenticated',
       }),
     },
     components: {
       'person-detail': PersonDetail, // eslint-disable-line no-undef
     },
     methods: {
+      showTab(allowedRoles) {
+        const may = new Set(allowedRoles);
+        const role = new Set(this.access);
+        const can = [...may].filter(right => role.has(right));
+        LG(may);
+        LG(role);
+        LG(can);
+        return can.length > 0;
+      },
       displayDetails(id) {
         this.$router.push({ name: 'detail', params: { id } });
       },
@@ -141,6 +188,7 @@
 
 <style scoped>
 
+/*
   .add-picture-button {
     position: fixed;
     right: 24px;
@@ -167,5 +215,5 @@
     font-size: 14px;
     font-weight: bold;
   }
-
+*/
 </style>

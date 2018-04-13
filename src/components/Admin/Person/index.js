@@ -57,6 +57,11 @@ export const store = createCrudModule({
       LG(cols);
       commit('tableColumns', cols);
     },
+    saveForm: ({ commit }, form) => {
+      window.lgr.info('Person.index --> actions.saveForm');
+      LG(form);
+      // commit('tableColumns', cols);
+    },
     /* eslint-enable no-unused-vars */
   },
   getters: {

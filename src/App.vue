@@ -36,7 +36,7 @@
     font-family: 'Open Sans', Open Sans, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-align: center;
+    /*text-align: center;*/
     color: #022442;
     border: 2px solid white;
     padding-right: 10px;

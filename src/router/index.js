@@ -81,8 +81,9 @@ const router = new Router({
 });
 
 router.beforeEach((_to, _from, next) => {
-  LG(`Routing from '${_from.name}' to '${_to.name}'. Params '${_to.params}').`);
-  LG(_to.params);
+  LG(`Routing from '${_from.name}' to '${_to.name}'. Params '${_from.params}').`);
+  LG(_to);
+  LG(_from);
 
   if (window.lgr) {
     window.lgr.info(`Routing from '${_from.name}' to '${_to.name}'.`);
