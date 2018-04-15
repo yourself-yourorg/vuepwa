@@ -6,7 +6,7 @@
     </div>
  -->
     <b-tabs v-model="activeTab">
-      <b-tab-item :visible="showTab(['visitor', 'member', 'distributor', 'staff', 'manager', 'owner', 'legalRepresentative'])" label="Shop">
+      <b-tab-item :visible="showTab('Shop', ['visitor', 'member', 'distributor', 'staff', 'manager', 'owner', 'legalRepresentative'])" label="Shop">
         <h3>Online Shop tasks</h3>
         <ul is-pulled-left>
           <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Water sales</li>
@@ -17,7 +17,7 @@
         <a href="/static/privacypolicy.html" target="_blank">Our privacy policy</a>
       </b-tab-item>
 
-      <b-tab-item :visible="showTab(['distributor', 'staff', 'manager', 'owner', 'legalRepresentative'])" label="Distributors">
+      <b-tab-item :visible="showTab('Distributors', ['distributor', 'staff', 'manager', 'owner', 'legalRepresentative'])" label="Distributors">
         <h3>Distributor Tasks</h3>
         <ul >
           <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Sales</li>
@@ -26,7 +26,7 @@
         </ul>
       </b-tab-item>
 
-      <b-tab-item :visible="showTab(['manager', 'owner', 'legalRepresentative'])" label="Admin">
+      <b-tab-item :visible="showTab('Admin', ['manager', 'owner', 'legalRepresentative'])" label="Admin">
         Administrative tasks.
         <ul is-pulled-left>
           <li><b-icon size="is-small" icon="hand-point-right" />
@@ -40,7 +40,7 @@
         </ul>
       </b-tab-item>
 
-      <b-tab-item :visible="showTab(['member', 'distributor', 'staff', 'manager', 'owner', 'legalRepresentative'])" label="Orders" disabled>
+      <b-tab-item :visible="showTab('Orders', ['member', 'distributor', 'staff', 'manager', 'owner', 'legalRepresentative'])" label="Orders" disabled>
         Nunc nec velit nec libero vestibulum eleifend.
         Curabitur pulvinar congue luctus.
         Nullam hendrerit iaculis augue vitae ornare.
@@ -76,7 +76,7 @@
         Token signature :: '{{ jwt.split(".")[2] }}'
       </div>
     </div>
-    <div v-else class="is-small">Version :: v0.0.19</div>
+    <div v-else class="is-small">Version :: v{{theVersion}}</div>
   </section>
 </template>
 
@@ -100,6 +100,9 @@
       };
     },
     computed: {
+      theVersion() {
+        return window.version;
+      },
       axsRights() {
         // return this.$store.getters.theRoles;
         return this.access;
@@ -114,13 +117,13 @@
       'person-detail': PersonDetail, // eslint-disable-line no-undef
     },
     methods: {
-      showTab(allowedRoles) {
+      showTab(tab, allowedRoles) {
         const may = new Set(allowedRoles);
         const role = new Set(this.access);
         const can = [...may].filter(right => role.has(right));
         LG(may);
         LG(role);
-        LG(can);
+        LG(`........ ${tab} allows [${can}]........`);
         return can.length > 0;
       },
       displayDetails(id) {

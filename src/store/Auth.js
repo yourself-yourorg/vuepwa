@@ -32,16 +32,17 @@ const mutations = {
   /* eslint-disable no-param-reassign, no-unused-vars */
   saveToken: (vx, payload) => {
     const pyld = jwt.decode(payload);
-    LG(`Access === ${pyld}`);
+
+    window.lgr.info(`Auth(mutation) => Saving jwt. Permissions :: [${pyld.permissions}]`);
     LG(pyld.permissions);
-    // window.lgr.info('Auth(mutation) :: Saving token');
+
     window.ls.set(cfg.tokenName, payload);
     vx.accessToken = payload;
     vx.nameUser = pyld.name;
     vx.permissions = pyld.permissions;
     vx.accessLevel = vx.nameUser === 'Iridium Blue' ? 'admin' : 'user';
     // vx.access = vx.nameUser === 'Iridium Blue' ? ['staff'] : ['visitor'];
-    window.lgr.info(`Auth(mutation) :: Setting access '${vx.access}'`);
+    // window.lgr.info(`Auth(mutation) :: Setting access '${vx.access}'`);
     window.ls.set(cfg.authName, KNOWN);
     vx.authenticated = KNOWN;
     window.ls.set(cfg.activityName, KNOWN);
