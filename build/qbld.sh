@@ -30,8 +30,6 @@ pushd ../vuesppwa
 
   sed -i "s/  \"version\":.*/  \"version\": \"${NSMVR}\",/" package.json;
   sed -i "s/  version:.*/  version: '${NSMVR}',/" ./src/config.js;
-  tail ./src/config.js;
-
 
   rm -fr docs
   npm run build

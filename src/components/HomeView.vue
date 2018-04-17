@@ -82,12 +82,12 @@
 
 <script>
 
-  import jwt from 'jsonwebtoken';
+  // import jwt from 'jsonwebtoken';
   import { mapGetters } from 'vuex';
 
   import PersonDetail from './Admin/Person/Detail';
 
-  import cfg from '../config';
+  // import cfg from '../config';
   // import data from '../data';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
@@ -126,97 +126,6 @@
         LG(`........ ${tab} allows [${can}]........`);
         return can.length > 0;
       },
-      displayDetails(id) {
-        this.$router.push({ name: 'detail', params: { id } });
-      },
-      qiktst() {
-        const accessToken = this.jwt;
-        const url = `${cfg.server}/api/person?s=1&c=3`;
-
-        this.$log.info(`  +++ Quick Test '${url}' +++ `);
-        const headers = {};
-        if (accessToken) {
-          headers.Authorization = `JWT ${accessToken}`;
-        }
-
-        fetch(`${url}`, { headers })
-          .then((response) => {
-            this.status = response.statusText;
-            response.text().then((text) => {
-              this.response = text;
-            });
-          });
-      },
-      logOutUser() {
-        const accessToken = this.jwt;
-        const memb = jwt.decode(accessToken).id;
-
-        const headers = {};
-        if (accessToken) {
-          headers.Authorization = `JWT ${accessToken}`;
-        }
-
-        const url = `${cfg.server}/lgo/${memb}`;
-        this.$log.info(` +++ LOG OUT USER '${memb}' AT '${url}' +++ `);
-
-        fetch(`${url}`, { headers })
-          .then((response) => {
-            this.status = response.statusText;
-            response.text().then((text) => {
-              this.response = text;
-            });
-          });
-      },
-      purge() {
-        const accessToken = this.jwt;
-        const url = `${cfg.server}/purge`;
-
-        this.$log.info(`  +++ PURGE USERS AT '${url}' +++ `);
-        const headers = {};
-        if (accessToken) {
-          headers.Authorization = `JWT ${accessToken}`;
-        }
-
-        fetch(`${url}`, { headers })
-          .then((response) => {
-            this.status = response.statusText;
-            response.text().then((text) => {
-              this.response = text;
-            });
-          });
-      },
     },
   };
 </script>
-
-<style scoped>
-
-/*
-  .add-picture-button {
-    position: fixed;
-    right: 24px;
-    bottom: 24px;
-    z-index: 998;
-  }
-  .image-card {
-    position: relative;
-    margin-bottom: 8px;
-  }
-  .image-card__picture > img {
-    width:10%;
-  }
-  .image-card__comment {
-    position: absolute;
-    bottom: 0;
-    height: 52px;
-    padding: 16px;
-    text-align: right;
-    background: rgba(0, 0, 0, 0.5);
-  }
-  .image-card__comment > span {
-    color: #fff;
-    font-size: 14px;
-    font-weight: bold;
-  }
-*/
-</style>

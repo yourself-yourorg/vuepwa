@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="isKnown && isHere">
-      <a class="button is-small" v-bind:class="highLightAdmin" data-cyp="logOut" @click="logOut">
+      <a class="button is-small" v-bind:class="highLightAdmin" data-cyp="logOut" @click="signOut">
         <span name="icon"><icon name="sign-out" /></icon></span>&nbsp;{{ $t('label.signout') }}, {{ user }}
       </a>
     </div>
@@ -34,6 +34,12 @@
       };
     },
 
+    beforeUpdate() {
+      if (!this.$store.getters.permissions) return;
+      if (this.access === this.$store.getters.permissions) return;
+      this.access = this.$store.getters.permissions;
+    },
+
     created() {
       const self = this;
 
@@ -55,11 +61,6 @@
         // this.axStkn = pyld;
         // self.sentinel = !self.sentinel;
       });
-
-      this.access = this.$store.getters.permissions;
-
-      window.lgr.debug(`Auth.vue :: created ${this.access}`);
-      LG(this.$route.meta.permission);
     },
     computed: {
       highLightAdmin() {
@@ -76,6 +77,15 @@
     },
     methods: {
       ...mapActions(['keepTkn', 'logIn', 'logOut', 'setActivity', 'setAuth']),
+      signOut() {
+        this.logOut();
+        this.$router.push({ name: 'root' });
+      },
+      signIn() {
+        this.logIn();
+        this.$router.push({ name: 'root' });
+        window.lgr.info(`Auth.vue :: signin '[${this.access}]'`);
+      },
     },
   };
 

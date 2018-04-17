@@ -28,12 +28,28 @@ const baseRoutes = [
     path: '',
     name: 'home',
     components: { default: HomeView, hdr: Header },
+    beforeEnter: (to, from, next) => {
+      LG('*********************  beforeRouteEnter  ***************************');
+      // LG(store);
+      LG(store.getters.permissions);
+      store._vm.access = store.getters.permissions; // eslint-disable-line no-underscore-dangle
+      LG(store._vm.access); // eslint-disable-line no-underscore-dangle
+      next();
+    },
     meta: { permission: 'visitor' },
   },
   {
     path: '/',
     name: 'root',
     components: { default: HomeView, hdr: Header },
+    beforeEnter: (to, from, next) => {
+      LG('*********************  beforeRouteEnter  ***************************');
+      // LG(store);
+      LG(store.getters.permissions);
+      store._vm.access = store.getters.permissions; // eslint-disable-line no-underscore-dangle
+      LG(store._vm.access); // eslint-disable-line no-underscore-dangle
+      next();
+    },
     meta: { permission: 'visitor' },
   },
   {
@@ -78,6 +94,12 @@ const routes = baseRoutes.concat(blog).concat(person).concat(poison);
 
 const router = new Router({
   routes,
+});
+
+router.beforeResolve((_to, _from, next) => {
+  LG(`beforeResolve :: '${_from.name}' to '${_to.name}'.`);
+  LG(store._vm.access); // eslint-disable-line no-underscore-dangle
+  next();
 });
 
 router.beforeEach((_to, _from, next) => {
