@@ -9,6 +9,7 @@ import { store as articles } from '@/components/Attic/Blog';
 // import articles from './articles';
 
 import Auth from './Auth';
+import a12n from '../accessControl'; // eslint-disable-line no-unused-vars
 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
@@ -76,6 +77,7 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
 
   modules: {
     Auth,
+    a12n,
     articles,
     person,
   },

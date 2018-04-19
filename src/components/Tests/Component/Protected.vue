@@ -1,0 +1,27 @@
+<template>
+  <div>
+    <h1>Some Protected Sections!</h1>
+    <hr />
+    <p>Unprotected text</p>
+
+    <p v-show="$isAllowed('viewParagraph')">Protected text!</p>
+ 
+    <hr />
+    <router-link class="button is-small is-link is-outlined" v-bind:to="{name: 'home'}">
+      <icon name="arrow-circle-up" />
+      &nbsp;Home
+    </router-link>
+    <router-link class="button is-small is-link is-outlined" v-bind:to="{name: 'classified'}">
+      <icon name="arrow-circle-right" />
+      &nbsp;Classified
+    </router-link>
+  </div>
+</template>
+
+<script>
+import elementLevelProtection from './Perimeters/Protected';
+
+export default {
+  perimeters: [elementLevelProtection],
+};
+</script>

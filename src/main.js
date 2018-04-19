@@ -3,6 +3,8 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import VueLocalStore from 'vue-ls';
+import VueKindergarten from 'vue-kindergarten';
+
 import Acl from 'vue-acl';
 import VueLogger from 'vuejs-logger';
 import 'vue-awesome/icons';
@@ -27,6 +29,7 @@ import config from './config';
 
 import HomeView from './components/HomeView';
 
+import { currentUser } from './accessControl'; // eslint-disable-line no-unused-vars
 import router from './router';
 
 // const LG = console.log; // eslint-disable-line no-console, no-unused-vars
@@ -35,6 +38,9 @@ Vue.use(VueLogger, config.logger);
 
 Vue.use(VueI18n);
 Vue.use(VueLocalStore, { namespace: 'vuesppwa-' });
+
+Vue.use(VueKindergarten, currentUser);
+
 // Vue.use(Acl, { router, init: ['visitor', 'member'] });
 Vue.use(Acl, { router, init: ['visitor'] });
 

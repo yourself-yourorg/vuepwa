@@ -1,10 +1,15 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import { routes as person } from '@/components/Admin/Person';
 import Header from '@/components/Header';
-
 import HomeView from '@/components/HomeView';
+
+import { routes as person } from '@/components/Admin/Person';
+import {
+  routes as exampleRoutes,
+  beforeEach as exampleBeforeEachTasks,
+} from '@/components/Tests/Component';
+
 import OldHomeView from '@/components/Attic/OldHomeView';
 import DetailView from '@/components/Attic/DetailView';
 import PostView from '@/components/Attic/PostView';
@@ -15,6 +20,7 @@ import Form from '@/components/Attic/Form';
 // import { Blog, Article } from '@/components/Blog';
 import { routes as blog } from '@/components/Attic/Blog';
 import { routes as poison } from '@/components/Attic/Poison';
+
 
 import { store } from '../store';
 
@@ -90,7 +96,34 @@ const baseRoutes = [
   },
 ];
 
-const routes = baseRoutes.concat(blog).concat(person).concat(poison);
+const routes = baseRoutes
+  .concat(person)
+  .concat(exampleRoutes)
+  .concat(blog)
+  .concat(poison);
+
+const keepToken = (t, f, n) => {
+  if (window.lgr) {
+    window.lgr.debug(`Routing from '${f.name}' to '${t.name}'.`);
+    if (t.query.tkn) {
+      LG(`
+???????????????????
+ Do we ever get here?
+???????????????????`);
+      window.lgr.info(`Query has '${t.query.tkn}'.`);
+      store.dispatch('keepTkn', t.query.tkn).then(() => n());
+    }
+  }
+};
+
+const beforeEachTasks = [
+  keepToken,
+  (t, f) => { LG(`TSK 0 ${t}, ${f}`); },
+  // (t, f) => { LG(f); },
+];
+
+const beforeEach = beforeEachTasks
+  .concat(exampleBeforeEachTasks);
 
 const router = new Router({
   routes,
@@ -102,20 +135,16 @@ router.beforeResolve((_to, _from, next) => {
   next();
 });
 
-router.beforeEach((_to, _from, next) => {
+router.beforeEach((_to, _from, _next) => {
   LG(`Routing from '${_from.name}' to '${_to.name}'. Params '${_from.params}').`);
   LG(_to);
   LG(_from);
 
-  if (window.lgr) {
-    window.lgr.info(`Routing from '${_from.name}' to '${_to.name}'.`);
-    if (_to.query.tkn) {
-      window.lgr.info(`Query has '${_to.query.tkn}'.`);
-      store.dispatch('keepTkn', _to.query.tkn).then(() => next());
-    }
-  }
+  beforeEach.forEach((tsk) => {
+    tsk(_to, _from, _next);
+  });
 
-  next();
+  _next();
 });
 
 // router.afterEach((_to, _from) => {

@@ -29,14 +29,30 @@
       <b-tab-item :visible="showTab('Admin', ['manager', 'owner', 'legalRepresentative'])" label="Admin">
         Administrative tasks.
         <ul is-pulled-left>
-          <li><b-icon size="is-small" icon="hand-point-right" />
-            <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" :to="{ name: 'persons' }">
-              <i class="material-icons">User Management</i>
+          <li><b-icon size="is-small" icon="users" />
+            <router-link :to="{ name: 'persons' }">
+              User Management
             </router-link>
           </li>
           <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Accounts Payable</li>
           <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Accounts Receivable</li>
           <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Banking</li>
+        </ul>
+      </b-tab-item>
+
+      <b-tab-item :visible="showTab('Tests', ['member'])" label="Tests">
+        Tests.
+        <ul is-pulled-left>
+          <li><b-icon size="is-small" icon="unlock-alt" />
+            <router-link :to="{ name: 'protected' }">
+              Protected
+            </router-link>
+          </li>
+          <li><b-icon size="is-small" icon="user-secret" />
+            <router-link :to="{ name: 'classified' }">
+              Classified
+            </router-link>
+          </li>
         </ul>
       </b-tab-item>
 
