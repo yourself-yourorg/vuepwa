@@ -137,9 +137,9 @@
         const may = new Set(allowedRoles);
         const role = new Set(this.access);
         const can = [...may].filter(right => role.has(right));
-        LG(may);
-        LG(role);
-        LG(`........ ${tab} allows [${can}]........`);
+        // LG(may);
+        // LG(role);
+        // LG(`........ ${tab} allows [${can}]........`);
         return can.length > 0;
       },
     },

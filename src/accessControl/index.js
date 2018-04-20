@@ -26,7 +26,8 @@ const getters = {};
 
 const mutations = {
   changeRole(vx, newRole) {
-    vx.a12n.user.info.role = newRole; // eslint-disable-line no-param-reassign
+    LG(vx);
+    vx.user.info.role = newRole; // eslint-disable-line no-param-reassign
   },
 };
 
