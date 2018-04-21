@@ -21,8 +21,45 @@
       </div>
     </nav>
 
+
+    <b-collapse id="divTbl" :open="true">
+      <button class="button is-small is-primary" slot="trigger">Authorizations Tester</button>
+      <div>
+        <table id="axsCtrl" class="table is-narrow is-hoverable is-size-6">
+          <thead>
+            <tr>
+              <th id="colRsrc">Resource</th>
+              <th id="colPrvlg">Privilege</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="row in axsLvlTblDef">
+              <th id="colRsrc" class="is-size-7">{{ row.name }}</th>
+              <td id="colPrvlg">
+                <b-field>
+                  <b-select class="is-size-7" :placeholder="row.name" v-model="axsLvl[row.name]">
+                    <option v-for="l in axsLvls" :value="l.id" :key="l.id">
+                     {{ l.axs }}
+                    </option>
+                  </b-select>
+                </b-field>
+              </td>
+              <td class="is-info is-hidden">{{ axsLvls[axsLvl[row.name]].axs }}</td>
+            </tr>
+          </tbody>
+          <tfoot class="is-hidden">
+            <tr>
+              <th id="colRsrc">Resource</th>
+              <th id="colPrvlg">Privilege</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </b-collapse>
+
+
     <a class="button is-small" @click="qtst">
-      Quick Test
+      Quick Tests
     </a>
 
     <p>
@@ -43,47 +80,6 @@
         @change="onRoleChange" />
       <label>Regular User</label>
     </p>
-
-<!-- 
-    <b-field label="Simple">
-      <b-select placeholder="Select a name">
-        <option
-          v-for="option in data"
-          :value="option.id"
-          :key="option.id">
-          {{ option.user.first_name }}
-        </option>
-      </b-select>
-    </b-field>
- -->
-
-    <table class="table is-narrow is-hoverable">
-      <thead><tr><th>Resource</th><th colspan=2 class="text-center">Privilege</th></tr></thead>
-      <tbody>
-        <tr v-for="row in axsLvlTblDef">
-          <th>{{ row.name }}</th>
-          <td>
-            <b-field>
-              <b-select :placeholder="row.name" v-model="axsLvl[row.name]">
-                <option v-for="l in axsLvls" :value="l.id" :key="l.id">{{ l.axs }}</option>
-              </b-select>
-            </b-field>
-          </td>
-          <td>{{ axsLvls[axsLvl[row.name]].axs }}</td>
-<!-- 
-          <td>
-            <b-field>
-              <b-select placeholder="Classified" v-model="axsLvl.Classified">
-                <option v-for="l in axsLvls" :value="l.id" :key="l.id">{{ l.axs }}</option>
-              </b-select>
-            </b-field>
-          </td>
-          <td>{{ axsLvls[axsLvl.Classified].axs }}</td>
- -->
-        </tr>
-      </tbody>
-      <tfoot><tr><th>Resource</th><th colspan=2 class="text-center">Privilege</th></tr></tfoot>
-    </table>
 
     <ul is-pulled-left>
       <li><b-icon size="is-small" icon="unlock-alt" />
@@ -152,20 +148,25 @@
 <script>
 
   import { mapMutations, mapState } from 'vuex';
+  import { Levels as accessLevels } from '@/accessControl';
 
   import authentication from './Auth';
 
+
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
-  const axsLvls = ['No Access', 'View Only', 'Comment', 'Alter', 'Own'];
-  
+  // const axsLvls = ['No Access', 'View Only', 'Comment', 'Alter', 'Own'];
+  LG('ACCESS LEVELS :::::::::::::');
+  LG(accessLevels.alvls[accessLevels.OWN]);
+
   export default {
     data() {
       return {
         lvlAcl: 0,
         axsLvlSelectorOpen: false,
         role: 'admin',
-        axsLvls: Array.from(axsLvls, (x, ix) => ({ id: ix, axs: x })),
+        // axsLvls: Array.from(axsLvls, (x, ix) => ({ id: ix, axs: x })),
+        axsLvls: accessLevels.olvls,
         axsLvl: { Classified: 0, Protected: 0 },
         axsLvlTblDef: {
           Classified: { name: 'Classified' },
@@ -224,5 +225,27 @@
 
   #hdr {
     text-align: center;
+  }
+
+  #divTbl {
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  #axsCtrl {
+    width: 70%;
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  #colRsrc {
+    text-align: right;
+    vertical-align: bottom;
+    padding-bottom: 8px;
+  }
+  #colPrvlg {
+    text-align: center;
+    padding-left: 18px;
   }
 </style>

@@ -19,9 +19,10 @@
 </template>
 
 <script>
-import elementLevelProtection from './Perimeters/Protected';
+// import elementLevelProtection from '@/accessControl/Perimeters/Protected';
+import { perimeters as acl } from '@/accessControl';
 
 export default {
-  perimeters: [elementLevelProtection],
+  perimeters: [acl.protectedPerimeter],
 };
 </script>

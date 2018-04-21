@@ -5,10 +5,9 @@ import Header from '@/components/Header';
 import HomeView from '@/components/HomeView';
 
 import { routes as person } from '@/components/Admin/Person';
-import {
-  routes as exampleRoutes,
-  beforeEach as exampleBeforeEachTasks,
-} from '@/components/Tests/Component';
+import { beforeEach as exampleBeforeEachTasks } from '@/accessControl';
+
+import { routes as example } from '@/components/Tests/Component';
 
 import OldHomeView from '@/components/Attic/OldHomeView';
 import DetailView from '@/components/Attic/DetailView';
@@ -98,7 +97,7 @@ const baseRoutes = [
 
 const routes = baseRoutes
   .concat(person)
-  .concat(exampleRoutes)
+  .concat(example)
   .concat(blog)
   .concat(poison);
 
@@ -122,8 +121,7 @@ const beforeEachTasks = [
   // (t, f) => { LG(f); },
 ];
 
-const beforeEach = beforeEachTasks
-  .concat(exampleBeforeEachTasks);
+const beforeEach = beforeEachTasks.concat(exampleBeforeEachTasks);
 
 const router = new Router({
   routes,
@@ -146,10 +144,5 @@ router.beforeEach((_to, _from, _next) => {
 
   _next();
 });
-
-// router.afterEach((_to, _from) => {
-//   LG(`Have rerouted from '${_from.name}' to '${_to.name}'.`);
-//   LG(_to);
-// });
 
 export default router;
