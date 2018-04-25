@@ -2,35 +2,9 @@ import { createSandbox, StrictGoverness } from 'vue-kindergarten';
 
 import { store } from '@/store';
 import perimeterDefs from './perimeters';
+import { Levels } from './BasePerimeter';
 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
-
-const accessLevels = [];
-
-const NO_ACCESS = 0;
-accessLevels[NO_ACCESS] = 'No Access';
-
-const VIEW_ONLY = NO_ACCESS + 1;
-accessLevels[VIEW_ONLY] = 'View Only';
-
-const COMMENT = VIEW_ONLY + 1;
-accessLevels[COMMENT] = 'Comment';
-
-const ALTER = COMMENT + 1;
-accessLevels[ALTER] = 'Alter';
-
-const OWN = ALTER + 1;
-accessLevels[OWN] = 'Own';
-
-export const Levels = {
-  alvls: accessLevels,
-  olvls: Array.from(accessLevels, (x, ix) => ({ id: ix, axs: x })),
-  NO_ACCESS,
-  VIEW_ONLY,
-  COMMENT,
-  ALTER,
-  OWN,
-};
 
 export const currentUser = {
   // Getter of your current user.
@@ -65,14 +39,37 @@ export const beforeEach = [
   },
 ];
 
+const collectDomains = () => {
+  const ret = {};
+  Object.entries(perimeterDefs).map((p) => {
+    const name = p[1].resource;
+    ret[name] = {
+      name,
+      level: Levels.alvls[Levels.NO_ACCESS],
+    };
+    return true;
+  });
+  return ret;
+};
+
+// const domains = collectDomains();
+
 const state = {
   user: {
     info: {
       name: 'Bob',
       role: 'admin',
-      permissions: 'admin',
+      permissions: {
+        Person: 'Owner',
+        // Example: Levels.alvls[Levels.NO_ACCESS],
+        Example: Levels.alvls[Levels.VIEW_ONLY],
+        // Example: Levels.alvls[Levels.COMMENT],
+        // Example: Levels.alvls[Levels.ALTER],
+        // Example: Levels.alvls[Levels.OWN],
+      },
     },
   },
+  domains: collectDomains(),
 };
 
 const getters = {};
@@ -87,6 +84,7 @@ const mutations = {
 const actions = {};
 
 export default {
+  namespaced: true,
   state,
   getters,
   mutations,
@@ -94,3 +92,4 @@ export default {
 };
 
 export const perimeters = perimeterDefs;
+export { Levels };

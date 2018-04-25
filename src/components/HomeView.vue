@@ -5,6 +5,7 @@
       <button class="button" @click="activeTab = 1">Set Pictures</button>
     </div>
  -->
+<!-- 
     <b-tabs v-model="activeTab">
       <b-tab-item :visible="showTab('Shop', ['visitor', 'member', 'distributor', 'staff', 'manager', 'owner', 'legalRepresentative'])" label="Shop">
         <h3>Online Shop tasks</h3>
@@ -63,18 +64,17 @@
         Maecenas vehicula pulvinar tellus, id sodales felis lobortis eget.
       </b-tab-item>
     </b-tabs>
+ -->
+<!-- 
     <div class="control">
       <b-switch v-model="aclDebug" type="is-danger">
         Debug
       </b-switch>
     </div>
-
     <div v-if="aclDebug">
       <div class="mdl-grid">
         <div class="mdl-cell mdl-cell--3-col mdl-cell mdl-cell--1-col-tablet mdl-cell--hide-phone">
 
-        <!--/div>
-        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-phone" -->
         <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" :to="{ name: 'persons' }">
           <i class="material-icons">Persons</i>
         </router-link>
@@ -93,13 +93,14 @@
       </div>
     </div>
     <div v-else class="is-small">Version :: v{{theVersion}}</div>
+ -->
   </section>
 </template>
 
 <script>
 
   // import jwt from 'jsonwebtoken';
-  import { mapGetters } from 'vuex';
+  // import { mapGetters } from 'vuex';
 
   import PersonDetail from './Admin/Person/Detail';
 
@@ -109,39 +110,42 @@
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
   export default {
-    data() {
-      return {
-        activeTab: 0,
-        aclDebug: false,
-      };
-    },
+    // data() {
+    //   return {
+    //     activeTab: 0,
+    //     aclDebug: false,
+    //   };
+    // },
     computed: {
-      theVersion() {
-        return window.version;
-      },
+      // theVersion() {
+      //   return window.version;
+      // },
       axsRights() {
         // return this.$store.getters.theRoles;
         return this.access;
       },
-      ...mapGetters({
-        jwt: 'axsToken',
-        isHere: 'isActive',
-        isKnown: 'isAuthenticated',
-      }),
+      // ...mapGetters({
+      //   jwt: 'axsToken',
+      //   isHere: 'isActive',
+      //   isKnown: 'isAuthenticated',
+      // }),
     },
     components: {
       'person-detail': PersonDetail, // eslint-disable-line no-undef
     },
     methods: {
-      showTab(tab, allowedRoles) {
-        const may = new Set(allowedRoles);
-        const role = new Set(this.access);
-        const can = [...may].filter(right => role.has(right));
-        // LG(may);
-        // LG(role);
-        // LG(`........ ${tab} allows [${can}]........`);
-        return can.length > 0;
-      },
+      // showTab() {
+      //   return true;
+      // },
+      // showTab(tab, allowedRoles) {
+      //   const may = new Set(allowedRoles);
+      //   const role = new Set(this.access);
+      //   const can = [...may].filter(right => role.has(right));
+      //   // LG(may);
+      //   // LG(role);
+      //   // LG(`........ ${tab} allows [${can}]........`);
+      //   return can.length > 0;
+      // },
     },
   };
 </script>

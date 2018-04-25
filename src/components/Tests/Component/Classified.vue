@@ -4,7 +4,7 @@
     <hr />
     <p>Protected by routing, but otherwise exposed</p>
     <hr />
-    <router-link class="button is-small is-link is-outlined" v-bind:to="{name: 'home'}">
+    <router-link class="button is-small is-link is-outlined" v-bind:to="{name: 'root'}">
       <icon name="arrow-circle-up" />
       &nbsp;Home
     </router-link>

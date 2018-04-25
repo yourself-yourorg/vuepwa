@@ -5,7 +5,7 @@ import VueI18n from 'vue-i18n';
 import VueLocalStore from 'vue-ls';
 import VueKindergarten from 'vue-kindergarten';
 
-import Acl from 'vue-acl';
+// import Acl from 'vue-acl';
 import VueLogger from 'vuejs-logger';
 import 'vue-awesome/icons';
 import Icon from 'vue-awesome/components/Icon';
@@ -42,7 +42,7 @@ Vue.use(VueLocalStore, { namespace: 'vuesppwa-' });
 Vue.use(VueKindergarten, currentUser);
 
 // Vue.use(Acl, { router, init: ['visitor', 'member'] });
-Vue.use(Acl, { router, init: ['visitor'] });
+// Vue.use(Acl, { router, init: ['visitor'] });
 
 Vue.use(Buefy, {
   defaultIconPack: 'fa',

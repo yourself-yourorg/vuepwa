@@ -4,11 +4,11 @@
       <!-- Left side -->
       <div class="level-left">
         <div class="level-item">
-          <router-link to="/">
-              <img
-                src="static/img/WaterDrop_50.png"
-                alt="Iridium Blue Logo">
-                <span data-cyp="appTitle" style="font-family: 'Advent Pro'; font-size: 48px;">iridium blue</span>
+          <router-link v-bind:to="{name: 'root'}">
+            <img
+              src="static/img/WaterDrop_50.png"
+              alt="Iridium Blue Logo">
+            <span data-cyp="appTitle" style="font-family: 'Advent Pro'; font-size: 48px;">iridium blue</span>
           </router-link>
         </div>
       </div>
@@ -58,96 +58,138 @@
     </b-collapse>
 
 
-    <a class="button is-small" @click="qtst">
-      Quick Tests
-    </a>
+    <div>
+      <p>
+        <input
+          type="radio"
+          name="role"
+          value="admin"
+          v-model="role"
+          @change="onRoleChange" />
+        <label>Admin</label>
+      </p>
+      <p>
+        <input
+          type="radio"
+          name="role"
+          value="user"
+          v-model="role"
+          @change="onRoleChange" />
+        <label>Regular User</label>
+      </p>
 
-    <p>
-      <input
-        type="radio"
-        name="role"
-        value="admin"
-        v-model="role"
-        @change="onRoleChange" />
-      <label>Admin</label>
-    </p>
-    <p>
-      <input
-        type="radio"
-        name="role"
-        value="user"
-        v-model="role"
-        @change="onRoleChange" />
-      <label>Regular User</label>
-    </p>
+      <ul is-pulled-left>
+        <li><b-icon size="is-small" icon="unlock-alt" />
+          <router-link :to="{ name: 'protected' }">
+            Protected
+          </router-link>
+        </li>
+        <li><b-icon size="is-small" icon="user-secret" />
+          <router-link :to="{ name: 'classified' }">
+            Classified
+          </router-link>
+        </li>
+      </ul>
 
-    <ul is-pulled-left>
-      <li><b-icon size="is-small" icon="unlock-alt" />
-        <router-link :to="{ name: 'protected' }">
-          Protected
-        </router-link>
-      </li>
-      <li><b-icon size="is-small" icon="user-secret" />
-        <router-link :to="{ name: 'classified' }">
-          Classified
-        </router-link>
-      </li>
-    </ul>
+    </div>
 
 <!--
-        <div class="level-item">
-          <button class="button is-small is-primary"
-              @click="axsLvlSelectorOpen = !axsLvlSelectorOpen">
-              Access Rights
-          </button> &nbsp; &nbsp;
-          <b-collapse class="panel" :open.sync="axsLvlSelectorOpen">
+    <b-tabs v-model="activeTab">
+      <b-tab-item :visible="showTab('Shop', ['visitor', 'member', 'distributor', 'staff', 'manager', 'owner', 'legalRepresentative'])" label="Shop">
+        <h3>Online Shop tasks</h3>
+        <ul is-pulled-left>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Water sales</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Bottle sales</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Bottle inventory outgoing</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Bottle inventory incoming</li>
+        </ul>
+        <a href="/static/privacypolicy.html" target="_blank">Our privacy policy</a>
+      </b-tab-item>
 
+      <b-tab-item :visible="showTab('Distributors', ['distributor', 'staff', 'manager', 'owner', 'legalRepresentative'])" label="Distributors">
+        <h3>Distributor Tasks</h3>
+        <ul >
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Sales</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Bonus</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Bottle inventory</li>
+        </ul>
+      </b-tab-item>
 
+      <b-tab-item :visible="showTab('Admin', ['manager', 'owner', 'legalRepresentative'])" label="Admin">
+        Administrative tasks.
+        <ul is-pulled-left>
+          <li><b-icon size="is-small" icon="users" />
+            <router-link :to="{ name: 'persons' }">
+              User Management
+            </router-link>
+          </li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Accounts Payable</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Accounts Receivable</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Banking</li>
+        </ul>
+      </b-tab-item>
 
-            <div class="block">
-              <b-checkbox-button type="is-success" v-model="axsRights"
-                @input="setRole" native-value="visitor" disabled>
-                  Visitor
-              </b-checkbox-button>
-              <b-checkbox-button type="is-success" v-model="axsRights"
-                @input="setRole" native-value="member">
-                  Member
-              </b-checkbox-button>
-              <b-checkbox-button type="is-success" v-model="axsRights"
-                @input="setRole" native-value="distributor">
-                  Distributor
-              </b-checkbox-button>
-              <b-checkbox-button type="is-success" v-model="axsRights"
-                @input="setRole" native-value="staff">
-                  Staff
-              </b-checkbox-button>
-              <b-checkbox-button type="is-success" v-model="axsRights"
-                @input="setRole" native-value="manager">
-                  Manager
-              </b-checkbox-button>
-              <b-checkbox-button type="is-success" v-model="axsRights"
-                @input="setRole" native-value="owner">
-                  Owner
-              </b-checkbox-button>
-              <b-checkbox-button type="is-success" v-model="axsRights"
-                @input="setRole" native-value="legalRepresentative">
-                  Legal Representative
-              </b-checkbox-button>
-            </div>
+      <b-tab-item :visible="showTab('Tests', ['member'])" label="Tests">
+        Tests.
+        <ul is-pulled-left>
+          <li><b-icon size="is-small" icon="unlock-alt" />
+            <router-link :to="{ name: 'protected' }">
+              Protected
+            </router-link>
+          </li>
+          <li><b-icon size="is-small" icon="user-secret" />
+            <router-link :to="{ name: 'classified' }">
+              Classified
+            </router-link>
+          </li>
+        </ul>
+      </b-tab-item>
 
-          </b-collapse>
-          <b-collapse :open="true">
-            {{ axsRights }}
-          </b-collapse>
-        </div>
+      <b-tab-item :visible="showTab('Orders', ['member', 'distributor', 'staff', 'manager', 'owner', 'legalRepresentative'])" label="Orders" disabled>
+        Nunc nec velit nec libero vestibulum eleifend.
+        Curabitur pulvinar congue luctus.
+        Nullam hendrerit iaculis augue vitae ornare.
+        Maecenas vehicula pulvinar tellus, id sodales felis lobortis eget.
+      </b-tab-item>
+    </b-tabs>
  -->
- 
+
+<!--
+    <div class="control">
+      <b-switch v-model="aclDebug" type="is-danger">
+        Debug
+      </b-switch>
+    </div>
+
+    <div v-if="aclDebug">
+      <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--3-col mdl-cell mdl-cell--1-col-tablet mdl-cell--hide-phone">
+
+        <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" :to="{ name: 'persons' }">
+          <i class="material-icons">Persons</i>
+        </router-link>
+        <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" :to="{ name: 'ohv' }">
+          <i class="material-icons">Old Home </i>
+        </router-link>
+        </div>
+      </div>
+      <a class="button is-small">{{ isHere }}</a><a class="button is-small">{{ isKnown }}</a>
+      <p class="content">
+        <b>Privileges:</b>
+        {{ access }}
+      </p>
+      <div class="is-invisible">
+        Token signature :: '{{ jwt.split(".")[2] }}'
+      </div>
+    </div>
+    <div v-else class="is-small">Version :: v{{theVersion}}</div>
+ --> 
   </section>
 </template>
 
 <script>
 
-  import { mapMutations, mapState } from 'vuex';
+  import { mapMutations, mapState, mapGetters } from 'vuex';
   import { Levels as accessLevels } from '@/accessControl';
 
   import authentication from './Auth';
@@ -162,6 +204,9 @@
   export default {
     data() {
       return {
+        activeTab: 0,
+        aclDebug: false,
+
         lvlAcl: 0,
         axsLvlSelectorOpen: false,
         role: 'admin',
@@ -176,9 +221,17 @@
       };
     },
     computed: {
+      theVersion() {
+        return window.version;
+      },
       ...mapState([
         'a12n.user',
       ]),
+      ...mapGetters({
+        jwt: 'axsToken',
+        isHere: 'isActive',
+        isKnown: 'isAuthenticated',
+      }),
 
       // axsRoles() {
       //   this.$store.dispatch('setAxsRole', { roles: this.access });
@@ -199,10 +252,14 @@
       accessControl: authentication,
     },
     methods: {
+      showTab() {
+        return true;
+      },
       ...mapMutations([
         'changeRole',
       ]),
       onRoleChange() {
+        LG(`================================ ${this.role}`);
         this.changeRole(this.role);
       },
       // ...mapActions(['setAxsRole']),
@@ -210,9 +267,6 @@
         this.access = this.axsRights;
         // LG(`================================ ${this.access} vs ${this.axsRights}`);
         this.$store.dispatch('setAxsRole', { roles: this.axsRights });
-      },
-      qtst() {
-        LG();
       },
       prog() {
         LG(' ------- prog -------');

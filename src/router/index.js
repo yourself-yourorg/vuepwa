@@ -4,10 +4,16 @@ import Router from 'vue-router';
 import Header from '@/components/Header';
 import HomeView from '@/components/HomeView';
 
+import { routes as mainLayout } from '@/components/MainLayout';
+// import UserSettings from '@/components/MainLayout/UserSettings';
+// import UserEmailsSubscriptions from '@/components/MainLayout/UserEmailsSubscriptions';
+// import UserProfile from '@/components/MainLayout/UserProfile';
+// import UserProfilePreview from '@/components/MainLayout/UserProfilePreview';
+
 import { routes as person } from '@/components/Admin/Person';
 import { beforeEach as exampleBeforeEachTasks } from '@/accessControl';
 
-import { routes as example } from '@/components/Tests/Component';
+// import { routes as example } from '@/components/Tests/Component';
 
 import OldHomeView from '@/components/Attic/OldHomeView';
 import DetailView from '@/components/Attic/DetailView';
@@ -33,71 +39,72 @@ const baseRoutes = [
     path: '',
     name: 'home',
     components: { default: HomeView, hdr: Header },
-    beforeEnter: (to, from, next) => {
-      LG('*********************  beforeRouteEnter  ***************************');
-      // LG(store);
-      LG(store.getters.permissions);
-      store._vm.access = store.getters.permissions; // eslint-disable-line no-underscore-dangle
-      LG(store._vm.access); // eslint-disable-line no-underscore-dangle
-      next();
-    },
-    meta: { permission: 'visitor' },
+    // beforeEnter: (to, from, next) => {
+    //   LG('*********************  beforeRouteEnter  ***************************');
+    //   // LG(store);
+    //   LG(store.getters.permissions);
+    //   store._vm.access = store.getters.permissions; // eslint-disable-line no-underscore-dangle
+    //   LG(store._vm.access); // eslint-disable-line no-underscore-dangle
+    //   next();
+    // },
+    // meta: { permission: 'visitor' },
   },
   {
     path: '/',
-    name: 'root',
+    name: 'oldroot',
     components: { default: HomeView, hdr: Header },
-    beforeEnter: (to, from, next) => {
-      LG('*********************  beforeRouteEnter  ***************************');
-      // LG(store);
-      LG(store.getters.permissions);
-      store._vm.access = store.getters.permissions; // eslint-disable-line no-underscore-dangle
-      LG(store._vm.access); // eslint-disable-line no-underscore-dangle
-      next();
-    },
-    meta: { permission: 'visitor' },
+    // beforeEnter: (to, from, next) => {
+    //   LG('*********************  beforeRouteEnter  ***************************');
+    //   // LG(store);
+    //   LG(store.getters.permissions);
+    //   store._vm.access = store.getters.permissions; // eslint-disable-line no-underscore-dangle
+    //   LG(store._vm.access); // eslint-disable-line no-underscore-dangle
+    //   next();
+    // },
+    // meta: { permission: 'visitor' },
   },
   {
     path: '/ohv',
     name: 'ohv',
     components: { default: OldHomeView, hdr: Header },
-    meta: { permission: 'visitor' },
+    // meta: { permission: 'visitor' },
   },
   {
     path: '/post',
     name: 'post',
     components: { default: PostView, hdr: Header },
-    meta: { permission: 'visitor' },
+    // meta: { permission: 'visitor' },
   },
   {
     path: '/detail/:id',
     name: 'detail',
     components: { default: DetailView, hdr: Header },
-    meta: { permission: 'visitor' },
+    // meta: { permission: 'visitor' },
   },
   {
     path: '/dc',
     name: 'DA',
     components: { default: DumbA, hdr: Header },
-    meta: { permission: 'visitor' },
+    // meta: { permission: 'visitor' },
   },
   {
     path: '/db',
     name: 'DB',
     components: { default: DumbB, hdr: Header },
-    meta: { permission: 'visitor' },
+    // meta: { permission: 'visitor' },
   },
   {
     path: '/form',
     name: 'form',
     components: { default: Form, hdr: Header },
-    meta: { permission: 'visitor' },
+    // meta: { permission: 'visitor' },
   },
 ];
 
 const routes = baseRoutes
+  .concat(mainLayout)
   .concat(person)
-  .concat(example)
+  // .concat(example)
   .concat(blog)
   .concat(poison);
 
