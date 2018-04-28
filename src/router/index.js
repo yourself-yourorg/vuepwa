@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import Header from '@/components/Header';
-import HomeView from '@/components/HomeView';
+// import HomeView from '@/components/HomeView';
 
 import { routes as mainLayout } from '@/components/MainLayout';
 // import UserSettings from '@/components/MainLayout/UserSettings';
@@ -10,7 +10,7 @@ import { routes as mainLayout } from '@/components/MainLayout';
 // import UserProfile from '@/components/MainLayout/UserProfile';
 // import UserProfilePreview from '@/components/MainLayout/UserProfilePreview';
 
-import { routes as person } from '@/components/Admin/Person';
+// import { routes as person } from '@/components/Admin/Person';
 import { beforeEach as exampleBeforeEachTasks } from '@/accessControl';
 
 // import { routes as example } from '@/components/Tests/Component';
@@ -35,34 +35,34 @@ const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
 const baseRoutes = [
 
-  {
-    path: '',
-    name: 'home',
-    components: { default: HomeView, hdr: Header },
-    // beforeEnter: (to, from, next) => {
-    //   LG('*********************  beforeRouteEnter  ***************************');
-    //   // LG(store);
-    //   LG(store.getters.permissions);
-    //   store._vm.access = store.getters.permissions; // eslint-disable-line no-underscore-dangle
-    //   LG(store._vm.access); // eslint-disable-line no-underscore-dangle
-    //   next();
-    // },
-    // meta: { permission: 'visitor' },
-  },
-  {
-    path: '/',
-    name: 'oldroot',
-    components: { default: HomeView, hdr: Header },
-    // beforeEnter: (to, from, next) => {
-    //   LG('*********************  beforeRouteEnter  ***************************');
-    //   // LG(store);
-    //   LG(store.getters.permissions);
-    //   store._vm.access = store.getters.permissions; // eslint-disable-line no-underscore-dangle
-    //   LG(store._vm.access); // eslint-disable-line no-underscore-dangle
-    //   next();
-    // },
-    // meta: { permission: 'visitor' },
-  },
+  // {
+  //   path: '',
+  //   name: 'homeOld',
+  //   components: { default: HomeView, hdr: Header },
+  //   // beforeEnter: (to, from, next) => {
+  //   //   LG('*********************  beforeRouteEnter  ***************************');
+  //   //   // LG(store);
+  //   //   LG(store.getters.permissions);
+  //   //   store._vm.access = store.getters.permissions;
+  //   //   LG(store._vm.access); // eslint-disable-line no-underscore-dangle
+  //   //   next();
+  //   // },
+  //   // meta: { permission: 'visitor' },
+  // },
+  // {
+  //   path: '/',
+  //   name: 'oldroot',
+  //   components: { default: HomeView, hdr: Header },
+  //   // beforeEnter: (to, from, next) => {
+  //   //   LG('*********************  beforeRouteEnter  ***************************');
+  //   //   // LG(store);
+  //   //   LG(store.getters.permissions);
+  //   //   store._vm.access = store.getters.permissions;
+  //   //   LG(store._vm.access); // eslint-disable-line no-underscore-dangle
+  //   //   next();
+  //   // },
+  //   // meta: { permission: 'visitor' },
+  // },
   {
     path: '/ohv',
     name: 'ohv',
@@ -103,7 +103,7 @@ const baseRoutes = [
 
 const routes = baseRoutes
   .concat(mainLayout)
-  .concat(person)
+  // .concat(person)
   // .concat(example)
   .concat(blog)
   .concat(poison);

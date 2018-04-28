@@ -30,16 +30,6 @@ export const Levels = {
   OWN,
 };
 
-const findRoleInResource = (user, rsrce, lvl) => {
-  LG('********  findRoleInResource  *********');
-  LG(user.permissions);
-  LG(`********  ${rsrce}  *********`);
-  const priv = user.permissions[rsrce];
-  const idx = accessLevels.findIndex(el => el === priv);
-  LG(`******** (${lvl} <= ${idx}) true? *********`);
-  return lvl <= accessLevels.findIndex(el => el === priv);
-};
-
 export default class BasePerimeter extends Perimeter {
   constructor(purpose, opts = {}) {
     super(purpose, opts);
@@ -47,13 +37,23 @@ export default class BasePerimeter extends Perimeter {
     // LG(`********  Constructor ${this.levels}  *********`);
   }
 
-  isAdmin() {
-    return this.child && this.child.role === 'admin';
+  mayView() {
+    LG(`********  mayView: Permission "${this.levels.alvls[VIEW_ONLY]}" to resource "${this.resource}".  *********`);
+    return this.levels.VIEW_ONLY <= this.child.permissions[this.resource];
   }
-  mayView(resource) {
-    LG(`********  mayView: Permission "${this.levels.alvls[VIEW_ONLY]}" to resource "${resource}".  *********`);
-    LG(this.child.permissions);
-    // return findRoleInResource(resource, this.levels.VIEW_ONLY);
-    return findRoleInResource(this.child, resource, this.levels.VIEW_ONLY);
+
+  mayComment() {
+    LG(`********  mayView: Permission "${this.levels.alvls[COMMENT]}" to resource "${this.resource}".  *********`);
+    return this.levels.COMMENT <= this.child.permissions[this.resource];
+  }
+
+  mayAlter() {
+    LG(`********  mayView: Permission "${this.levels.alvls[ALTER]}" to resource "${this.resource}".  *********`);
+    return this.levels.ALTER <= this.child.permissions[this.resource];
+  }
+
+  mayAuthorize() {
+    LG(`********  mayView: Permission "${this.levels.alvls[OWN]}" to resource "${this.resource}".  *********`);
+    return this.levels.OWN <= this.child.permissions[this.resource];
   }
 }

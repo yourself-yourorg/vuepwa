@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <section>
 <!--
     <button data-cyp="fetch-persons" class="fetch-persons" @click="onFetchPersons">Fetch Persons</button>
     <button class="create-person" @click="onCreatePerson">Add Person</button>
@@ -9,7 +9,9 @@
 
     <b-tabs>
       <b-tab-item label="Persons">
-        <b-table :data="persons" :columns="columns"
+        <b-table
+          :data="isEmpty ? [] : persons"
+          :columns="columns"
           :striped="true"
           paginated
           :per-page="5"
@@ -30,6 +32,23 @@
             <person-detail :id="row.codigo" />
           </template>
 
+          <template slot="empty">
+            <section class="section">
+              <div style="font-size:large;" class="content has-text-grey has-text-centered">
+                <icon scale="3" name="thumbs-down" />
+                <p>No results</p>
+              </div>
+            </section>
+<!--
+                <p>
+                  <b-icon
+                    icon="emoticon-sad"
+                    size="is-large">
+                  </b-icon>
+                </p>
+                <p>Nothing here.</p>
+ -->
+          </template>
         </b-table>
 
         <div class="block">
@@ -56,7 +75,7 @@
         </b-collapse>
 
       </b-tab-item>
-      <b-tab-item label="Add Person">
+      <b-tab-item :visible="$isAllowed('minorEdits')" label="Add Person">
         Add a new person here.
       </b-tab-item>
     </b-tabs>
@@ -65,17 +84,21 @@
       <icon name="arrow-circle-up" />
       &nbsp;Home
     </router-link>
-  </main>
+  </section>
 </template>
 
 <script>
   import { mapState, mapActions, mapGetters } from 'vuex';
+
+  import { perimeters as acl } from '@/accessControl';
+
   import PersonDetail from './Detail';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
   export default {
     name: 'Person',
+    perimeters: [acl.personDetailPerimeter],
     beforeMount() {
       LG('\n * * Ready to fetch persons * * \n');
       this.onFetchPersons();
@@ -90,6 +113,7 @@
         anObj: { tst: 'passed in as data' },
         isLoading: true,
         isFullPage: false,
+        isEmpty: false,
         defaultOpenedDetails: [124],
         selected: persons[1],
         columnSelectorOpen: false,

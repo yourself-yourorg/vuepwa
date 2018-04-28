@@ -17,13 +17,15 @@
 
   // const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
+  import { responsivity } from '@/utils/responsive';
+
   export default {
     name: 'app',
     data: () => ({
     }),
-    // created() {
-    //   window.ls.set(cfg.tokenName, 'Created in App');
-    // },
+    created() {
+      document.addEventListener('DOMContentLoaded', responsivity);
+    },
   };
 </script>
 

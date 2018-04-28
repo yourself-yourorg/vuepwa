@@ -4,7 +4,7 @@
       Admin
     </router-link>
     <div class="navbar-dropdown is-boxed">
-      <router-link class="navbar-item"  :to="{ name: 'profile' }">
+      <router-link class="navbar-item"  :to="{ name: 'persons' }">
         User Management
       </router-link>
       <router-link class="navbar-item"  :to="{ name: 'profile' }">
@@ -19,7 +19,7 @@
 
 <script>
 
-  import { shutBurgerMenu } from '../MainLayout/responsive';
+  import { shutBurgerMenu } from '@/utils/responsive';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 

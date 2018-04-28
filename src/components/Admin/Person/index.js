@@ -2,7 +2,7 @@ import createCrudModule, { client } from 'vuex-crud';
 
 import { variablizeTitles } from '@/utils/strings';
 
-import Header from '@/components/Header';
+// import Header from '@/components/Header';
 import cfg from '@/config';
 
 import List from './List';
@@ -13,17 +13,25 @@ const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
 export const routes = [
   {
-    path: '/persons',
+    path: 'persons',
     name: 'persons',
-    components: { default: List, hdr: Header },
-    meta: { permission: 'visitor' },
+    component: List,
   },
+  // {
+  //   path: '/persons',
+  //   name: 'persons',
+  //   components: { default: List, hdr: Header },
+  // },
   {
-    path: '/person/:id',
+    path: 'person/:id',
     name: 'person',
-    components: { default: Retrieve, hdr: Header },
-    meta: { permission: 'visitor' },
+    component: Retrieve,
   },
+  // {
+  //   path: 'person/:id',
+  //   name: 'person',
+  //   components: { default: Retrieve, hdr: Header },
+  // },
 ];
 
 client.interceptors.request.use((_payload) => {

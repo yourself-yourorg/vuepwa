@@ -9,7 +9,7 @@ const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 export const currentUser = {
   // Getter of your current user.
   // If you use store, then store will be passed
-  child: vx => (vx ? vx.state.a12n.user.info : null),
+  child: vx => (vx ? vx.state.a12n.user : null),
 
   // child: (store) =>
   //   return store.state.user;
@@ -33,6 +33,8 @@ export const beforeEach = [
         // governess: new RouteGoverness({ from, t, nxt }),
         governess: new StrictGoverness(),
       });
+      LG('~~~~~~~~~~~~   sandbox   ~~~~~~~~~~~~');
+      LG(sandbox.guard('route'));
       return sandbox.guard('route');
     }
     return nxt();
@@ -59,29 +61,46 @@ const state = {
     info: {
       name: 'Bob',
       role: 'admin',
-      permissions: {
-        Person: 'Owner',
-        // Example: Levels.alvls[Levels.NO_ACCESS],
-        Example: Levels.alvls[Levels.VIEW_ONLY],
-        // Example: Levels.alvls[Levels.COMMENT],
-        // Example: Levels.alvls[Levels.ALTER],
-        // Example: Levels.alvls[Levels.OWN],
-      },
+    },
+    permissions: {
+      // Person: Levels.NO_ACCESS,
+      // Person: Levels.VIEW_ONLY,
+      Person: Levels.COMMENT,
+      // Person: Levels.ALTER,
+      // Person: Levels.OWN,
+
+      // Example: Levels.NO_ACCESS,
+      Example: Levels.VIEW_ONLY,
+      // Example: Levels.COMMENT,
+      // Example: Levels.ALTER,
+      // Example: Levels.OWN,
     },
   },
   domains: collectDomains(),
 };
 
-const getters = {};
+const getters = {
+  getUserPermissions: vx => vx.user.permissions,
+};
 
 const mutations = {
   changeRole(vx, newRole) {
     LG(vx);
     vx.user.info.role = newRole; // eslint-disable-line no-param-reassign
   },
+  changePermission(vx, chg) {
+    window.lgr.info(`Access Control (mutation) :: changePermissions of "${chg.resource}"`);
+    vx.user.permissions[chg.resource] = chg.setting; // eslint-disable-line no-param-reassign
+    LG(vx.user.permissions);
+  },
 };
 
-const actions = {};
+const actions = {
+  changePermissions(vx, _permissions) {
+    vx.commit('changePermission', _permissions);
+    // LG(vx.state.user.permissions);
+  },
+};
 
 export default {
   namespaced: true,

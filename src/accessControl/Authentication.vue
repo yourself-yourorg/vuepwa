@@ -2,13 +2,13 @@
   <div>
     <div v-if="isKnown && isHere">
       <a class="button is-small" v-bind:class="highLightAdmin" data-cyp="logOut" @click="signOut">
-        <span name="icon"><icon name="sign-out" /></icon></span>&nbsp;{{ $t('label.signout') }}, {{ user }}
+        <span name="icon"><icon name="sign-out-alt" /></span>&nbsp;{{ $t('label.signout') }}, {{ user }}
       </a>
     </div>
     <div v-else="isKnown && isHere">
       &nbsp;
       <a class="button is-small" data-cyp="logIn" @click="logIn">
-        <icon name="sign-in" />&nbsp;{{ $t('label.signin') }}
+        <icon name="sign-in-alt" />&nbsp;{{ $t('label.signin') }}
       </a>
     </div>
   </div>

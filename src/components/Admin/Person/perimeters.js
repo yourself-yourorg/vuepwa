@@ -1,31 +1,24 @@
 import BasePerimeter from '@/accessControl/BasePerimeter';
+import GenericPerimeter from '@/accessControl/GenericPerimeter';
 
-class PersonPerimeter extends BasePerimeter {
+const LG = console.log; // eslint-disable-line no-console, no-unused-vars
+
+const RESOURCE_NAME = 'Person';
+class PersonPerimeter extends GenericPerimeter {
   constructor(purpose, opts = {}) {
     super(purpose, opts);
-    this.resource = 'Person';
+    this.resource = RESOURCE_NAME;
   }
 }
 
 
-// class PersonPerimeter extends BasePerimeter {
-//   isViewer() {
-//     return this.isViewer('Person');
-//   }
-// };
-
 export default {
   personDetailPerimeter: new PersonPerimeter({
     purpose: 'elementLevelProtection',
-    govern: {
-      'can route': () => true,
-      'can viewParagraph': function canViewParagraph() {
-        return this.isAdmin();
-      },
-    },
   }),
-  personListPerimeter: new PersonPerimeter({
+  personListPerimeter: new BasePerimeter({
     purpose: 'routeLevelProtection',
+    resource: RESOURCE_NAME,
     govern: {
       'can route': function canRoute() {
         return this.isAdmin();

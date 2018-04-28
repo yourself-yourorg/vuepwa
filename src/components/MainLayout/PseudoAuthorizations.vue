@@ -10,12 +10,32 @@
               <th id="colPrvlg">Privilege</th>
             </tr>
           </thead>
+
+          <tbody>
+            <tr v-for="(item, key, index) in getUserPermissions">
+              <th id="colRsrc" class="is-size-7">{{ key }}</th>
+              <td id="colPrvlg">
+                <b-field>
+                  <b-select :id="key" class="is-size-7" :placeholder="axsLvls[0].axs" @change.native="updPermissions" v-model="user.permissions[key]">
+
+                    <option v-for="l in axsLvls" :value="l.id" :key="l.id">
+                     {{ l.axs }}
+                    </option>
+
+                  </b-select>
+                </b-field>
+              </td>
+              <!-- <td class="is-info is-hidden">{{ axsLvls[userPermissions[key]].axs }}</td> -->
+            </tr>
+          </tbody>
+
+<!--
           <tbody>
             <tr v-for="row in domains">
               <th id="colRsrc" class="is-size-7">{{ row.name }}</th>
               <td id="colPrvlg">
                 <b-field>
-                  <b-select class="is-size-7" :placeholder="row.name" v-model="axsLvl[row.name]">
+                  <b-select class="is-size-7" :placeholder="axsLvls[0].axs" v-model="axsLvl[row.name]">
                     <option v-for="l in axsLvls" :value="l.id" :key="l.id">
                      {{ l.axs }}
                     </option>
@@ -25,6 +45,7 @@
               <td class="is-info is-hidden">{{ axsLvls[axsLvl[row.name]].axs }}</td>
             </tr>
           </tbody>
+ -->
           <tfoot class="is-hidden">
             <tr>
               <th id="colRsrc">Resource</th>
@@ -35,6 +56,8 @@
       </div>
     </b-collapse>
 
+{{ getUserPermissions }}
+<!--
     <div>
       <p>
         <input
@@ -54,30 +77,16 @@
           @change="onRoleChange" />
         <label>Regular User</label>
       </p>
-<!-- 
-      <ul is-pulled-left>
-        <li><b-icon size="is-small" icon="unlock-alt" />
-          <router-link :to="{ name: 'protected' }">
-            Protected
-          </router-link>
-        </li>
-        <li><b-icon size="is-small" icon="user-secret" />
-          <router-link :to="{ name: 'classified' }">
-            Classified
-          </router-link>
-        </li>
-      </ul>
- -->
     </div>
-
+ -->
   </div>
 </template>
 
 
 <script>
 
-  // import { mapMutations, mapState, mapGetters } from 'vuex';
-  import { mapMutations, mapState } from 'vuex';
+  import { mapActions, mapState, mapGetters } from 'vuex';
+  // import { mapMutations, mapState } from 'vuex';
   import { Levels as accessLevels } from '@/accessControl';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
@@ -86,24 +95,38 @@
     data() {
       return {
         axsLvls: accessLevels.olvls,
-        axsLvl: { Example: 0, Person: 0 },
-        // axsLvlTblDef: {
-        //   Classified: { name: 'Classified' },
-        //   Protected: { name: 'Protected' },
-        // },
+        axsLvl: { Example: 0, Person: 3 },
         role: 'admin',
       };
     },
     computed: {
-      ...mapState('a12n', ['domains']),
+      ...mapState('a12n', ['domains', 'user']),
+      ...mapGetters('a12n', ['getUserPermissions']),
+      // userPermissions: {
+      //   get: function get() {
+      //     LG('========= get user permissions =======================');
+      //     LG(this.$store.state.a12n.user.permissions);
+      //     return this.$store.state.a12n.user.permissions;
+      //   },
+      //   set: function set(permissions) {
+      //     LG(`========= set user permissions ======================= ${permissions}`);
+      //   },
+      // },
     },
     methods: {
-      ...mapMutations('a12n', [
-        'changeRole',
+      ...mapActions('a12n', [
+        // 'changeRole',
+        'changePermissions',
       ]),
       onRoleChange() {
         LG(`================================ ${this.domains}`);
         this.changeRole(this.role);
+      },
+      updPermissions(e) {
+        this.changePermissions({
+          resource: e.target.id,
+          setting: e.target.value,
+        });
       },
     },
   };

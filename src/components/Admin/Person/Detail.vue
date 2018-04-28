@@ -13,7 +13,7 @@
           </template>
           <person-record :pers="p(id)"/>
         </b-tab-item>
-        <b-tab-item>
+        <b-tab-item :visible="$isAllowed('allEdits')">
           <template slot="header">
             <p class="button is-small is-info is-outlined">
               <b-icon icon="edit"></b-icon>
@@ -21,7 +21,7 @@
           </template>
           <person-update :pers="p(id)"/>
         </b-tab-item>
-        <b-tab-item>
+        <b-tab-item :visible="$isAllowed('toChangeAuthorizations')">
           <template slot="header">
             <p class="button is-small is-danger is-outlined">
               <b-icon icon="trash"></b-icon>
@@ -48,6 +48,8 @@
 </template>
 
 <script>
+  import { perimeters as acl } from '@/accessControl';
+
   import { mapGetters } from 'vuex';
   import Retrieve from './Retrieve';
   import Update from './Update';
@@ -55,6 +57,7 @@
   export default {
     name: 'Detail',
     props: ['id'],
+    perimeters: [acl.personDetailPerimeter],
     data() {
       return {
         activeSubTab: 0,
@@ -76,4 +79,3 @@
   };
 
 </script>
-

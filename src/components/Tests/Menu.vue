@@ -22,7 +22,7 @@
 
 <script>
 
-  import { shutBurgerMenu } from '../MainLayout/responsive';
+  import { shutBurgerMenu } from '@/utils/responsive';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 

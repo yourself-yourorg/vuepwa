@@ -23,5 +23,5 @@ export default {
     // optional: defaults to false if not specified
     showConsoleColors: true,
   },
-  version: '0.0.29',
+  version: '0.0.33',
 };

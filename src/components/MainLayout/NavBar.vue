@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar is-transparent">
+  <nav class="navbar is-transparent" style="background-color: transparent;">
     <div class="navbar-brand">
       <router-link v-bind:to="{name: 'root'}">
         <img
@@ -35,17 +35,19 @@
 
 <script>
 
+  // import { responsivity, shutBurgerMenu } from './responsive';
+  import { shutBurgerMenu } from '@/utils/responsive';
   import Authentication from '@/accessControl/Authentication';
+
   import Shop from '../Shop/Menu';
   import Admin from '../Admin/Menu';
   import Tests from '../Tests/Menu';
   import Distributor from '../Distributor/Menu';
 
-  import { responsivity, shutBurgerMenu } from './responsive';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
-  document.addEventListener('DOMContentLoaded', responsivity);
+  // document.addEventListener('DOMContentLoaded', responsivity);
 
   export default {
     components: {

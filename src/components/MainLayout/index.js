@@ -1,4 +1,5 @@
 import { routes as example } from '@/components/Tests/Component';
+import { routes as person } from '@/components/Admin/Person';
 
 import BaseLayer from './BaseLayer';
 import NavBar from './NavBar';
@@ -32,16 +33,17 @@ const local = [{
 }];
 
 const children = baseRoutes
-  .concat(local)
-  .concat(example);
+  .concat(example)
+  .concat(person)
+  .concat(local);
 
 LG('............');
 LG(children);
 LG('............');
 export const routes = [ // eslint-disable-line import/prefer-default-export
   {
-    path: '/vwxyz',
-    name: 'root',
+    path: '',
+    name: 'home',
     // You could also have named views at tho top
     component: BaseLayer,
     children,
