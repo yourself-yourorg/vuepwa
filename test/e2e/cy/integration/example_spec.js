@@ -702,8 +702,7 @@ describe('Kitchen Sink', () => {
           // return an array of texts from all of the p's
             let texts = $p.map((i, el) =>
             // https://on.cypress.io/$
-              Cypress.$(el).text(),
-            );
+              Cypress.$(el).text());
 
             // jquery map returns jquery object
             // and .get() convert this to simple array
@@ -1335,8 +1334,7 @@ describe('Kitchen Sink', () => {
 
             cy.get('.utility-blob img').click()
               .should('have.attr', 'src', dataUrl);
-          }),
-      );
+          }));
     });
 
     it('new Cypress.Promise(function) - instantiate a bluebird promise', () => {
@@ -1362,8 +1360,7 @@ describe('Kitchen Sink', () => {
         waitOneSecond().then((str) => {
           expect(str).to.eq('foo');
           expect(waited).to.be.true.after(500);
-        }),
-      );
+        }));
     });
   });
 

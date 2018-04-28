@@ -15,6 +15,8 @@ const state = {
   active: INACTIVE,
   authenticated: UNKNOWN,
   nameUser: '',
+  permissions: '',
+  accessLevel: '',
 };
 
 const getters = {
@@ -22,15 +24,25 @@ const getters = {
   isActive: vx => vx.active,
   isAuthenticated: vx => vx.authenticated,
   nameUser: vx => vx.nameUser,
+  accessLevel: vx => vx.accessLevel,
+  permissions: vx => vx.permissions,
 };
 
 const mutations = {
   /* eslint-disable no-param-reassign, no-unused-vars */
   saveToken: (vx, payload) => {
-    // window.lgr.info('Auth(mutation) :: Saving token');
+    const pyld = jwt.decode(payload);
+
+    window.lgr.info(`Auth(mutation) => Saving jwt. Permissions :: [${pyld.permissions}]`);
+    LG(pyld.permissions);
+
     window.ls.set(cfg.tokenName, payload);
     vx.accessToken = payload;
-    vx.nameUser = jwt.decode(payload).name;
+    vx.nameUser = pyld.name;
+    vx.permissions = pyld.permissions;
+    vx.accessLevel = vx.nameUser === 'Iridium Blue' ? 'admin' : 'user';
+    // vx.access = vx.nameUser === 'Iridium Blue' ? ['staff'] : ['visitor'];
+    // window.lgr.info(`Auth(mutation) :: Setting access '${vx.access}'`);
     window.ls.set(cfg.authName, KNOWN);
     vx.authenticated = KNOWN;
     window.ls.set(cfg.activityName, KNOWN);

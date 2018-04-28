@@ -1,130 +1,151 @@
 <template>
-  <div>
-    <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--3-col mdl-cell mdl-cell--1-col-tablet mdl-cell--hide-phone"></div>
-      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-phone">
-        <a class="button" data-cyp="logOutUser" @click="logOutUser">logOutUser</a>
-        <a class="button" data-cyp="purge" @click="purge">Purge</a>
-        <div data-cyp="status">{{ status }}</div>
-        <div>{{ response }}</div>
-        <div
-          v-for="picture in this.pictures"
-          class="image-card"
-          @click="displayDetails(picture.id)">
-          <div class="image-card__picture">
-            <img :src="picture.url" />
-          </div>
+  <section>
+<!--                   ******  HOW TO SET A SPECIFIC TAB ********
+    <div class="block">
+      <button class="button" @click="activeTab = 1">Set Pictures</button>
+    </div>
+ -->
+<!-- 
+    <b-tabs v-model="activeTab">
+      <b-tab-item :visible="showTab('Shop', ['visitor', 'member', 'distributor', 'staff', 'manager', 'owner', 'legalRepresentative'])" label="Shop">
+        <h3>Online Shop tasks</h3>
+        <ul is-pulled-left>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Water sales</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Bottle sales</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Bottle inventory outgoing</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Bottle inventory incoming</li>
+        </ul>
+        <a href="/static/privacypolicy.html" target="_blank">Our privacy policy</a>
+      </b-tab-item>
+
+      <b-tab-item :visible="showTab('Distributors', ['distributor', 'staff', 'manager', 'owner', 'legalRepresentative'])" label="Distributors">
+        <h3>Distributor Tasks</h3>
+        <ul >
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Sales</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Bonus</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Bottle inventory</li>
+        </ul>
+      </b-tab-item>
+
+      <b-tab-item :visible="showTab('Admin', ['manager', 'owner', 'legalRepresentative'])" label="Admin">
+        Administrative tasks.
+        <ul is-pulled-left>
+          <li><b-icon size="is-small" icon="users" />
+            <router-link :to="{ name: 'persons' }">
+              User Management
+            </router-link>
+          </li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Accounts Payable</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Accounts Receivable</li>
+          <li><b-icon size="is-small" icon="hand-point-right" /> &nbsp; Banking</li>
+        </ul>
+      </b-tab-item>
+
+      <b-tab-item :visible="showTab('Tests', ['member'])" label="Tests">
+        Tests.
+        <ul is-pulled-left>
+          <li><b-icon size="is-small" icon="unlock-alt" />
+            <router-link :to="{ name: 'protected' }">
+              Protected
+            </router-link>
+          </li>
+          <li><b-icon size="is-small" icon="user-secret" />
+            <router-link :to="{ name: 'classified' }">
+              Classified
+            </router-link>
+          </li>
+        </ul>
+      </b-tab-item>
+
+      <b-tab-item :visible="showTab('Orders', ['member', 'distributor', 'staff', 'manager', 'owner', 'legalRepresentative'])" label="Orders" disabled>
+        Nunc nec velit nec libero vestibulum eleifend.
+        Curabitur pulvinar congue luctus.
+        Nullam hendrerit iaculis augue vitae ornare.
+        Maecenas vehicula pulvinar tellus, id sodales felis lobortis eget.
+      </b-tab-item>
+    </b-tabs>
+ -->
+<!-- 
+    <div class="control">
+      <b-switch v-model="aclDebug" type="is-danger">
+        Debug
+      </b-switch>
+    </div>
+    <div v-if="aclDebug">
+      <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--3-col mdl-cell mdl-cell--1-col-tablet mdl-cell--hide-phone">
+
+        <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" :to="{ name: 'persons' }">
+          <i class="material-icons">Persons</i>
+        </router-link>
+        <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" :to="{ name: 'ohv' }">
+          <i class="material-icons">Old Home </i>
+        </router-link>
         </div>
-        <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" to="/blog">
-          <i class="material-icons">blog</i>
-        </router-link>
-        <router-link class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" to="/form">
-          <i class="material-icons">form</i>
-        </router-link>
+      </div>
+      <a class="button is-small">{{ isHere }}</a><a class="button is-small">{{ isKnown }}</a>
+      <p class="content">
+        <b>Privileges:</b>
+        {{ access }}
+      </p>
+      <div class="is-invisible">
+        Token signature :: '{{ jwt.split(".")[2] }}'
       </div>
     </div>
-    <router-link class="add-picture-button mdl-button mdl-js-button mdl-button--fab mdl-button--colored" to="/post">
-      <i class="material-icons">add</i>
-    </router-link>
-  </div>
+    <div v-else class="is-small">Version :: v{{theVersion}}</div>
+ -->
+  </section>
 </template>
 
 <script>
 
-  import jwt from 'jsonwebtoken';
-  import { mapGetters } from 'vuex';
+  // import jwt from 'jsonwebtoken';
+  // import { mapGetters } from 'vuex';
 
-  import cfg from '../config';
-  import data from '../data';
+  import PersonDetail from './Admin/Person/Detail';
+
+  // import cfg from '../config';
+  // import data from '../data';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
   export default {
-    methods: {
-      displayDetails(id) {
-        this.$router.push({ name: 'detail', params: { id } });
-      },
-      logOutUser() {
-        const accessToken = this.jwt;
-        const memb = jwt.decode(accessToken).id;
-
-        const headers = {};
-        if (accessToken) {
-          headers.Authorization = `JWT ${accessToken}`;
-        }
-
-        const url = `${cfg.server}/lgo/${memb}`;
-        this.$log.info(` +++ LOG OUT USER '${memb}' AT '${url}' +++ `);
-
-        fetch(`${url}`, { headers })
-          .then((response) => {
-            this.status = response.statusText;
-            response.text().then((text) => {
-              this.response = text;
-            });
-          });
-      },
-      purge() {
-        const accessToken = this.jwt;
-        const url = `${cfg.server}/purge`;
-
-        this.$log.info(`  +++ PURGE USERS AT '${url}' +++ `);
-        const headers = {};
-        if (accessToken) {
-          headers.Authorization = `JWT ${accessToken}`;
-        }
-
-        fetch(`${url}`, { headers })
-          .then((response) => {
-            this.status = response.statusText;
-            response.text().then((text) => {
-              this.response = text;
-            });
-          });
-      },
-    },
-    data() {
-      return {
-        pictures: data.pictures,
-        status: '',
-        response: '',
-      };
-    },
+    // data() {
+    //   return {
+    //     activeTab: 0,
+    //     aclDebug: false,
+    //   };
+    // },
     computed: {
-      ...mapGetters({
-        jwt: 'axsToken',
-      }),
+      // theVersion() {
+      //   return window.version;
+      // },
+      axsRights() {
+        // return this.$store.getters.theRoles;
+        return this.access;
+      },
+      // ...mapGetters({
+      //   jwt: 'axsToken',
+      //   isHere: 'isActive',
+      //   isKnown: 'isAuthenticated',
+      // }),
+    },
+    components: {
+      'person-detail': PersonDetail, // eslint-disable-line no-undef
+    },
+    methods: {
+      // showTab() {
+      //   return true;
+      // },
+      // showTab(tab, allowedRoles) {
+      //   const may = new Set(allowedRoles);
+      //   const role = new Set(this.access);
+      //   const can = [...may].filter(right => role.has(right));
+      //   // LG(may);
+      //   // LG(role);
+      //   // LG(`........ ${tab} allows [${can}]........`);
+      //   return can.length > 0;
+      // },
     },
   };
 </script>
-
-<style scoped>
-
-  .add-picture-button {
-    position: fixed;
-    right: 24px;
-    bottom: 24px;
-    z-index: 998;
-  }
-  .image-card {
-    position: relative;
-    margin-bottom: 8px;
-  }
-  .image-card__picture > img {
-    width:10%;
-  }
-  .image-card__comment {
-    position: absolute;
-    bottom: 0;
-    height: 52px;
-    padding: 16px;
-    text-align: right;
-    background: rgba(0, 0, 0, 0.5);
-  }
-  .image-card__comment > span {
-    color: #fff;
-    font-size: 14px;
-    font-weight: bold;
-  }
-
-</style>

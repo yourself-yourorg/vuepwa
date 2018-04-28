@@ -1,85 +1,155 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import HomeView from '@/components/HomeView';
-import DetailView from '@/components/DetailView';
-import PostView from '@/components/PostView';
-import DumbA from '@/components/DumbA';
-import DumbB from '@/components/DumbB';
 import Header from '@/components/Header';
-import Form from '@/components/Form';
+// import HomeView from '@/components/HomeView';
 
-import { Blog, Article } from '@/components/Blog';
+import { routes as mainLayout } from '@/components/MainLayout';
+// import UserSettings from '@/components/MainLayout/UserSettings';
+// import UserEmailsSubscriptions from '@/components/MainLayout/UserEmailsSubscriptions';
+// import UserProfile from '@/components/MainLayout/UserProfile';
+// import UserProfilePreview from '@/components/MainLayout/UserProfilePreview';
 
-import { store } from '../store/store';
+// import { routes as person } from '@/components/Admin/Person';
+import { beforeEach as exampleBeforeEachTasks } from '@/accessControl';
+
+// import { routes as example } from '@/components/Tests/Component';
+
+import OldHomeView from '@/components/Attic/OldHomeView';
+import DetailView from '@/components/Attic/DetailView';
+import PostView from '@/components/Attic/PostView';
+import DumbA from '@/components/Attic/DumbA';
+import DumbB from '@/components/Attic/DumbB';
+import Form from '@/components/Attic/Form';
+
+// import { Blog, Article } from '@/components/Blog';
+import { routes as blog } from '@/components/Attic/Blog';
+import { routes as poison } from '@/components/Attic/Poison';
+
+
+import { store } from '../store';
 
 Vue.use(Router);
 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
-const router = new Router({
+const baseRoutes = [
 
-  routes: [
-    {
-      path: '/blog',
-      name: 'blog',
-      components: { default: Blog, hdr: Header },
-    },
-    {
-      path: '/articles/:id',
-      name: 'article',
-      components: { default: Article, hdr: Header },
-    },
-    {
-      path: '',
-      name: 'home',
-      components: { default: HomeView, hdr: Header },
-    },
-    {
-      path: '/',
-      name: 'root',
-      components: { default: HomeView, hdr: Header },
-    },
-    {
-      path: '/detail/:id',
-      name: 'detail',
-      components: { default: DetailView, hdr: Header },
-    },
-    {
-      path: '/post',
-      name: 'post',
-      components: { default: PostView, hdr: Header },
-    },
-    {
-      path: '/dc',
-      name: 'DA',
-      components: { default: DumbA, hdr: Header },
-    },
-    {
-      path: '/db',
-      name: 'DB',
-      components: { default: DumbB, hdr: Header },
-    },
-    {
-      path: '/form',
-      name: 'form',
-      components: { default: Form, hdr: Header },
-    },
-  ],
-});
+  // {
+  //   path: '',
+  //   name: 'homeOld',
+  //   components: { default: HomeView, hdr: Header },
+  //   // beforeEnter: (to, from, next) => {
+  //   //   LG('*********************  beforeRouteEnter  ***************************');
+  //   //   // LG(store);
+  //   //   LG(store.getters.permissions);
+  //   //   store._vm.access = store.getters.permissions;
+  //   //   LG(store._vm.access); // eslint-disable-line no-underscore-dangle
+  //   //   next();
+  //   // },
+  //   // meta: { permission: 'visitor' },
+  // },
+  // {
+  //   path: '/',
+  //   name: 'oldroot',
+  //   components: { default: HomeView, hdr: Header },
+  //   // beforeEnter: (to, from, next) => {
+  //   //   LG('*********************  beforeRouteEnter  ***************************');
+  //   //   // LG(store);
+  //   //   LG(store.getters.permissions);
+  //   //   store._vm.access = store.getters.permissions;
+  //   //   LG(store._vm.access); // eslint-disable-line no-underscore-dangle
+  //   //   next();
+  //   // },
+  //   // meta: { permission: 'visitor' },
+  // },
+  {
+    path: '/ohv',
+    name: 'ohv',
+    components: { default: OldHomeView, hdr: Header },
+    // meta: { permission: 'visitor' },
+  },
+  {
+    path: '/post',
+    name: 'post',
+    components: { default: PostView, hdr: Header },
+    // meta: { permission: 'visitor' },
+  },
+  {
+    path: '/detail/:id',
+    name: 'detail',
+    components: { default: DetailView, hdr: Header },
+    // meta: { permission: 'visitor' },
+  },
+  {
+    path: '/dc',
+    name: 'DA',
+    components: { default: DumbA, hdr: Header },
+    // meta: { permission: 'visitor' },
+  },
+  {
+    path: '/db',
+    name: 'DB',
+    components: { default: DumbB, hdr: Header },
+    // meta: { permission: 'visitor' },
+  },
+  {
+    path: '/form',
+    name: 'form',
+    components: { default: Form, hdr: Header },
+    // meta: { permission: 'visitor' },
+  },
+];
 
-router.beforeEach((_to, _from, next) => {
-  LG(`Routing from '${_from.name}' to '${_to.name}'. (WITH TOKEN :: Query '${_to.query.tkn}').`);
+const routes = baseRoutes
+  .concat(mainLayout)
+  // .concat(person)
+  // .concat(example)
+  .concat(blog)
+  .concat(poison);
 
+const keepToken = (t, f, n) => {
   if (window.lgr) {
-    window.lgr.info(`Routing from '${_from.name}' to '${_to.name}'.`);
-    if (_to.query.tkn) {
-      window.lgr.info(`Query has '${_to.query.tkn}'.`);
-      store.dispatch('keepTkn', _to.query.tkn).then(() => next());
+    window.lgr.debug(`Routing from '${f.name}' to '${t.name}'.`);
+    if (t.query.tkn) {
+      LG(`
+???????????????????
+ Do we ever get here?
+???????????????????`);
+      window.lgr.info(`Query has '${t.query.tkn}'.`);
+      store.dispatch('keepTkn', t.query.tkn).then(() => n());
     }
   }
+};
 
+const beforeEachTasks = [
+  keepToken,
+  (t, f) => { LG(`TSK 0 ${t}, ${f}`); },
+  // (t, f) => { LG(f); },
+];
+
+const beforeEach = beforeEachTasks.concat(exampleBeforeEachTasks);
+
+const router = new Router({
+  routes,
+});
+
+router.beforeResolve((_to, _from, next) => {
+  LG(`beforeResolve :: '${_from.name}' to '${_to.name}'.`);
+  LG(store._vm.access); // eslint-disable-line no-underscore-dangle
   next();
+});
+
+router.beforeEach((_to, _from, _next) => {
+  LG(`Routing from '${_from.name}' to '${_to.name}'. Params '${_from.params}').`);
+  LG(_to);
+  LG(_from);
+
+  beforeEach.forEach((tsk) => {
+    tsk(_to, _from, _next);
+  });
+
+  _next();
 });
 
 export default router;
