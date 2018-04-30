@@ -1,5 +1,6 @@
 export default {
-  server: 'https://wt-a0a68818c7b34a465e865e888dc419c9-0.run.webtask.io/webtasksso',
+  // NODE 4 server: 'https://wt-a0a68818c7b34a465e865e888dc419c9-0.run.webtask.io/webtasksso',
+  server: 'https://wt-a0a68818c7b34a465e865e888dc419c9-0.sandbox.auth0-extend.com/webtasksso',
   authPath: '/authentication/google/start',
   tokenTimeToLive: 20000, // 10m * 60s * 1000ms
   tokenName: 'tkn',
@@ -23,5 +24,5 @@ export default {
     // optional: defaults to false if not specified
     showConsoleColors: true,
   },
-  version: '0.0.33',
+  version: '0.0.34',
 };

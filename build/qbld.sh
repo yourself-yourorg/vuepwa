@@ -17,6 +17,11 @@ if [ ${BRNCH} != ${ONLY} ]; then
   exit 1;
 fi;
 
+if [[ ! $(which jq) ]]; then
+  echo -e "Need to install 'jq' using command --> 'sudo apt -y install jq'.";
+  sudo apt -y install jq;
+fi;
+
 pushd ../vuesppwa
 
   export SMVR=$(jq -r .version ./package.json);
