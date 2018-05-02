@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar is-transparent" style="background-color: transparent;">
     <div class="navbar-brand">
-      <router-link v-bind:to="{name: 'root'}">
+      <router-link v-bind:to="{name: 'home'}">
         <img
           src="static/img/WaterDrop_50.png"
           alt="Iridium Blue Logo">

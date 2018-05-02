@@ -48,12 +48,12 @@ export const routes = [ // eslint-disable-line import/prefer-default-export
     component: BaseLayer,
     children,
   },
-  {
-    path: '/',
-    name: 'root',
-    // You could also have named views at tho top
-    component: BaseLayer,
-    children,
-  },
+  // {
+  //   path: '/',
+  //   name: 'root',
+  //   // You could also have named views at tho top
+  //   component: BaseLayer,
+  //   children,
+  // },
 ];
 

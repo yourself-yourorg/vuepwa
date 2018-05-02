@@ -79,11 +79,11 @@
       ...mapActions(['keepTkn', 'logIn', 'logOut', 'setActivity', 'setAuth']),
       signOut() {
         this.logOut();
-        this.$router.push({ name: 'root' });
+        this.$router.push({ name: 'home' });
       },
       signIn() {
         this.logIn();
-        this.$router.push({ name: 'root' });
+        this.$router.push({ name: 'home' });
         window.lgr.info(`Auth.vue :: signin '[${this.access}]'`);
       },
     },
