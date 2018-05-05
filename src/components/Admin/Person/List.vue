@@ -77,6 +77,9 @@
       </b-tab-item>
       <b-tab-item :visible="$isAllowed('minorEdits')" label="Add Person">
         Add a new person here.
+        <a class="button is-outlined is-small" @click="qtst">
+          Add
+        </a>
       </b-tab-item>
     </b-tabs>
 
@@ -135,9 +138,13 @@
     },
 
     methods: {
+      qtst() {
+        LG(' ------- Quick Test -------');
+        this.onCreatePerson();
+      },
       onFetchPersons() {
         LG(' * * Try to fetch persons * *');
-        this.fetchPersons({ customUrlFnArgs: { s: 1, c: 10 } })
+        this.fetchPersons({ customUrlFnArgs: { s: 1, c: 100 } })
           .then((resp) => {
             LG(' * * Fetched persons * *');
             LG(resp.columns);
@@ -150,14 +157,25 @@
           });
       },
 
-      // onCreatePerson() {
-      //   this.createPerson({
-      //     data: {
-      //       title: ipsum.generateSentence(),
-      //       content: ipsum.generateParagraph(),
-      //     },
-      //   });
-      // },
+      onCreatePerson() {
+        this.createPerson({
+          data: {
+            store: 'person',
+            mode: 'post',
+            data: {
+              ruc_cedula: '0708217086001',
+              nombre: 'Jesu Cristo',
+              direccion: '#1 Pearly Gates',
+              telefono: '099-444-4719',
+              distribuidor: 'si',
+              retencion: 'si',
+              tipo: '_04',
+              scabetti: '333',
+              tipo_de_documento: 'RUC',
+            },
+          },
+        });
+      },
 
       ...mapActions('person', {
         fetchPersons: 'fetchList',

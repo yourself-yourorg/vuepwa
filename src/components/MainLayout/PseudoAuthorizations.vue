@@ -1,6 +1,6 @@
 <template>
   <div id="pauth">
-    <b-collapse id="divTbl" :open="true">
+    <b-collapse id="divTbl" :open="false">
       <button class="button is-small is-primary" slot="trigger">Authorizations Tester</button>
       <div>
         <table id="axsCtrl" class="table is-narrow is-hoverable is-size-6">
