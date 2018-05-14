@@ -144,12 +144,19 @@ export const store = createCrudModule({
       return mapping;
     });
     LG(' * * Parsed persons data * * ');
+    LG('store');
     LG(store);
+    LG('result');
     LG(result);
-    LG(meta.toString());
+    LG('meta');
+    LG(meta);
     // meta.forEach((val) => {
     //   LG(val);
     // });
+    // meta.forEach((val) => {
+    //   LG(val);
+    // });
+    LG(' - - - - - - - - - - ');
     return Object.assign({}, response, {
       data: result, // expecting array of objects with IDs
       columns: meta,

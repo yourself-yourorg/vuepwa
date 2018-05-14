@@ -44,10 +44,10 @@ export function responsivity() {
       $el.addEventListener('click', () => {
         const { target } = $el.dataset;
         const $target = document.getElementById(target);
-        LG('------');
-        LG($el.classList);
-        LG($target.classList);
-        LG('------');
+        // LG('------');
+        // LG($el.classList);
+        // LG($target.classList);
+        // LG('------');
         $el.classList.toggle('is-active');
         $target.classList.toggle('is-active');
       });

@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
 
+import verifyToken from '@/utils/verifyToken';
+
 import cfg from '../config';
 
 const ACTIVE = 1;
@@ -32,21 +34,22 @@ const mutations = {
   /* eslint-disable no-param-reassign, no-unused-vars */
   saveToken: (vx, payload) => {
     const pyld = jwt.decode(payload);
+    if (pyld) {
+      window.lgr.info(`Auth(mutation) => Saving jwt. Permissions :: [${pyld.permissions}]`);
+      LG(pyld.permissions);
 
-    window.lgr.info(`Auth(mutation) => Saving jwt. Permissions :: [${pyld.permissions}]`);
-    LG(pyld.permissions);
-
-    window.ls.set(cfg.tokenName, payload);
-    vx.accessToken = payload;
-    vx.nameUser = pyld.name;
-    vx.permissions = pyld.permissions;
-    vx.accessLevel = vx.nameUser === 'Iridium Blue' ? 'admin' : 'user';
-    // vx.access = vx.nameUser === 'Iridium Blue' ? ['staff'] : ['visitor'];
-    // window.lgr.info(`Auth(mutation) :: Setting access '${vx.access}'`);
-    window.ls.set(cfg.authName, KNOWN);
-    vx.authenticated = KNOWN;
-    window.ls.set(cfg.activityName, KNOWN);
-    vx.active = ACTIVE;
+      window.ls.set(cfg.tokenName, payload);
+      vx.accessToken = payload;
+      vx.nameUser = pyld.name;
+      vx.permissions = pyld.permissions;
+      vx.accessLevel = vx.nameUser === 'Iridium Blue' ? 'admin' : 'user';
+      // vx.access = vx.nameUser === 'Iridium Blue' ? ['staff'] : ['visitor'];
+      // window.lgr.info(`Auth(mutation) :: Setting access '${vx.access}'`);
+      window.ls.set(cfg.authName, KNOWN);
+      vx.authenticated = KNOWN;
+      window.ls.set(cfg.activityName, KNOWN);
+      vx.active = ACTIVE;
+    }
   },
   // toSignedIn: (vx) => {
   //   window.lgr.warn('Auth(mutation) :: Trying to sign in here');
@@ -80,6 +83,70 @@ const actions = {
     //   commit('incrementViewsCntr'); // trick current age into rechecking auth status
     // }, 500);
   },
+  refreshToken: (_ctx, _pyld) => {
+    let pyld = _pyld;
+
+    LG('--------------  VALIDATE TOKEN ------------------');
+    LG('pyld');
+    LG(pyld);
+    if (pyld) {
+      LG(jwt.decode(pyld));
+    } else {
+      pyld = NULL_TOKEN;
+    }
+
+    let whichToken = 0;
+    const USE_PAYLOAD_TOKEN = 1;
+    const USE_STORED_TOKEN = 2;
+    const USE_LATEST_TOKEN = 3;
+
+    let payloadToken = null;
+    let payloadExp = null;
+    let storedToken = null;
+    let storedExp = null;
+
+    LG('check pyld token');
+    try {
+      payloadToken = verifyToken(pyld);
+      payloadExp = jwt.decode(pyld).exp;
+      whichToken += USE_PAYLOAD_TOKEN;
+    } catch (e) {
+      LG(`Payload token invalid :: ${e}`);
+      // LG(e);
+    }
+
+    LG('Check stored token');
+    try {
+      storedToken = verifyToken(_ctx.getters.axsToken);
+      storedExp = jwt.decode(_ctx.getters.axsToken).exp;
+      whichToken += USE_STORED_TOKEN;
+    } catch (e) {
+      LG(`Stored token invalid :: ${e}`);
+      // LG(e);
+    }
+
+    let result = NULL_TOKEN;
+    switch (whichToken) {
+      case 1:
+        result = payloadToken;
+        break;
+      case 2:
+        result = storedToken;
+        break;
+      case 3:
+        result = (payloadExp > storedExp) ? payloadToken : storedToken;
+        break;
+      default:
+    }
+
+    _ctx.commit('saveToken', result);
+    // if (tkn === NULL_TOKEN) return;
+    // LG(tkn);
+    // LG(ctx.getters.axsToken);
+
+    // LG(jwt.decode(ctx.state.accessToken).exp);
+  },
+
   // viewChange: ({ commit, dispatch }) => {
   //   commit('incrementViewsCntr');
   // },

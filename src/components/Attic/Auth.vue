@@ -21,7 +21,7 @@
 
   import { mapGetters, mapActions } from 'vuex';
 
-  import cfg from '../config';
+  import cfg from '@/config';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 

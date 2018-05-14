@@ -27,12 +27,12 @@ import xlate from './internationalization';
 
 import config from './config';
 
-import HomeView from './components/HomeView';
+// import HomeView from './components/HomeView';
 
 import { currentUser } from './accessControl'; // eslint-disable-line no-unused-vars
 import router from './router';
 
-// const LG = console.log; // eslint-disable-line no-console, no-unused-vars
+const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
 Vue.use(VueLogger, config.logger);
 
@@ -50,7 +50,7 @@ Vue.use(Buefy, {
 
 Vue.use(formulate);
 
-Vue.component('home', HomeView);
+// Vue.component('home', HomeView);
 Vue.component('icon', Icon);
 
 Vue.config.productionTip = config.productionTip;
@@ -78,11 +78,19 @@ const mainVue = new Vue({
     window.ls = this.$ls;
     window.version = config.version;
     this.$log.info(`microservice = ${config.server}`);
-    if (this.$route.query.tkn) {
-      this.$store.dispatch('keepTkn', this.$route.query.tkn);
-    } else {
-      // this.$store.dispatch('logOut');
-    }
+
+    const tkn = this.$route.query.tkn ? this.$route.query.tkn : this.$ls.get(config.tokenName);
+    // this.$store.dispatch('refreshToken', tkn);
+    this.$store.dispatch('keepTkn', tkn);
+    // if (this.$route.query.tkn) {
+    //   this.$store.dispatch('keepTkn', this.$route.query.tkn);
+    // } else {
+    //   LG('<<<<<<<<<<  >>>>>>>>>>>');
+    //   LG(this.$store);
+    //   LG(this.$ls);
+    //   LG(this.$ls.get(config.tokenName));
+    //   this.$store.dispatch('keepTkn', this.$ls.get(config.tokenName));
+    // }
   },
   render: site => site(App),
 });

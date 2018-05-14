@@ -26,7 +26,7 @@
         { { access } }
       </p>
       <div>
-        Token signature :: " {{ jwt.split(".")[2] }} "
+        User status :: " {{ getExpiry() }} "
       </div>
       <a class="button is-small" @click="qtst">
         Quick Tests
@@ -40,15 +40,26 @@
 
   // import { mapMutations, mapState, mapGetters } from 'vuex';
   import { mapGetters } from 'vuex';
+  import jwt from 'jsonwebtoken';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
   export default {
     data() {
       return {
         aclDebug: false,
+        // aclDebug: true,
       };
     },
     methods: {
+      getExpiry() {
+        try {
+          const expiry = new Date(jwt.decode(this.tkn).exp * 1000);
+          const now = new Date();
+          return `Token expiry at ${expiry.getDate()} ${expiry.toTimeString()}  vs  ${now.getDate()} ${now.toTimeString()}`;
+        } catch (e) {
+          return 'Logged out';
+        }
+      },
       qtst() {
         LG(' ------- Quick Test -------');
       },
@@ -58,7 +69,7 @@
         return window.version;
       },
       ...mapGetters({
-        jwt: 'axsToken',
+        tkn: 'axsToken',
         isHere: 'isActive',
         isKnown: 'isAuthenticated',
       }),

@@ -2,7 +2,7 @@ import createCrudModule, { client } from 'vuex-crud';
 // import { store as baseStore } from '@/store/store';
 import cfg from '@/config';
 
-import Header from '@/components/Header';
+import Header from '@/components/Attic/Header';
 
 import PersonAdd from './Create';
 import PersonDelete from './Delete';

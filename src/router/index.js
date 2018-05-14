@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import Header from '@/components/Header';
+import Header from '@/components/Attic/Header';
 // import HomeView from '@/components/HomeView';
 
 import { routes as mainLayout } from '@/components/MainLayout';
