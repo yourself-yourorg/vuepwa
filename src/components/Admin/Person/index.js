@@ -1,4 +1,5 @@
 import createCrudModule, { client } from 'vuex-crud';
+import { store as vuex } from '@/store';
 
 import { variablizeTitles } from '@/utils/strings';
 
@@ -48,15 +49,17 @@ client.interceptors.request.use((_payload) => {
   return Promise.reject(error);
 });
 
+const IDATTRIBUTE = 'codigo';
 const RESOURCE = 'person';
 export const store = createCrudModule({
   resource: RESOURCE, // The name of your CRUD resource (mandatory)
-  idAttribute: 'codigo', // What should be used as ID
+  idAttribute: IDATTRIBUTE, // What should be used as ID
   // urlRoot: `${cfg.server}/api/${RESOURCE}`, // The url to fetch the resource
   urlRoot: `${cfg.server}`, // The url to fetch the resource person?s=1&c=3
   client,
   state: {
     columns,
+    currentTab: 0,
   },
   actions: {
     /* eslint-disable no-unused-vars */
@@ -64,6 +67,10 @@ export const store = createCrudModule({
       window.lgr.info('Person.index --> actions.setColumns');
       LG(cols);
       commit('tableColumns', cols);
+    },
+    setCurrentTab: ({ commit }, numTab) => {
+      window.lgr.info(`Person.index --> actions.setCurrentTab -- ${numTab}`);
+      commit('tab', numTab);
     },
     saveForm: ({ commit }, form) => {
       window.lgr.info('Person.index --> actions.saveForm');
@@ -73,14 +80,19 @@ export const store = createCrudModule({
     /* eslint-enable no-unused-vars */
   },
   getters: {
+    getCurrentTab: vx => vx.currentTab,
     getColumns: vx => vx.columns,
     getPersons: vx => vx.list,
     getPerson: vx => id => vx.entities[id],
   },
   mutations: {
     /* eslint-disable no-param-reassign */
+    tab: (vx, numTab) => {
+      window.lgr.debug(`Person.index --> mutations.tab -- ${numTab}`);
+      vx.currentTab = numTab;
+    },
     tableColumns: (vx, cols) => {
-      window.lgr.info('Person.index --> mutation.tableColumns');
+      window.lgr.debug('Person.index --> mutation.tableColumns');
       vx.columns = cols;
     },
     /* eslint-enable no-param-reassign */
@@ -97,41 +109,27 @@ export const store = createCrudModule({
     const URI = `${cfg.server}/api/${RESOURCE}${id}?${pgntr}`;
     return URI;
   },
-  // onFetchListStart(vx) {
-  //   LG('onFetchListStart');
-  //   baseStore.$dispatch('setLoading')(true);
-  // },
-  // onFetchListSuccess() {
-  //   LG('onFetchListSuccess');
-  // },
-  // onFetchListError() {
-  //   LG('onFetchListError');
-  // },
-  parseSingle(response) {
-    const { data, titles } = response.data[RESOURCE];
-    const vars = variablizeTitles(titles);
-    LG('parseSingle');
-    LG(vars);
 
-    const mapping = {};
-    const result = data.forEach((vl, ix) => {
-      LG(`  ${vl} -->> ${vars[ix]} `);
-      mapping[vars[ix]] = vl;
-      return vl;
-    });
-    LG(' * * Parsed single person data * *');
-    LG(mapping);
-    LG(result);
+  onCreateSuccess(response) {
+    vuex.dispatch('person/fetchList', { customUrlFnArgs: { s: 1, c: 100 } });
+    vuex.dispatch('person/setCurrentTab', 0);
+    window.lgr.info('Person.index --> mutation.onCreateSuccess OK!');
+  },
+
+  parseSingle(response) {
+    // LG('parseSingle');
+    // LG(response);
+
+    const objID = {};
+    objID[IDATTRIBUTE] = response.data.newID;
     return Object.assign({}, response, {
-      data: mapping, // expecting object with ID
+      data: objID, // expecting object with ID
     });
   },
 
   parseList(response) {
     const { data, titles, meta } = response.data[RESOURCE];
     const vars = variablizeTitles(titles);
-    // LG('parseList');
-    // LG(vars);
 
     const result = data.map((itm) => {
       // LG(`${itm[0]} -- ${idx} `);

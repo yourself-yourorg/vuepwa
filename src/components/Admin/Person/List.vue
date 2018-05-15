@@ -4,10 +4,9 @@
     <button data-cyp="fetch-persons" class="fetch-persons" @click="onFetchPersons">Fetch Persons</button>
     <button class="create-person" @click="onCreatePerson">Add Person</button>
 -->
-
     <b-loading :is-full-page="false" :active.sync="isLoadingList" :canCancel="true"></b-loading>
 
-    <b-tabs>
+    <b-tabs v-model="activeTab">
       <b-tab-item label="Persons">
         <b-table
           :data="isEmpty ? [] : persons"
@@ -95,6 +94,8 @@
 
   import { perimeters as acl } from '@/accessControl';
 
+  import { store } from '@/store';
+
   import PersonDetail from './Detail';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
@@ -117,7 +118,7 @@
         isLoading: true,
         isFullPage: false,
         isEmpty: false,
-        defaultOpenedDetails: [124],
+        defaultOpenedDetails: [0],
         selected: persons[1],
         columnSelectorOpen: false,
       };
@@ -130,11 +131,16 @@
       ...mapGetters('person', {
         persons: 'list',
         columns: 'getColumns',
+        currentTab: 'getCurrentTab',
       }),
 
       ...mapState('person', {
         isLoadingList: 'isFetchingList',
       }),
+      activeTab: {
+        get: () => store.state.person.currentTab,
+        set: newTab => store.dispatch('person/setCurrentTab', newTab),
+      },
     },
 
     methods: {
@@ -181,6 +187,7 @@
         fetchPersons: 'fetchList',
         createPerson: 'create',
         setColumns: 'setColumns',
+        setTab: 'setCurrentTab',
       }),
       ...mapActions(['logIn']),
     },

@@ -5,7 +5,6 @@ import VueI18n from 'vue-i18n';
 import VueLocalStore from 'vue-ls';
 import VueKindergarten from 'vue-kindergarten';
 
-// import Acl from 'vue-acl';
 import VueLogger from 'vuejs-logger';
 import 'vue-awesome/icons';
 import Icon from 'vue-awesome/components/Icon';

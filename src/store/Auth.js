@@ -85,6 +85,7 @@ const actions = {
   },
   refreshToken: (_ctx, _pyld) => {
     let pyld = _pyld;
+    let result = NULL_TOKEN;
 
     LG('--------------  VALIDATE TOKEN ------------------');
     LG('pyld');
@@ -117,7 +118,7 @@ const actions = {
 
     LG('Check stored token');
     try {
-      storedToken = verifyToken(_ctx.getters.axsToken);
+      storedToken = window.ls.get(cfg.tokenName, NULL_TOKEN);
       storedExp = jwt.decode(_ctx.getters.axsToken).exp;
       whichToken += USE_STORED_TOKEN;
     } catch (e) {
@@ -125,16 +126,20 @@ const actions = {
       // LG(e);
     }
 
-    let result = NULL_TOKEN;
+    let usePayloadToken;
     switch (whichToken) {
       case 1:
+        LG('Committing token from payload');
         result = payloadToken;
         break;
       case 2:
+        LG('Refreshing stored token from payload');
         result = storedToken;
         break;
       case 3:
-        result = (payloadExp > storedExp) ? payloadToken : storedToken;
+        usePayloadToken = payloadExp > storedExp;
+        LG(`Refreshing ${usePayloadToken ? 'payload token' : 'stored token'} from payload`);
+        result = usePayloadToken ? payloadToken : storedToken;
         break;
       default:
     }
