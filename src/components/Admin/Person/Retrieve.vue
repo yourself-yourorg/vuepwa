@@ -40,12 +40,12 @@
       </div>
       <div class="level-left">
         <div class="level-item has-text-centered">
-          <div v-bind:class="[pers.distribuidor === 'no' ? 'price--line-through' : '']">
+          <div v-bind:class="[pers.distribuidor ? '' : 'price--line-through']">
             Distribuidor
           </div>
         </div>
         <div class="level-item has-text-centered">
-          <div v-bind:class="[pers.retencion === 'no' ? 'price--line-through' : '']">
+          <div v-bind:class="[pers.retencion ? '' : 'price--line-through']">
             Retencion
           </div>
         </div>

@@ -63,10 +63,10 @@
         activeSubTab: 0,
       };
     },
-    methods: {
-      switvh() { return 99; },
-      q() { return { codigo: 125 }; },
-    },
+    // methods: {
+    //   switvh() { return 99; },
+    //   q() { return { codigo: 125 }; },
+    // },
     components: {
       'person-record': Retrieve, // eslint-disable-line no-undef
       'person-update': Update, // eslint-disable-line no-undef

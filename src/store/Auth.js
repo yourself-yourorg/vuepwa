@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 import verifyToken from '@/utils/verifyToken';
+import vue from '@/main';
 
 import cfg from '../config';
 
@@ -10,7 +11,7 @@ const KNOWN = 1;
 const UNKNOWN = 0;
 const NULL_TOKEN = 'no token';
 
-const LG = console.log; // eslint-disable-line no-console, no-unused-vars
+const LG = console.log; // eslint-disable-line no-unused-vars, no-console
 
 const state = {
   accessToken: NULL_TOKEN,
@@ -69,19 +70,11 @@ const mutations = {
     vx.authenticated = payload;
     window.ls.set(cfg.authName, payload);
   },
-  // incrementViewsCntr: (vx) => {
-  //   if (window.lgr) window.lgr.warn('Auth(mutation) :: View change occurred');
-  //   vx.counter = window.ls.get(cfg.reroutesCounterName, 0);
-  //   window.ls.set(cfg.reroutesCounterName, vx.counter += 1);
-  // },
 };
 
 const actions = {
   keepTkn: ({ commit }, payload) => {
     commit('saveToken', payload);
-    // setTimeout(() => {
-    //   commit('incrementViewsCntr'); // trick current age into rechecking auth status
-    // }, 500);
   },
   refreshToken: (_ctx, _pyld) => {
     let pyld = _pyld;
@@ -152,9 +145,6 @@ const actions = {
     // LG(jwt.decode(ctx.state.accessToken).exp);
   },
 
-  // viewChange: ({ commit, dispatch }) => {
-  //   commit('incrementViewsCntr');
-  // },
   logIn: ({ commit, dispatch }) => {
     dispatch('setActivity', ACTIVE);
     dispatch('authenticate');
@@ -168,6 +158,9 @@ const actions = {
     window.lgr.info(`Auth(action) :: Faked authentication URL :: ${testAuthUrlEnvVar}`);
     if (testAuthUrlEnvVar) url = testAuthUrlEnvVar;
     window.location.assign(url);
+    if (vue.$route.name.includes('home')) return;
+    window.lgr.info(`Auth(action) :: Set return route in local storage - ${cfg.returnRouteName}: "${vue.$route.name}"`);
+    window.ls.set(cfg.returnRouteName, vue.$route.name);
   },
   logOut: ({ commit, dispatch }) => {
     dispatch('setActivity', INACTIVE);
@@ -181,6 +174,7 @@ const actions = {
     commit('auth', payload);
   },
 };
+
 
 export default {
   state,

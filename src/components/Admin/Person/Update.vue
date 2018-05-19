@@ -16,19 +16,34 @@
         <article class="tile is-child box">
           <h3 class="title">Person</h3>
 
-          <div class="columns">
-            <div class="column">
+          <div class="columns is-mobile is-multiline is-centered">
+
+            <div class="column is-narrow">
               <div class="control">
                 <label class="label">Nombre</label>
 
                 <formulate-element
                   name="nombre"
                   type="text"
-                  placeholder="Doink"
+                  placeholder="Nombre y Appellidos"
                 />
 
               </div>
             </div>
+
+            <div class="column">
+              <div class="control">
+                <label class="label">RUC / Cedula</label>
+
+                <formulate-element
+                  name="ruc_cedula"
+                  type="text"
+                  placeholder="Codigo de identificacion"
+                />
+
+              </div>
+            </div>
+
             <div class="column">
               <div class="control">
                 <label class="label">Telefono</label>
@@ -36,11 +51,68 @@
                 <formulate-element
                   name="telefono"
                   type="tel"
-                  placeholder="23452345"
+                  placeholder="# de telefono"
                 />
 
               </div>
             </div>
+
+
+            <div class="column">
+              <div class="control">
+                <label class="label">Dirección</label>
+
+                <formulate-element
+                  name="direccion"
+                  type="text"
+                  placeholder="Dirección"
+                />
+
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="control">
+                <label class="label">Tipo de Identificacion</label>
+
+                <formulate-element
+                  name="tipo"
+                  type="select"
+                  initial="cedula"
+                  :options="typesId"
+                />
+
+              </div>
+            </div>
+
+
+
+            <div class="column">
+              <div class="control">
+
+                <label class="label">Distribuidor?</label>
+                <formulate-element
+                  type="checkbox"
+                  label="  "
+                  name="distribuidor"
+                />
+
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="control">
+
+                <label class="label">Retencion?</label>
+                <formulate-element
+                  type="checkbox"
+                  label="  "
+                  name="retencion"
+                />
+
+              </div>
+            </div>
+
             <div class="control">
 
               <formulate-element
@@ -63,7 +135,9 @@
 
 <script>
 
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions } from 'vuex'; // eslint-disable-line no-unused-vars
+
+const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
 export default {
   props: ['pers'],
@@ -72,16 +146,28 @@ export default {
   },
   computed: {
     ...mapGetters('person', {
-      p: 'getPerson',
+      enums: 'getEnums',
     }),
     formUid() {
       return `pers_${this.pers.codigo}`;
     },
+    typesId() {
+      const types = this.enums.DocTypeLookup;
+      const ret = [];
+      Object.keys(types).forEach((value) => {
+        const name = types[value];
+        ret.push({
+          name,
+          value,
+          id: value,
+          label: name,
+        });
+      });
+      LG(ret);
+      return ret;
+    },
   },
   methods: {
-    // useFormData(vals) {
-    //   this.values = JSON.stringify(vals, null, 2);
-    // },
     ...mapActions('person', {
       saveForm: 'saveForm',
     }),
@@ -91,59 +177,4 @@ export default {
 </script>
 
 <style>
-
-/*
-button.Fill {
-    margin-bottom: 25px;
-}
-
-code {
-  white-space: pre;
-}
-::-webkit-input-placeholder {
-  color: lightgray;
-}
-::-moz-placeholder {
-  color: lightgray;
-}
-:-ms-input-placeholder {
-  color: lightgray;
-}
-:-moz-placeholder {
-  color: lightgray;
-}
-
-.my-form {
-  box-sizing: border-box;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, .2);
-  background-color: white;
-  border-radius: .25em;
-  padding: 2em;
-  margin: auto;
-  min-width: 100px;
-}
-
-
-.formulate-element {
-  font-size: 1em;
-  margin-bottom: 1em;
-}
-
-.formulate-element:last-child {
-  margin-bottom: 0;
-}
-
-.formulate-errors {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.formulate-errors li {
-  margin: .25em 0;
-  font-size: 14px;
-  color: red;
-  font-style: italic;
-}
-*/
 </style>

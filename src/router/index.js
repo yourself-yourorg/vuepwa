@@ -4,14 +4,18 @@ import Router from 'vue-router';
 import Header from '@/components/Attic/Header';
 // import HomeView from '@/components/HomeView';
 
-import { routes as mainLayout } from '@/components/MainLayout';
 // import UserSettings from '@/components/MainLayout/UserSettings';
 // import UserEmailsSubscriptions from '@/components/MainLayout/UserEmailsSubscriptions';
 // import UserProfile from '@/components/MainLayout/UserProfile';
 // import UserProfilePreview from '@/components/MainLayout/UserProfilePreview';
 
 // import { routes as person } from '@/components/Admin/Person';
-import { beforeEach as exampleBeforeEachTasks } from '@/accessControl';
+import {
+  routes as mainLayout,
+  // beforeEach as beforeEachTaskAuth,
+} from '@/components/MainLayout';
+
+import { beforeEach as beforeEachTaskAcl } from '@/accessControl';
 
 // import { routes as example } from '@/components/Tests/Component';
 
@@ -122,30 +126,33 @@ const keepToken = (t, f, n) => {
   }
 };
 
-const beforeEachTasks = [
+let beforeEachTasks = [
   keepToken,
   (t, f) => { LG(`TSK 0 ${t}, ${f}`); },
   // (t, f) => { LG(f); },
 ];
 
-const beforeEach = beforeEachTasks.concat(exampleBeforeEachTasks);
+beforeEachTasks = beforeEachTasks.concat(beforeEachTaskAcl);
+// beforeEachTasks = beforeEachTasks.concat(beforeEachTaskAuth);
 
 const router = new Router({
   routes,
 });
 
-router.beforeResolve((_to, _from, next) => {
-  LG(`beforeResolve :: '${_from.name}' to '${_to.name}'.`);
-  LG(store._vm.access); // eslint-disable-line no-underscore-dangle
-  next();
-});
+// router.beforeResolve((_to, _from, next) => {
+//   LG(`beforeResolve :: '${_from.name}' to '${_to.name}'.`);
+//   LG(store._vm.access); // eslint-disable-line no-underscore-dangle
+//   next();
+// });
 
 router.beforeEach((_to, _from, _next) => {
-  LG(`Routing from '${_from.name}' to '${_to.name}'. Params '${_from.params}').`);
+  LG(`Router.beforeEach ==> Routing from '${_from.name}' to '${_to.name}'. Params '${_from.params}').`);
   LG(_to);
   LG(_from);
+  LG(`beforeEachTasks.length ${beforeEachTasks.length}`);
+  LG(beforeEachTasks);
 
-  beforeEach.forEach((tsk) => {
+  beforeEachTasks.forEach((tsk) => {
     tsk(_to, _from, _next);
   });
 

@@ -19,26 +19,29 @@ export const currentUser = {
   // }
 };
 
+const prepareSandBoxGuards = (t, f, nxt) => { // eslint-disable-line no-unused-vars
+  LG(`accessControl beforeEach ==> Query has '${t.name}'.`);
+  if (window.lgr) window.lgr.info(`accessControl beforeEach ==> Query has '${t.name}'.`);
+  const perimeter = perimeterDefs[`${t.name}Perimeter`];
+  if (perimeter) {
+    let sandbox = null;
+
+    sandbox = createSandbox(currentUser.child(store), {
+      perimeters: [
+        perimeter,
+      ],
+      // governess: new RouteGoverness({ from, t, nxt }),
+      governess: new StrictGoverness(),
+    });
+    LG('~~~~~~~~~~~~   sandbox   ~~~~~~~~~~~~');
+    LG(sandbox.guard('route'));
+    return sandbox.guard('route');
+  }
+  return nxt();
+};
 
 export const beforeEach = [
-  (t, f, nxt) => { // eslint-disable-line no-unused-vars
-    const perimeter = perimeterDefs[`${t.name}Perimeter`];
-    if (perimeter) {
-      let sandbox = null;
-
-      sandbox = createSandbox(currentUser.child(store), {
-        perimeters: [
-          perimeter,
-        ],
-        // governess: new RouteGoverness({ from, t, nxt }),
-        governess: new StrictGoverness(),
-      });
-      LG('~~~~~~~~~~~~   sandbox   ~~~~~~~~~~~~');
-      LG(sandbox.guard('route'));
-      return sandbox.guard('route');
-    }
-    return nxt();
-  },
+  prepareSandBoxGuards,
 ];
 
 const collectDomains = () => {
@@ -65,8 +68,8 @@ const state = {
     permissions: {
       // Person: Levels.NO_ACCESS,
       // Person: Levels.VIEW_ONLY,
-      Person: Levels.COMMENT,
-      // Person: Levels.ALTER,
+      // Person: Levels.COMMENT,
+      Person: Levels.ALTER,
       // Person: Levels.OWN,
 
       // Example: Levels.NO_ACCESS,

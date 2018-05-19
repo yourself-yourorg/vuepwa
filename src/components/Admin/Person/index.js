@@ -60,6 +60,7 @@ export const store = createCrudModule({
   state: {
     columns,
     currentTab: 0,
+    enums: {},
   },
   actions: {
     /* eslint-disable no-unused-vars */
@@ -72,8 +73,18 @@ export const store = createCrudModule({
       window.lgr.info(`Person.index --> actions.setCurrentTab -- ${numTab}`);
       commit('tab', numTab);
     },
-    saveForm: ({ commit }, form) => {
+    setEnums: ({ commit }, enums) => {
+      window.lgr.info('Person.index --> actions.setEnums');
+      commit('enums', enums);
+    },
+    saveForm: ({ commit }, _form) => {
       window.lgr.info('Person.index --> actions.saveForm');
+      const form = _form;
+
+      form.retencion = form.retencion ? 'si' : 'no';
+      form.distribuidor = form.distribuidor ? 'si' : 'no';
+
+      LG(form.retencion);
       LG(form);
       // commit('tableColumns', cols);
     },
@@ -83,6 +94,7 @@ export const store = createCrudModule({
     getCurrentTab: vx => vx.currentTab,
     getColumns: vx => vx.columns,
     getPersons: vx => vx.list,
+    getEnums: vx => vx.enums,
     getPerson: vx => id => vx.entities[id],
   },
   mutations: {
@@ -90,6 +102,9 @@ export const store = createCrudModule({
     tab: (vx, numTab) => {
       window.lgr.debug(`Person.index --> mutations.tab -- ${numTab}`);
       vx.currentTab = numTab;
+    },
+    enums: (vx, enums) => {
+      vx.enums = enums;
     },
     tableColumns: (vx, cols) => {
       window.lgr.debug('Person.index --> mutation.tableColumns');
@@ -110,7 +125,7 @@ export const store = createCrudModule({
     return URI;
   },
 
-  onCreateSuccess(response) {
+  onCreateSuccess() {
     vuex.dispatch('person/fetchList', { customUrlFnArgs: { s: 1, c: 100 } });
     vuex.dispatch('person/setCurrentTab', 0);
     window.lgr.info('Person.index --> mutation.onCreateSuccess OK!');
@@ -128,36 +143,44 @@ export const store = createCrudModule({
   },
 
   parseList(response) {
-    const { data, titles, meta } = response.data[RESOURCE];
+    const {
+      data,
+      titles,
+      meta,
+      enums,
+    } = response.data[RESOURCE];
+
     const vars = variablizeTitles(titles);
 
     const result = data.map((itm) => {
       // LG(`${itm[0]} -- ${idx} `);
       const mapping = {};
       itm.forEach((vl, ix) => {
-        // LG(`  ${vl} -->> ${vars[ix]} `);
-        mapping[vars[ix]] = vl;
+        // LG(`  ${vars[ix]} -->> ${vl} `);
+        if (vars[ix] === 'retencion' || vars[ix] === 'distribuidor') {
+          mapping[vars[ix]] = vl === 'si';
+        } else {
+          mapping[vars[ix]] = vl;
+        }
         return vl;
       });
       return mapping;
     });
-    LG(' * * Parsed persons data * * ');
-    LG('store');
-    LG(store);
-    LG('result');
-    LG(result);
-    LG('meta');
-    LG(meta);
-    // meta.forEach((val) => {
-    //   LG(val);
-    // });
-    // meta.forEach((val) => {
-    //   LG(val);
-    // });
-    LG(' - - - - - - - - - - ');
+    // LG(' * * Parsed persons data * * ');
+    // LG('store');
+    // LG(store);
+    // LG('result');
+    // LG(result);
+    // LG('meta');
+    // LG(meta);
+    // LG('enums');
+    // LG(enums);
+    vuex.dispatch('person/setEnums', enums);
+    // LG(' - - - - - - - - - - ');
     return Object.assign({}, response, {
       data: result, // expecting array of objects with IDs
       columns: meta,
+      enums,
     });
   },
 });

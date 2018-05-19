@@ -1,6 +1,10 @@
 import { routes as example } from '@/components/Tests/Component';
 import { routes as person } from '@/components/Admin/Person';
 
+// import cfg from '@/config'; // eslint-disable-line no-unused-vars
+
+// import { store } from '@/store'; // eslint-disable-line no-unused-vars
+
 import BaseLayer from './BaseLayer';
 import NavBar from './NavBar';
 
@@ -8,7 +12,7 @@ import UserEmailsSubscriptions from './UserEmailsSubscriptions';
 import UserProfile from './UserProfile';
 import UserProfilePreview from './UserProfilePreview';
 
-const LG = console.log; // eslint-disable-line no-console, no-unused-vars
+const LG = console.log; // eslint-disable-line no-unused-vars, no-console
 
 const baseRoutes = [];
 
@@ -37,23 +41,16 @@ const children = baseRoutes
   .concat(person)
   .concat(local);
 
-LG('............');
-LG(children);
-LG('............');
+// LG('............');
+// LG(children);
+// LG('............');
+
 export const routes = [ // eslint-disable-line import/prefer-default-export
   {
     path: '',
     name: 'home',
-    // You could also have named views at tho top
     component: BaseLayer,
     children,
   },
-  // {
-  //   path: '/',
-  //   name: 'root',
-  //   // You could also have named views at tho top
-  //   component: BaseLayer,
-  //   children,
-  // },
 ];
 

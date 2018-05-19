@@ -118,7 +118,7 @@
         isLoading: true,
         isFullPage: false,
         isEmpty: false,
-        defaultOpenedDetails: [0],
+        defaultOpenedDetails: [123],
         selected: persons[1],
         columnSelectorOpen: false,
       };

@@ -73,6 +73,7 @@ const mainVue = new Vue({
   router,
   store,
   created() {
+    LG('<<<<<<<<<< created >>>>>>>>>>>');
     window.lgr = this.$log;
     window.ls = this.$ls;
     window.version = config.version;
@@ -80,7 +81,26 @@ const mainVue = new Vue({
 
     const tkn = this.$route.query.tkn ? this.$route.query.tkn : this.$ls.get(config.tokenName);
     // this.$store.dispatch('refreshToken', tkn);
+    LG('<<<<<<<<<< keeping token >>>>>>>>>>>');
     this.$store.dispatch('keepTkn', tkn);
+
+
+    LG(`
+      !!!!!!!!!?  returnToExitPoint  ?!!!!!!!!!`);
+    const ls = window.localStorage;
+    const retRoute = config.localStorageNameSpace + config.returnRouteName;
+    const redir = JSON.parse(ls.getItem(retRoute));
+    if (redir) {
+      const rr = redir.value;
+      if (rr && rr.length > 0 && !rr.includes('home')) {
+        LG(`
+    !!!!!!!!!?  return to ${rr}  !!!!!!!!!`);
+        LG(this.$router.push({ name: rr }));
+        ls.removeItem(retRoute);
+        // nxt({ name: rr });
+      }
+    }
+
     // if (this.$route.query.tkn) {
     //   this.$store.dispatch('keepTkn', this.$route.query.tkn);
     // } else {
