@@ -7,16 +7,32 @@ import { variablizeTitles } from '@/utils/strings';
 import cfg from '@/config';
 
 import List from './List';
+import Person from './Layout';
 import Retrieve from './Retrieve';
 import columns from './column_specs';
 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
+const local = [{
+  path: 'list',
+  name: 'persons/list',
+  components: {
+    default: List,
+  },
+  // props: {
+  //   nav_bar: { setTab: 'Admin' },
+  // },
+}];
+
+const children = []
+  .concat(local);
+
 export const routes = [
   {
     path: 'persons',
     name: 'persons',
-    component: List,
+    component: Person,
+    children,
   },
   // {
   //   path: '/persons',

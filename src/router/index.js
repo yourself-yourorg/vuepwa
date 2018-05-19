@@ -2,18 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import Header from '@/components/Attic/Header';
-// import HomeView from '@/components/HomeView';
 
-// import UserSettings from '@/components/MainLayout/UserSettings';
-// import UserEmailsSubscriptions from '@/components/MainLayout/UserEmailsSubscriptions';
-// import UserProfile from '@/components/MainLayout/UserProfile';
-// import UserProfilePreview from '@/components/MainLayout/UserProfilePreview';
-
-// import { routes as person } from '@/components/Admin/Person';
-import {
-  routes as mainLayout,
-  // beforeEach as beforeEachTaskAuth,
-} from '@/components/MainLayout';
+import { routes as mainLayout } from '@/components/MainLayout';
 
 import { beforeEach as beforeEachTaskAcl } from '@/accessControl';
 

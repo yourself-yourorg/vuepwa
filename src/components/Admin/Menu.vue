@@ -4,7 +4,7 @@
       Admin
     </router-link>
     <div class="navbar-dropdown is-boxed">
-      <router-link class="navbar-item"  :to="{ name: 'persons' }">
+      <router-link class="navbar-item"  :to="{ name: 'persons/list' }">
         User Management
       </router-link>
       <router-link class="navbar-item"  :to="{ name: 'profile' }">
