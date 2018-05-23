@@ -1,18 +1,16 @@
 <template>
   <div>
     <formulate
-      :name="formUid"
       class="my-form"
-      v-if="!values"
       @submit="saveForm"
-
-      :initial="pers"
+      name="createPerson"
     >
       <formulate-element
         name="codigo"
         type="hidden"
         placeholder="-1"
       />
+      
         <article class="tile is-child box">
           <h3 class="title">Person</h3>
 
@@ -25,6 +23,7 @@
                 <formulate-element
                   name="nombre"
                   type="text"
+                  initial="Joe Bloggs"
                   placeholder="Nombre y Appellidos"
                 />
 
@@ -36,12 +35,13 @@
                 <label class="label">Tipo de Identificación</label>
 
                 <formulate-element
-                  class="select is-small is-focused"
+                  class="select is-small"
                   name="tipo"
                   type="select"
-                  initial="cedula"
+                  initial="_05"
                   :options="typesId"
                 />
+ 
 
               </div>
             </div>
@@ -53,6 +53,7 @@
                 <formulate-element
                   name="ruc_cedula"
                   type="text"
+                  initial="1713931416"
                   placeholder="Codigo de identificación"
                 />
 
@@ -61,26 +62,13 @@
 
             <div class="column">
               <div class="control">
-                <label class="label">Telefono</label>
+                <label class="label">Correos Electronicos</label>
 
                 <formulate-element
-                  name="telefono"
-                  type="tel"
-                  placeholder="# de telefono"
-                />
-
-              </div>
-            </div>
-
-
-            <div class="column">
-              <div class="control">
-                <label class="label">Dirección</label>
-
-                <formulate-element
-                  name="direccion"
+                  name="email"
                   type="text"
-                  placeholder="Dirección"
+                  initial="a@b.cd"
+                  placeholder="Correos Electronicos"
                 />
 
               </div>
@@ -97,6 +85,9 @@
                 />
 
               </div>
+            </div>
+
+            <div class="column">
               <div class="control">
 
                 <label class="label">Retencion?</label>
@@ -111,12 +102,51 @@
 
             <div class="column">
               <div class="control">
-                <label class="label">Correos Electronicos</label>
+                <label class="label">Telefono</label>
 
                 <formulate-element
-                  name="email"
+                  name="telefono"
+                  type="tel"
+                  initial="4444719"
+                  placeholder="# de telefono"
+                />
+
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="control">
+                <label class="label">Dirección</label>
+
+                <formulate-element
+                  name="direccion"
+                  initial="#1 1st St., Here, There, Everywhere"
                   type="text"
-                  placeholder="Correos Electronicos"
+                  placeholder="Dirección"
+                />
+
+              </div>
+            </div>
+
+
+            <div class="column">
+              <div class="control">
+
+                <formulate-element
+                  name="Person"
+                  initial=0
+                  type="text"
+                />
+
+              </div>
+            </div>
+            <div class="column">
+              <div class="control">
+
+                <formulate-element
+                  name="Example"
+                  initial=3
+                  type="text"
                 />
 
               </div>
@@ -129,16 +159,14 @@
                 name="Save"
                 elementClasses="button is-info"
               />
-
             </div>
+
           </div>
+
         </article>
+
     </formulate>
-    <code
-      v-else
-      class="my-form my-form--code"
-      v-text="values"
-    />
+    
   </div>
 </template>
 
@@ -157,28 +185,58 @@ export default {
     ...mapGetters('person', {
       enums: 'getEnums',
     }),
-    formUid() {
-      return `pers_${this.pers.codigo}`;
-    },
     typesId() {
-      // LG('UU %%%%%%%%%%%%%%%%%%');
+      LG('CC %%%%%%%%%%%%%%%%%%');
       // LG(this);
-      const types = this.enums.DocTypeLookup;
       const ret = [];
-      Object.keys(types).forEach((value) => {
-        const name = types[value];
-        ret.push({
-          name,
-          value,
-          id: value,
-          label: name,
+      const types = this.enums.DocTypeLookup;
+      if (types) {
+        Object.keys(types).forEach((value) => {
+          const name = types[value];
+          ret.push({
+            name,
+            value,
+            id: value,
+            label: name,
+          });
         });
-      });
-      // LG(ret);
+      } else {
+        ret.push({
+          name: 'aa',
+          value: 'AA',
+          id: 'AA-',
+          label: 'aa-',
+        });
+      }
+      LG(ret);
       return ret;
     },
   },
   methods: {
+    // qtst() {
+    //   LG(' ------- Quick Test -------');
+    //   this.onCreatePerson();
+    // },
+    // onCreatePerson() {
+    //   this.createPerson({
+    //     data: {
+    //       store: 'person',
+    //       mode: 'post',
+    //       data: {
+    //         ruc_cedula: '0708217086001',
+    //         nombre: 'Jesu Cristo',
+    //         direccion: '#1 Pearly Gates',
+    //         telefono: '099-444-4719',
+    //         distribuidor: 'si',
+    //         retencion: 'si',
+    //         tipo: '_04',
+    //         scabetti: '333',
+    //         tipo_de_documento: 'RUC',
+    //       },
+    //     },
+    //   });
+    // },
+
     ...mapActions('person', {
       saveForm: 'saveForm',
     }),

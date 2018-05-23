@@ -3,32 +3,25 @@ import { Perimeter } from 'vue-kindergarten';
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
 
-const accessLevels = [];
+const accessLevels = ['No Access', 'View Only', 'Comment', 'Alter', 'Own'];
+// const axsLabels = ['NO_ACCESS', 'VIEW_ONLY', 'COMMENT', 'ALTER', 'OWN'];
+const lvls = {};
+const lvlOpts = [];
+for (let idx = 0; idx < accessLevels.length; idx += 1) {
+  const name = accessLevels[idx];
+  const value = name.toUpperCase().split(' ').join('_');
+  lvls[value] = idx;
+  lvlOpts.push({
+    name, value: idx, id: idx, label: name,
+  });
+}
 
-const NO_ACCESS = 0;
-accessLevels[NO_ACCESS] = 'No Access';
+lvls.alvls = accessLevels;
+lvls.options = lvlOpts;
+lvls.olvls = Array.from(accessLevels, (x, ix) => ({ id: ix, axs: x }));
+lvls.slvls = Array.from(accessLevels, (x, ix) => ({ id: ix, axs: x }));
 
-const VIEW_ONLY = NO_ACCESS + 1;
-accessLevels[VIEW_ONLY] = 'View Only';
-
-const COMMENT = VIEW_ONLY + 1;
-accessLevels[COMMENT] = 'Comment';
-
-const ALTER = COMMENT + 1;
-accessLevels[ALTER] = 'Alter';
-
-const OWN = ALTER + 1;
-accessLevels[OWN] = 'Own';
-
-export const Levels = {
-  alvls: accessLevels,
-  olvls: Array.from(accessLevels, (x, ix) => ({ id: ix, axs: x })),
-  NO_ACCESS,
-  VIEW_ONLY,
-  COMMENT,
-  ALTER,
-  OWN,
-};
+export const Levels = lvls;
 
 export default class BasePerimeter extends Perimeter {
   constructor(purpose, opts = {}) {
@@ -38,22 +31,22 @@ export default class BasePerimeter extends Perimeter {
   }
 
   mayView() {
-    LG(`********  mayView: Permission "${this.levels.alvls[VIEW_ONLY]}" to resource "${this.resource}".  *********`);
+    LG(`********  mayView: Permission "${this.levels.alvls[Levels.VIEW_ONLY]}" to resource "${this.resource}".  *********`);
     return this.levels.VIEW_ONLY <= this.child.permissions[this.resource];
   }
 
   mayComment() {
-    LG(`********  mayView: Permission "${this.levels.alvls[COMMENT]}" to resource "${this.resource}".  *********`);
+    LG(`********  mayView: Permission "${this.levels.alvls[Levels.COMMENT]}" to resource "${this.resource}".  *********`);
     return this.levels.COMMENT <= this.child.permissions[this.resource];
   }
 
   mayAlter() {
-    LG(`********  mayView: Permission "${this.levels.alvls[ALTER]}" to resource "${this.resource}".  *********`);
+    LG(`********  mayView: Permission "${this.levels.alvls[Levels.ALTER]}" to resource "${this.resource}".  *********`);
     return this.levels.ALTER <= this.child.permissions[this.resource];
   }
 
   mayAuthorize() {
-    LG(`********  mayView: Permission "${this.levels.alvls[OWN]}" to resource "${this.resource}".  *********`);
+    LG(`********  mayView: Permission "${this.levels.alvls[Levels.OWN]}" to resource "${this.resource}".  *********`);
     return this.levels.OWN <= this.child.permissions[this.resource];
   }
 }

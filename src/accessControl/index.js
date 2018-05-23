@@ -46,6 +46,9 @@ export const beforeEach = [
 
 const collectDomains = () => {
   const ret = {};
+  LG('WWWWWWWWWWWWWWWWWWWWWWWWWWWWW');
+  LG(Levels);
+  LG('WWWWWWWWWWWWWWWWWWWWWWWWWWWWW');
   Object.entries(perimeterDefs).map((p) => {
     const name = p[1].resource;
     ret[name] = {
@@ -69,8 +72,8 @@ const state = {
       // Person: Levels.NO_ACCESS,
       // Person: Levels.VIEW_ONLY,
       // Person: Levels.COMMENT,
-      Person: Levels.ALTER,
-      // Person: Levels.OWN,
+      // Person: Levels.ALTER,
+      Person: Levels.OWN,
 
       // Example: Levels.NO_ACCESS,
       Example: Levels.VIEW_ONLY,
@@ -113,5 +116,11 @@ export default {
   actions,
 };
 
-export const perimeters = perimeterDefs;
-export { Levels };
+const Perimeters = perimeterDefs;
+
+const rsrc = new Set();
+Object.values(Perimeters).forEach((x) => {
+  rsrc.add(x.resource);
+});
+const Resources = Array.from(rsrc);
+export { Levels, Perimeters, Resources };

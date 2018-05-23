@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { perimeters as acl } from '@/accessControl';
+import { Perimeters as acl } from '@/accessControl';
 
 export default {
   perimeters: [acl.protectedPerimeter],

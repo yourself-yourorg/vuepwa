@@ -13,6 +13,7 @@
           </template>
           <person-record :pers="p(id)"/>
         </b-tab-item>
+
         <b-tab-item :visible="$isAllowed('allEdits')">
           <template slot="header">
             <p class="button is-small is-info is-outlined">
@@ -21,6 +22,16 @@
           </template>
           <person-update :pers="p(id)"/>
         </b-tab-item>
+
+        <b-tab-item :visible="$isAllowed('toChangeAuthorizations')">
+          <template slot="header">
+            <p class="button is-small is-warning has-text-weight-bold is-outlined">
+              <b-icon icon="lock"></b-icon>
+            </p>
+          </template>
+          <person-auth :pers="p(id)"/>
+        </b-tab-item>
+
         <b-tab-item :visible="$isAllowed('toChangeAuthorizations')">
           <template slot="header">
             <p class="button is-small is-danger is-outlined">
@@ -42,20 +53,22 @@
             </div>
           </nav>
         </b-tab-item>
+
       </b-tabs>
     </nav>
   </section>
 </template>
 
 <script>
-  import { perimeters as acl } from '@/accessControl';
+  import { Perimeters as acl } from '@/accessControl';
 
   import { mapGetters } from 'vuex';
   import Retrieve from './Retrieve';
   import Update from './Update';
+  import Permissions from './Permissions';
 
   export default {
-    name: 'Detail',
+    name: 'RUDcards',
     props: ['id'],
     perimeters: [acl.personDetailPerimeter],
     data() {
@@ -70,6 +83,7 @@
     components: {
       'person-record': Retrieve, // eslint-disable-line no-undef
       'person-update': Update, // eslint-disable-line no-undef
+      'person-auth': Permissions, // eslint-disable-line no-undef
     },
     computed: {
       ...mapGetters('person', {

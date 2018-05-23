@@ -3,10 +3,14 @@ import { store as vuex } from '@/store';
 
 import { variablizeTitles } from '@/utils/strings';
 
+import { Resources } from '@/accessControl';
+
+
 // import Header from '@/components/Header';
 import cfg from '@/config';
 
 import List from './List';
+// import Create from './Create';
 import Person from './Layout';
 import Retrieve from './Retrieve';
 import columns from './column_specs';
@@ -17,11 +21,14 @@ const local = [{
   path: 'list',
   name: 'persons/list',
   components: {
-    default: List,
+    personsList: List,
   },
-  // props: {
-  //   nav_bar: { setTab: 'Admin' },
-  // },
+// }, {
+//   path: 'add',
+//   name: 'persons/add',
+//   components: {
+//     personsAdd: Create,
+//   },
 }];
 
 const children = []
@@ -64,7 +71,6 @@ client.interceptors.request.use((_payload) => {
   LG('request failed');
   return Promise.reject(error);
 });
-
 const IDATTRIBUTE = 'codigo';
 const RESOURCE = 'person';
 export const store = createCrudModule({
@@ -77,6 +83,7 @@ export const store = createCrudModule({
     columns,
     currentTab: 0,
     enums: {},
+    paginator: { s: 1, c: 100 },
   },
   actions: {
     /* eslint-disable no-unused-vars */
@@ -93,31 +100,75 @@ export const store = createCrudModule({
       window.lgr.info('Person.index --> actions.setEnums');
       commit('enums', enums);
     },
-    saveForm: ({ commit }, _form) => {
+    updLocal: ({ commit }, record) => {
+      LG('uuuuuuu Update local record uuuuuuuuuu');
+      LG(`${record.data.mode} ${record.data.store} ${record.id}`);
+      LG(record.data.data);
+      commit('person', { id: record.id, data: record.data.data });
+    },
+    newLocal: ({ dispatch }, record) => {
+      LG('uuuuuuu Append new local record uuuuuuuuuu');
+      LG(`${record.data.mode} ${record.data.store}`);
+    },
+    saveForm: ({ dispatch }, _form) => {
       window.lgr.info('Person.index --> actions.saveForm');
-      const form = _form;
+      const model = _form;
+      const pkge = {};
 
-      form.retencion = form.retencion ? 'si' : 'no';
-      form.distribuidor = form.distribuidor ? 'si' : 'no';
+      model.retencion = _form.retencion ? 'si' : 'no';
+      model.distribuidor = _form.distribuidor ? 'si' : 'no';
 
-      LG(form.retencion);
-      LG(form);
-      // commit('tableColumns', cols);
+      LG('unununu save form ununununun');
+      const permissions = {};
+      Resources.map((rsrc) => {
+        LG(`${rsrc} => ${model[rsrc]}`);
+        permissions[rsrc] = model[rsrc];
+        delete model[rsrc];
+        return permissions[rsrc];
+      });
+      model.permissions = JSON.stringify(permissions).split('"').join("'");
+
+      LG('model');
+      LG(model);
+      if (_form.codigo) {
+        pkge.id = model.codigo;
+        pkge.data = { mode: 'patch', data: model, store: 'person' };
+        dispatch('update', pkge);
+        // dispatch('updLocal', pkge);
+        LG('store');
+        LG(store);
+      } else {
+        delete model.codigo;
+        pkge.data = { mode: 'post', data: model, store: 'person' };
+        dispatch('newLocal', pkge);
+        dispatch('create', pkge);
+      }
+    },
+    backToListTab: ({ getters, dispatch }) => {
+      vuex.dispatch('person/fetchList', { customUrlFnArgs: getters.getPaginator });
+      vuex.dispatch('person/setCurrentTab', 0);
     },
     /* eslint-enable no-unused-vars */
   },
+
   getters: {
     getCurrentTab: vx => vx.currentTab,
     getColumns: vx => vx.columns,
     getPersons: vx => vx.list,
     getEnums: vx => vx.enums,
+    getPaginator: vx => vx.paginator,
     getPerson: vx => id => vx.entities[id],
   },
+
   mutations: {
     /* eslint-disable no-param-reassign */
     tab: (vx, numTab) => {
       window.lgr.debug(`Person.index --> mutations.tab -- ${numTab}`);
       vx.currentTab = numTab;
+    },
+    person: (vx, payload) => {
+      LG(`${payload.id} = ${payload.data.codigo}/${payload.data.nombre}`);
+      vx.entities[payload.id] = payload.data;
     },
     enums: (vx, enums) => {
       vx.enums = enums;
@@ -128,6 +179,7 @@ export const store = createCrudModule({
     },
     /* eslint-enable no-param-reassign */
   },
+
   customUrlFn(_id, _pgntr) {
     LG(cfg.server);
     // LG(this.resource);
@@ -142,17 +194,22 @@ export const store = createCrudModule({
   },
 
   onCreateSuccess() {
-    vuex.dispatch('person/fetchList', { customUrlFnArgs: { s: 1, c: 100 } });
-    vuex.dispatch('person/setCurrentTab', 0);
+    vuex.dispatch('person/backToListTab');
     window.lgr.info('Person.index --> mutation.onCreateSuccess OK!');
   },
 
+  onUpdateSuccess() {
+    vuex.dispatch('person/backToListTab');
+    window.lgr.info('Person.index --> mutation.onUpdateSuccess OK!');
+  },
+
   parseSingle(response) {
-    // LG('parseSingle');
-    // LG(response);
+    LG('parseSingle');
+    LG(response.data);
+    LG(vuex.state.person.entities[response.data.itemID]);
 
     const objID = {};
-    objID[IDATTRIBUTE] = response.data.newID;
+    objID[IDATTRIBUTE] = response.data.itemID;
     return Object.assign({}, response, {
       data: objID, // expecting object with ID
     });
@@ -169,12 +226,13 @@ export const store = createCrudModule({
     const vars = variablizeTitles(titles);
 
     const result = data.map((itm) => {
-      // LG(`${itm[0]} -- ${idx} `);
       const mapping = {};
       itm.forEach((vl, ix) => {
         // LG(`  ${vars[ix]} -->> ${vl} `);
         if (vars[ix] === 'retencion' || vars[ix] === 'distribuidor') {
           mapping[vars[ix]] = vl === 'si';
+        } else if (vars[ix] === 'permissions') {
+          mapping[vars[ix]] = vl ? JSON.parse(vl.replace(/'/g, '"')) : '';
         } else {
           mapping[vars[ix]] = vl;
         }
@@ -182,11 +240,11 @@ export const store = createCrudModule({
       });
       return mapping;
     });
-    // LG(' * * Parsed persons data * * ');
+    LG(' * * Parsed persons data * * ');
     // LG('store');
     // LG(store);
-    // LG('result');
-    // LG(result);
+    LG('result');
+    LG(result);
     // LG('meta');
     // LG(meta);
     // LG('enums');

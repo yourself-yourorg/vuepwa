@@ -1,5 +1,6 @@
 <template>
   <section>
+    <b-loading :is-full-page="false" :active.sync="isLoadingList" :canCancel="true"></b-loading>
     <b-table
       :data="isEmpty ? [] : persons"
       :columns="columns"
@@ -13,7 +14,7 @@
       @details-open="(row, index) => $toast.open(`Expanded ${row.nombre}`)"
       focusable>
 
-      <template slot-scope="props" slot="anonymous">
+      <template slot-scope="props" slot="header">
         <b-tooltip position="is-left" :active="!!props.column.meta" :label="props.column.meta" dashed>
           {{ props.column.label }}
         </b-tooltip>
@@ -61,11 +62,11 @@
 <script>
   import { mapState, mapActions, mapGetters } from 'vuex';
 
-  import { perimeters as acl } from '@/accessControl';
+  import { Perimeters as acl } from '@/accessControl';
 
   // import { store } from '@/store';
 
-  import PersonDetail from './Detail';
+  import PersonDetail from './RUDcards';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
