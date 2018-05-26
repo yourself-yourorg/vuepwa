@@ -64,7 +64,8 @@
 
   import { Perimeters as acl } from '@/accessControl';
 
-  // import { store } from '@/store';
+  import config from '@/config';
+
 
   import PersonDetail from './RUDcards';
 
@@ -103,6 +104,9 @@
         columns: 'getColumns',
         // currentTab: 'getCurrentTab',
       }),
+      ...mapGetters({
+        loggedIn: 'isAuthenticated',
+      }),
 
       ...mapState('person', {
         isLoadingList: 'isFetchingList',
@@ -129,7 +133,13 @@
           .catch((e) => {
             LG(`*** Error while fetching persons :: ${e}***`);
             LG(this);
-            this.logIn();
+            LG(window.ls.storage);
+            if (this.loggedIn < 1) {
+              this.logIn();
+            } else {
+              window.ls.storage.removeItem(config.localStorageNameSpace + config.returnRouteName);
+              this.$router.push({ path: '/' });
+            }
           });
       },
 

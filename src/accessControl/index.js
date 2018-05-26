@@ -46,9 +46,6 @@ export const beforeEach = [
 
 const collectDomains = () => {
   const ret = {};
-  LG('WWWWWWWWWWWWWWWWWWWWWWWWWWWWW');
-  LG(Levels);
-  LG('WWWWWWWWWWWWWWWWWWWWWWWWWWWWW');
   Object.entries(perimeterDefs).map((p) => {
     const name = p[1].resource;
     ret[name] = {
@@ -104,7 +101,8 @@ const mutations = {
 const actions = {
   changePermissions(vx, _permissions) {
     vx.commit('changePermission', _permissions);
-    // LG(vx.state.user.permissions);
+    // LG('vx.actions');
+    // LG(vx);
   },
 };
 
@@ -118,9 +116,12 @@ export default {
 
 const Perimeters = perimeterDefs;
 
+
 const rsrc = new Set();
 Object.values(Perimeters).forEach((x) => {
   rsrc.add(x.resource);
 });
 const Resources = Array.from(rsrc);
+
+
 export { Levels, Perimeters, Resources };

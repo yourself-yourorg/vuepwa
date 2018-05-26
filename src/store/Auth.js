@@ -33,16 +33,17 @@ const getters = {
 
 const mutations = {
   /* eslint-disable no-param-reassign, no-unused-vars */
-  saveToken: (vx, payload) => {
-    const pyld = jwt.decode(payload);
-    if (pyld) {
-      window.lgr.info(`Auth(mutation) => Saving jwt. Permissions :: [${pyld.permissions}]`);
-      LG(pyld.permissions);
+  saveToken: (vx, pyld) => {
+    const { token, payload } = pyld;
+    if (payload) {
+      window.lgr.info(`Auth(mutation) => Saving jwt. Permissions :: [${payload.permissions}]`);
+      LG(payload.permissions);
+      LG(vx);
 
-      window.ls.set(cfg.tokenName, payload);
-      vx.accessToken = payload;
-      vx.nameUser = pyld.name;
-      vx.permissions = pyld.permissions;
+      window.ls.set(cfg.tokenName, token);
+      vx.accessToken = token;
+      vx.nameUser = payload.name;
+      vx.permissions = payload.permissions;
       vx.accessLevel = vx.nameUser === 'Iridium Blue' ? 'admin' : 'user';
       // vx.access = vx.nameUser === 'Iridium Blue' ? ['staff'] : ['visitor'];
       // window.lgr.info(`Auth(mutation) :: Setting access '${vx.access}'`);
@@ -73,8 +74,22 @@ const mutations = {
 };
 
 const actions = {
-  keepTkn: ({ commit }, payload) => {
-    commit('saveToken', payload);
+  keepTkn: (ctx, token) => {
+    const payload = jwt.decode(token);
+    if (payload) {
+      LG(`
+        keepTkn:`);
+      const txtPrms = payload.permissions.replace(/'/g, '"');
+      const prms = JSON.parse(txtPrms);
+
+      Object.keys(prms).forEach((permission) => {
+        ctx.dispatch('a12n/changePermissions', {
+          resource: permission,
+          setting: prms[permission],
+        });
+      });
+      ctx.commit('saveToken', { token, payload });
+    }
   },
   refreshToken: (_ctx, _pyld) => {
     let pyld = _pyld;
