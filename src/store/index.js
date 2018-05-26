@@ -70,7 +70,11 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
 
   actions: {
     setAxsRole: ({ commit }, pyld) => { commit('axsRole', pyld); },
-    increment: ({ commit }) => { commit('increment'); },
+    increment: (ctx) => {
+      LG('QQQQQ  increment QQQQQQ');
+      LG(ctx);
+      return ctx.commit('increment');
+    },
     decrement: ({ commit }) => { commit('decrement'); },
     fillForm: ({ commit }) => { commit('fillForm'); },
   },

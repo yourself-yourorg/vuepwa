@@ -1,6 +1,6 @@
 <template>
   <section>
-    <b-loading :is-full-page="false" :active.sync="isLoadingList" :canCancel="true"></b-loading>
+    <b-loading :is-full-page="false" :active.sync="isBusy" :canCancel="true"></b-loading>
     <b-table
       :data="isEmpty ? [] : persons"
       :columns="columns"
@@ -110,11 +110,12 @@
 
       ...mapState('person', {
         isLoadingList: 'isFetchingList',
+        isUpdating: 'isUpdating',
+        isCreating: 'isCreating',
       }),
-      // activeTab: {
-      //   get: () => store.state.person.currentTab,
-      //   set: newTab => store.dispatch('person/setCurrentTab', newTab),
-      // },
+      isBusy() {
+        return this.isLoadingList || this.isUpdating || this.isCreating;
+      },
     },
 
     methods: {

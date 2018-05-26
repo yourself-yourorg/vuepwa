@@ -1,5 +1,6 @@
 <template>
   <div>
+    <b-loading :is-full-page="false" :active.sync="isUpdating" :canCancel="true"></b-loading>
     <formulate
       :name="formUid"
       class="my-form"
@@ -144,7 +145,7 @@
 
 <script>
 
-import { mapGetters, mapActions } from 'vuex'; // eslint-disable-line no-unused-vars
+import { mapGetters, mapActions, mapState } from 'vuex'; // eslint-disable-line no-unused-vars
 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
@@ -156,6 +157,9 @@ export default {
   computed: {
     ...mapGetters('person', {
       enums: 'getEnums',
+    }),
+    ...mapState('person', {
+      isUpdating: 'isUpdating',
     }),
     formUid() {
       return `pers_${this.pers.codigo}`;

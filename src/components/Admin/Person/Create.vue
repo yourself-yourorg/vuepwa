@@ -1,5 +1,6 @@
 <template>
   <div>
+    <b-loading :is-full-page="false" :active.sync="isCreating" :canCancel="true"></b-loading>
     <formulate
       class="my-form"
       @submit="saveForm"
@@ -10,7 +11,7 @@
         type="hidden"
         placeholder="-1"
       />
-      
+
         <article class="tile is-child box">
           <h3 class="title">Person</h3>
 
@@ -41,7 +42,7 @@
                   initial="_05"
                   :options="typesId"
                 />
- 
+
 
               </div>
             </div>
@@ -166,13 +167,13 @@
         </article>
 
     </formulate>
-    
+
   </div>
 </template>
 
 <script>
 
-import { mapGetters, mapActions } from 'vuex'; // eslint-disable-line no-unused-vars
+import { mapGetters, mapActions, mapState } from 'vuex'; // eslint-disable-line no-unused-vars
 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
@@ -184,6 +185,9 @@ export default {
   computed: {
     ...mapGetters('person', {
       enums: 'getEnums',
+    }),
+    ...mapState('person', {
+      isCreating: 'isCreating',
     }),
     typesId() {
       LG('CC %%%%%%%%%%%%%%%%%%');
