@@ -6,13 +6,6 @@
       </b-tab-item>
       <b-tab-item :visible="$isAllowed('minorEdits')" label="Add Person">
         <Create/>
-
-<!--
-        Add a new person here.
-        <a class="button is-outlined is-small" @click="qtst">
-          Add
-        </a>
- -->
       </b-tab-item>
     </b-tabs>
 

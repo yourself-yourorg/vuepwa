@@ -72,6 +72,12 @@ const state = {
       // Person: Levels.ALTER,
       Person: Levels.OWN,
 
+      // Product: Levels.NO_ACCESS,
+      Product: Levels.VIEW_ONLY,
+      // Product: Levels.COMMENT,
+      // Product: Levels.ALTER,
+      // Product: Levels.OWN,
+
       // Example: Levels.NO_ACCESS,
       Example: Levels.VIEW_ONLY,
       // Example: Levels.COMMENT,

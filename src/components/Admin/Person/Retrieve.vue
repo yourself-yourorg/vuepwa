@@ -38,6 +38,14 @@
           </div>
         </div>
       </div>
+      <div class="level-right">
+        <div class="level-item has-text-centered">
+          <div>
+          <p class="heading">Mail</p>
+          <p class="is-size-5">{{ pers.email }}</p>
+          </div>
+        </div>
+      </div>
       <div class="level-left">
         <div class="level-item has-text-centered">
           <div v-bind:class="[pers.distribuidor ? '' : 'price--line-through']">

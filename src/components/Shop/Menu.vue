@@ -7,6 +7,9 @@
       <router-link class="navbar-item" :to="{ name: 'profile' }">
         Invoicing
       </router-link>
+      <router-link class="navbar-item" :to="{ name: 'products/list' }">
+        Products
+      </router-link>
       <router-link class="navbar-item" :to="{ name: 'profile' }">
         Payment
       </router-link>

@@ -1,5 +1,6 @@
 import { routes as example } from '@/components/Tests/Component';
 import { routes as person } from '@/components/Admin/Person';
+import { routes as product } from '@/components/Sales/Product';
 
 // import cfg from '@/config'; // eslint-disable-line no-unused-vars
 
@@ -39,6 +40,7 @@ const local = [{
 const children = baseRoutes
   .concat(example)
   .concat(person)
+  .concat(product)
   .concat(local);
 
 // LG('............');

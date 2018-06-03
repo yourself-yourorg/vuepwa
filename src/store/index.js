@@ -4,6 +4,7 @@ import Vue from 'vue';
 import { formulateState, formulateGetters, formulateMutations } from 'vue-formulate';
 
 import { store as person } from '@/components/Admin/Person';
+import { store as product } from '@/components/Sales/Product';
 import { store as articles } from '@/components/Attic/Blog';
 
 // import articles from './articles';
@@ -84,6 +85,7 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
     a12n,
     articles,
     person,
+    product,
   },
 });
 
