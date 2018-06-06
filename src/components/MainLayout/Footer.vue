@@ -1,12 +1,21 @@
 <template>
   <div>
+
+    <section>
+        <b-notification :type="msgError.lvl" has-icon :active.sync="isError">
+        {{ msgError.txt }}
+      </b-notification>
+
+
+    </section>
+
     <div class="control">
       <b-switch v-model="aclDebug" type="is-danger">
         Debug
       </b-switch>
     </div>
 
-    <div v-if="aclDebug">      
+    <div v-if="aclDebug">
       <div class="mdl-grid">
         <div class="mdl-cell mdl-cell--3-col mdl-cell mdl-cell--1-col-tablet mdl-cell--hide-phone">
 
@@ -72,6 +81,8 @@
         tkn: 'axsToken',
         isHere: 'isActive',
         isKnown: 'isAuthenticated',
+        isError: 'isError',
+        msgError: 'msgError',
       }),
     },
   };

@@ -15,6 +15,7 @@ const LG = console.log; // eslint-disable-line no-unused-vars, no-console
 
 const state = {
   accessToken: NULL_TOKEN,
+  accessExpiry: null,
   active: INACTIVE,
   authenticated: UNKNOWN,
   nameUser: '',
@@ -27,6 +28,7 @@ const getters = {
   isActive: vx => vx.active,
   isAuthenticated: vx => vx.authenticated,
   nameUser: vx => vx.nameUser,
+  accessExpiry: vx => vx.accessExpiry,
   accessLevel: vx => vx.accessLevel,
   permissions: vx => vx.permissions,
 };
@@ -44,6 +46,7 @@ const mutations = {
       vx.accessToken = token;
       vx.nameUser = payload.name;
       vx.permissions = payload.permissions;
+      vx.accessExpiry = payload.exp;
       vx.accessLevel = vx.nameUser === 'Iridium Blue' ? 'admin' : 'user';
       // vx.access = vx.nameUser === 'Iridium Blue' ? ['staff'] : ['visitor'];
       // window.lgr.info(`Auth(mutation) :: Setting access '${vx.access}'`);
@@ -187,6 +190,33 @@ const actions = {
   },
   setAuth: ({ commit }, payload) => {
     commit('auth', payload);
+  },
+  handle401: (ctx) => {
+    // const sessionTime = 2 * 60 * 60 * 1000;
+    const sessionTime = 15 * 60 * 1000;
+    const now = new Date().getTime() / 1000; //
+    // const deadline = (now + sessionTime) / 1000; //
+    const remaining = ctx.state.accessExpiry - now;
+    LG(`sessionTime  - ${sessionTime}`);
+    LG(`now  - ${now / 1000}`);
+    LG(`exp  - ${ctx.state.accessExpiry}`);
+    // LG(`deadline  - ${deadline}`);
+    LG(`remaining  - ${remaining}`);
+    const sts = remaining > 1 ? 'expired' : `remaining validity (secs): ${remaining}`;
+    window.lgr.info(`Auth(action) handle401:: Token status : ${sts}`);
+
+    if (ctx.state.authenticated < 1) {
+      window.lgr.info('Auth(action) handle401:: Not logged in.');
+      ctx.dispatch('logIn');
+    } else if (remaining < 1) {
+      window.lgr.info('Auth(action) handle401:: Expired token.');
+      ctx.dispatch('notifyUser', { txt: 'Your session expired. Logging you in again.', lvl: 'is-warning' });
+      ctx.dispatch('logIn');
+    } else {
+      window.lgr.info('Auth(action) handle401:: Wrong user??');
+      window.ls.storage.removeItem(cfg.localStorageNameSpace + cfg.returnRouteName);
+      // this.$router.push({ path: '/' });
+    }
   },
 };
 

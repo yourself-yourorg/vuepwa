@@ -19,11 +19,15 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({ // eslint-disable-line new-cap
   state: {
     counter: 0,
+    isError: false,
+    msgError: { txt: 'We got failure happening', lvl: 'is-warning' },
     axsRights: ['visitor'],
     ...formulateState()(),
   },
 
   getters: {
+    isError: state => state.isError,
+    msgError: state => state.msgError,
     theRoles: (state) => {
       window.lgr.debug(state.axsRights);
       return state.axsRights;
@@ -35,9 +39,14 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
 
   mutations: {
     /* eslint-disable no-param-reassign */
+    notifyUser: (state, pyld) => {
+      window.lgr.warn(pyld.txt);
+      LG(state);
+      state.msgError = pyld;
+      state.isError = true;
+    },
     axsRole: (state, pyld) => {
       window.lgr.debug(pyld.roles);
-      // this.access = pyld.roles;
       state.axsRights = pyld.roles;
     },
     increment: (state) => {
@@ -70,6 +79,7 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
   },
 
   actions: {
+    notifyUser: ({ commit }, pyld) => { commit('notifyUser', pyld); },
     setAxsRole: ({ commit }, pyld) => { commit('axsRole', pyld); },
     increment: (ctx) => {
       LG('QQQQQ  increment QQQQQQ');

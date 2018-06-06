@@ -65,7 +65,7 @@
 
   import { Perimeters as acl } from '@/accessControl';
 
-  import config from '@/config';
+  // import config from '@/config';
 
   import ProductDetail from './Retrieve';
 
@@ -136,6 +136,14 @@
     },
 
     methods: {
+      // ...mapActions(['logIn']),
+      ...mapActions(['handle401', 'notifyUser']),
+      ...mapActions('product', {
+        fetchProducts: 'fetchList',
+        // createProduct: 'create',
+        setColumns: 'setColumns',
+        // setTab: 'setCurrentTab',
+      }),
       onFetchProducts() {
         LG(' * * Try to fetch products * *');
         this.fetchProducts({ customUrlFnArgs: { s: 1, c: 100 } })
@@ -146,23 +154,23 @@
           })
           .catch((e) => {
             LG(`*** Error while fetching products :: ${e}***`);
-            LG(this);
-            LG(window.ls.storage);
-            if (this.loggedIn < 1) {
-              this.logIn();
+            LG(e.message);
+            if (e.message.endsWith('401')) {
+              this.handle401();
             } else {
-              window.ls.storage.removeItem(config.localStorageNameSpace + config.returnRouteName);
-              this.$router.push({ path: '/' });
+              this.notifyUser({ txt: `Error while fetching products :: ${e.message}`, lvl: 'is-warning' });
             }
+
+            // LG(this);
+            // LG(window.ls.storage);
+            // if (this.loggedIn < 1) {
+            //   this.logIn();
+            // } else {
+            //   window.ls.storage.removeItem(config.localStorageNameSpace + config.returnRouteName);
+            //   this.$router.push({ path: '/' });
+            // }
           });
       },
-      ...mapActions('product', {
-        fetchProducts: 'fetchList',
-        // createProduct: 'create',
-        setColumns: 'setColumns',
-        // setTab: 'setCurrentTab',
-      }),
-      ...mapActions(['logIn']),
     },
   };
 </script>

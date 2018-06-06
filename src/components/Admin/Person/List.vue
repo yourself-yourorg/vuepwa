@@ -64,7 +64,7 @@
 
   import { Perimeters as acl } from '@/accessControl';
 
-  import config from '@/config';
+  // import config from '@/config';
 
 
   import PersonDetail from './RUDcards';
@@ -106,6 +106,7 @@
       }),
       ...mapGetters({
         loggedIn: 'isAuthenticated',
+        // accessExpiry: 'accessExpiry',
       }),
 
       ...mapState('person', {
@@ -119,10 +120,14 @@
     },
 
     methods: {
-      // qtst() {
-      //   LG(' ------- Quick Test -------');
-      //   this.onCreatePerson();
-      // },
+      // ...mapActions(['logIn', 'handle401', 'notifyUser']),
+      ...mapActions(['handle401', 'notifyUser']),
+      ...mapActions('person', {
+        fetchPersons: 'fetchList',
+        // createPerson: 'create',
+        setColumns: 'setColumns',
+        // setTab: 'setCurrentTab',
+      }),
       onFetchPersons() {
         LG(' * * Try to fetch persons * *');
         this.fetchPersons({ customUrlFnArgs: { s: 1, c: 100 } })
@@ -132,14 +137,12 @@
             this.setColumns(resp.columns);
           })
           .catch((e) => {
-            LG(`*** Error while fetching persons :: ${e}***`);
-            LG(this);
-            LG(window.ls.storage);
-            if (this.loggedIn < 1) {
-              this.logIn();
+            LG(`*** Error while fetching persons :: >${e.message}<***`);
+            LG(e.message);
+            if (e.message.endsWith('401')) {
+              this.handle401();
             } else {
-              window.ls.storage.removeItem(config.localStorageNameSpace + config.returnRouteName);
-              this.$router.push({ path: '/' });
+              this.notifyUser({ txt: `Error while fetching persons :: ${e.message}`, lvl: 'is-warning' });
             }
           });
       },
@@ -164,13 +167,26 @@
       //   });
       // },
 
-      ...mapActions('person', {
-        fetchPersons: 'fetchList',
-        // createPerson: 'create',
-        setColumns: 'setColumns',
-        // setTab: 'setCurrentTab',
-      }),
-      ...mapActions(['logIn']),
     },
   };
+
+
+// const now = (new Date().getTime() + 90000) / 1000;// 2 * 60 * 60 * 1000
+// // const now = (new Date().getTime() + 7200000) / 1000; // 2 * 60 * 60 * 1000
+// const exp = this.accessExpiry;
+// const remaining = now - exp;
+// LG(remaining > 1 ? 'expired' : `remaining validity (secs): ${remaining}`);
+
+// LG(window.ls.storage);
+// if (this.loggedIn < 1) {
+//   this.logIn();
+// } else if (remaining > 1) {
+//   this.notifyUser({ txt: 'Your session expired. Logging you in again.', lvl: 'is-warning' });
+//   this.logIn();
+// } else {
+//   this.notifyUser({ txt: 'Not aauthorized.', lvl: 'is-danger' });
+//   window.ls.storage.removeItem(config.localStorageNameSpace + config.returnRouteName);
+//   this.$router.push({ path: '/' });
+// }
+
 </script>
