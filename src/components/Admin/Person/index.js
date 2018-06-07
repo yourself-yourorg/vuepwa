@@ -8,6 +8,7 @@ import { Resources } from '@/accessControl';
 
 // import Header from '@/components/Header';
 import cfg from '@/config';
+import format from '@/utils/format';
 
 import List from './List';
 // import Create from './Create';
@@ -71,6 +72,25 @@ client.interceptors.request.use((_payload) => {
   LG('request failed');
   return Promise.reject(error);
 });
+
+
+const formatters = {
+  processPermissions(pkg) {
+    LG(`
+
+        processPermissions
+        ==================
+        ${pkg}
+`);
+    try {
+      return JSON.parse(pkg.replace(/'/g, '"'));
+    } catch (e) {
+      return pkg;
+    }
+  },
+};
+
+
 const IDATTRIBUTE = 'codigo';
 const RESOURCE = 'person';
 export const store = createCrudModule({
@@ -225,21 +245,55 @@ export const store = createCrudModule({
 
     const vars = variablizeTitles(titles);
 
-    const result = data.map((itm) => {
+    const result = data.map((_person, idx) => {
+      const person = _person;
       const mapping = {};
-      itm.forEach((vl, ix) => {
-        // LG(`  ${vars[ix]} -->> ${vl} `);
-        if (vars[ix] === 'retencion' || vars[ix] === 'distribuidor') {
-          mapping[vars[ix]] = vl === 'si';
-        } else if (vars[ix] === 'permissions') {
-          mapping[vars[ix]] = vl ? JSON.parse(vl.replace(/'/g, '"')) : '';
-        } else {
-          mapping[vars[ix]] = vl;
+      meta.forEach((col, ix) => {
+        if (idx === 3) {
+          // LG(` ?? ${col.field}`);
+          // LG(` ?? ${person[ix]}`);
+          // LG(` ==== ${format[col.type](person[ix])}`);
         }
-        return vl;
+        person[ix] = format[col.type](
+          person[ix],
+          {
+            JSON1: { fn: formatters.processPermissions, vl: person[ix] },
+          },
+        );
       });
+
+      person.forEach((vl, ix) => {
+        LG(`  ${vars[ix]} -->> ${vl} `);
+        // if (vars[ix] === 'retencion' || vars[ix] === 'distribuidor') {
+        //   mapping[vars[ix]] = vl === 'si';
+        // } else if (vars[ix] === 'permissions') {
+        // if (vars[ix] === 'permissions') {
+        //   LG(vl);
+        //   mapping[vars[ix]] = vl ? JSON.parse(vl.replace(/'/g, '"')) : '';
+        // } else {
+        // }
+        mapping[vars[ix]] = vl;
+        // return vl;
+      });
+
       return mapping;
     });
+
+    // const result = data.map((itm) => {
+    //   const mapping = {};
+    //   itm.forEach((vl, ix) => {
+    //     // LG(`  ${vars[ix]} -->> ${vl} `);
+    //     if (vars[ix] === 'retencion' || vars[ix] === 'distribuidor') {
+    //       mapping[vars[ix]] = vl === 'si';
+    //     } else if (vars[ix] === 'permissions') {
+    //       mapping[vars[ix]] = vl ? JSON.parse(vl.replace(/'/g, '"')) : '';
+    //     } else {
+    //       mapping[vars[ix]] = vl;
+    //     }
+    //     return vl;
+    //   });
+    //   return mapping;
+    // });
     LG(' * * Parsed persons data * * ');
     // LG('store');
     // LG(store);

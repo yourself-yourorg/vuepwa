@@ -2,7 +2,7 @@
   <section>
     <b-loading :is-full-page="false" :active.sync="isBusy" :canCancel="true"></b-loading>
     <b-table
-      :data="isEmpty ? [] : products"
+      :data="isEmpty ? [] : invoices"
       :columns="columns"
       :striped="true"
       paginated
@@ -21,9 +21,8 @@
       </template>
 
       <template slot="detail" slot-scope="{ row }">
-
-        <product-detail :id="row.codigo" />
-       </template>
+        <invoice-detail :id="row.codigo" />
+      </template>
 
       <template slot="empty">
         <section class="section">
@@ -67,48 +66,50 @@
 
   // import config from '@/config';
 
-  import ProductDetail from './Retrieve';
+
+  import InvoiceDetail from './RUDcards';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
   export default {
-    name: 'ProductList',
-    perimeters: [acl.productDetailPerimeter],
+    name: 'InvoiceList',
+    perimeters: [acl.invoiceDetailPerimeter],
     beforeMount() {
-      LG('\n * * Ready to fetch products * * \n');
-      this.onFetchProducts();
+      LG('\n * * Ready to fetch invoices * * \n');
+      this.onFetchInvoices();
     },
     props: {
       // anObj: { tst: 'passed in' },
-      tst: { val: 'passed in with props' },
+      tst: 'passed in with props',
     },
     data() {
-      const products = [];
+      const invoices = [];
       return {
         anObj: { tst: 'passed in as data' },
         isLoading: true,
         isFullPage: false,
         isEmpty: false,
         defaultOpenedDetails: [123],
-        selected: products[1],
+        selected: invoices[1],
         columnSelectorOpen: false,
       };
     },
     components: {
-      'product-detail': ProductDetail, // eslint-disable-line no-undef
+      'invoice-detail': InvoiceDetail, // eslint-disable-line no-undef
     },
+
     computed: {
-      ...mapGetters('product', {
-        products: 'list',
-        prod: 'getProduct',
+      ...mapGetters('invoice', {
+        invoices: 'list',
         columns: 'getColumns',
         // currentTab: 'getCurrentTab',
       }),
       ...mapGetters({
         loggedIn: 'isAuthenticated',
+        // accessExpiry: 'accessExpiry',
       }),
 
-      ...mapState('product', {
+      ...mapState('invoice', {
         isLoadingList: 'isFetchingList',
         isUpdating: 'isUpdating',
         isCreating: 'isCreating',
@@ -116,61 +117,79 @@
       isBusy() {
         return this.isLoadingList || this.isUpdating || this.isCreating;
       },
-      prods() {
-        const rslt = this.products;
-        LG('-----------------------');
-        LG(rslt);
-        LG('-----------------------');
-        // const rslt = this.products.map((_prod, idx) => {
-        // const newProd = _prod;
-        // this.columns.forEach((col) => {
-        //   if (idx === 4) {
-        //     LG(` ?? ${newProd[col.field]} ${newProd[col.field]}`);
-        //     LG(col);
-        //   }
-        // });
-        // return newProd;
-        // });
-        return rslt;
-      },
     },
 
     methods: {
-      // ...mapActions(['logIn']),
+      // ...mapActions(['logIn', 'handle401', 'notifyUser']),
       ...mapActions(['handle401', 'notifyUser']),
-      ...mapActions('product', {
-        fetchProducts: 'fetchList',
-        // createProduct: 'create',
+      ...mapActions('invoice', {
+        fetchInvoices: 'fetchList',
+        // createInvoice: 'create',
         setColumns: 'setColumns',
         // setTab: 'setCurrentTab',
       }),
-      onFetchProducts() {
-        LG(' * * Try to fetch products * *');
-        this.fetchProducts({ customUrlFnArgs: { s: 1, c: 100 } })
+      onFetchInvoices() {
+        LG(' * * Try to fetch invoices * *');
+        this.fetchInvoices({ customUrlFnArgs: { s: 1, c: 100 } })
           .then((resp) => {
-            LG(' * * Fetched products * *');
+            LG(' * * Fetched invoices * *');
             LG(resp.columns);
             this.setColumns(resp.columns);
           })
           .catch((e) => {
-            LG(`*** Error while fetching products :: ${e}***`);
+            LG(`*** Error while fetching invoices :: >${e.message}<***`);
             LG(e.message);
             if (e.message.endsWith('401')) {
               this.handle401();
             } else {
-              this.notifyUser({ txt: `Error while fetching products :: ${e.message}`, lvl: 'is-danger' });
+              this.notifyUser({
+                txt: `Error fetching invoices :: ${e.message}`,
+                lvl: 'is-danger',
+              });
             }
-
-            // LG(this);
-            // LG(window.ls.storage);
-            // if (this.loggedIn < 1) {
-            //   this.logIn();
-            // } else {
-            //   window.ls.storage.removeItem(config.localStorageNameSpace + config.returnRouteName);
-            //   this.$router.push({ path: '/' });
-            // }
           });
       },
+
+      // onCreateInvoice() {
+      //   this.createInvoice({
+      //     data: {
+      //       store: 'invoice',
+      //       mode: 'post',
+      //       data: {
+      //         ruc_cedula: '0708217086001',
+      //         nombre: 'Jesu Cristo',
+      //         direccion: '#1 Pearly Gates',
+      //         telefono: '099-444-4719',
+      //         distribuidor: 'si',
+      //         retencion: 'si',
+      //         tipo: '_04',
+      //         scabetti: '333',
+      //         tipo_de_documento: 'RUC',
+      //       },
+      //     },
+      //   });
+      // },
+
     },
   };
+
+
+// const now = (new Date().getTime() + 90000) / 1000;// 2 * 60 * 60 * 1000
+// // const now = (new Date().getTime() + 7200000) / 1000; // 2 * 60 * 60 * 1000
+// const exp = this.accessExpiry;
+// const remaining = now - exp;
+// LG(remaining > 1 ? 'expired' : `remaining validity (secs): ${remaining}`);
+
+// LG(window.ls.storage);
+// if (this.loggedIn < 1) {
+//   this.logIn();
+// } else if (remaining > 1) {
+//   this.notifyUser({ txt: 'Your session expired. Logging you in again.', lvl: 'is-warning' });
+//   this.logIn();
+// } else {
+//   this.notifyUser({ txt: 'Not aauthorized.', lvl: 'is-danger' });
+//   window.ls.storage.removeItem(config.localStorageNameSpace + config.returnRouteName);
+//   this.$router.push({ path: '/' });
+// }
+
 </script>

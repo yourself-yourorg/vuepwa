@@ -18,7 +18,7 @@ import Form from '@/components/Attic/Form';
 
 // import { Blog, Article } from '@/components/Blog';
 import { routes as blog } from '@/components/Attic/Blog';
-import { routes as poison } from '@/components/Attic/Poison';
+// import { routes as poison } from '@/components/Attic/Poison';
 
 
 import { store } from '../store';
@@ -29,34 +29,6 @@ const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
 const baseRoutes = [
 
-  // {
-  //   path: '',
-  //   name: 'homeOld',
-  //   components: { default: HomeView, hdr: Header },
-  //   // beforeEnter: (to, from, next) => {
-  //   //   LG('*********************  beforeRouteEnter  ***************************');
-  //   //   // LG(store);
-  //   //   LG(store.getters.permissions);
-  //   //   store._vm.access = store.getters.permissions;
-  //   //   LG(store._vm.access); // eslint-disable-line no-underscore-dangle
-  //   //   next();
-  //   // },
-  //   // meta: { permission: 'visitor' },
-  // },
-  // {
-  //   path: '/',
-  //   name: 'oldroot',
-  //   components: { default: HomeView, hdr: Header },
-  //   // beforeEnter: (to, from, next) => {
-  //   //   LG('*********************  beforeRouteEnter  ***************************');
-  //   //   // LG(store);
-  //   //   LG(store.getters.permissions);
-  //   //   store._vm.access = store.getters.permissions;
-  //   //   LG(store._vm.access); // eslint-disable-line no-underscore-dangle
-  //   //   next();
-  //   // },
-  //   // meta: { permission: 'visitor' },
-  // },
   {
     path: '/ohv',
     name: 'ohv',
@@ -99,8 +71,12 @@ const routes = baseRoutes
   .concat(mainLayout)
   // .concat(person)
   // .concat(example)
-  .concat(blog)
-  .concat(poison);
+  // .concat(poison)
+  .concat(blog);
+
+const clearErrorNotification = (t, f, n) => { // eslint-disable-line no-unused-vars
+  store.dispatch('clearNotifyUser').then(() => n());
+};
 
 const keepToken = (t, f, n) => {
   if (window.lgr) {
@@ -118,6 +94,7 @@ const keepToken = (t, f, n) => {
 
 let beforeEachTasks = [
   keepToken,
+  clearErrorNotification,
   (t, f) => { LG(`TSK 0 ${t}, ${f}`); },
   // (t, f) => { LG(f); },
 ];

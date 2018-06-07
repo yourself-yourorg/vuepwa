@@ -5,6 +5,7 @@ import { formulateState, formulateGetters, formulateMutations } from 'vue-formul
 
 import { store as person } from '@/components/Admin/Person';
 import { store as product } from '@/components/Sales/Product';
+import { store as invoice } from '@/components/Sales/Invoice';
 import { store as articles } from '@/components/Attic/Blog';
 
 // import articles from './articles';
@@ -45,6 +46,10 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
       state.msgError = pyld;
       state.isError = true;
     },
+    clearNotifyUser: (state) => {
+      state.msgError = '';
+      state.isError = false;
+    },
     axsRole: (state, pyld) => {
       window.lgr.debug(pyld.roles);
       state.axsRights = pyld.roles;
@@ -80,6 +85,7 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
 
   actions: {
     notifyUser: ({ commit }, pyld) => { commit('notifyUser', pyld); },
+    clearNotifyUser: ({ commit }) => { commit('clearNotifyUser'); },
     setAxsRole: ({ commit }, pyld) => { commit('axsRole', pyld); },
     increment: (ctx) => {
       LG('QQQQQ  increment QQQQQQ');
@@ -96,6 +102,7 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
     articles,
     person,
     product,
+    invoice,
   },
 });
 

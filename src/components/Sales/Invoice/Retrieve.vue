@@ -1,10 +1,10 @@
 <template>
 <!--
-  <main id="person">
+  <main id="invoice">
     <p class="back">
-      <router-link :to="{ name: 'persons' }">Back to Persons</router-link>
+      <router-link :to="{ name: 'invoices' }">Back to Invoices</router-link>
     </p>
-    <person-record v-if="currentPerson" :person="currentPerson" />
+    <invoice-record v-if="currentInvoice" :invoice="currentInvoice" />
   </main>
 -->
 
@@ -48,12 +48,12 @@
       </div>
       <div class="level-left">
         <div class="level-item has-text-centered">
-          <div v-bind:class="[pers.distribuidor === 'si' ? '' : 'price--line-through']">
+          <div v-bind:class="[pers.distribuidor ? '' : 'price--line-through']">
             Distribuidor
           </div>
         </div>
         <div class="level-item has-text-centered">
-          <div v-bind:class="[pers.retencion === 'si' ? '' : 'price--line-through']">
+          <div v-bind:class="[pers.retencion ? '' : 'price--line-through']">
             Retencion
           </div>
         </div>

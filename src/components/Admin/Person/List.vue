@@ -142,7 +142,7 @@
             if (e.message.endsWith('401')) {
               this.handle401();
             } else {
-              this.notifyUser({ txt: `Error while fetching persons :: ${e.message}`, lvl: 'is-warning' });
+              this.notifyUser({ txt: `Error while fetching persons :: ${e.message}`, lvl: 'is-danger' });
             }
           });
       },

@@ -4,7 +4,7 @@
       Shop
     </router-link>
     <div class="navbar-dropdown is-boxed">
-      <router-link class="navbar-item" :to="{ name: 'profile' }">
+      <router-link class="navbar-item" :to="{ name: 'invoices/list' }">
         Invoicing
       </router-link>
       <router-link class="navbar-item" :to="{ name: 'products/list' }">

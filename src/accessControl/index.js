@@ -66,6 +66,18 @@ const state = {
       role: 'admin',
     },
     permissions: {
+      // Example: Levels.NO_ACCESS,
+      Example: Levels.VIEW_ONLY,
+      // Example: Levels.COMMENT,
+      // Example: Levels.ALTER,
+      // Example: Levels.OWN,
+
+      // Invoice: Levels.NO_ACCESS,
+      Invoice: Levels.VIEW_ONLY,
+      // Invoice: Levels.COMMENT,
+      // Invoice: Levels.ALTER,
+      // Invoice: Levels.OWN,
+
       // Person: Levels.NO_ACCESS,
       // Person: Levels.VIEW_ONLY,
       // Person: Levels.COMMENT,
@@ -78,11 +90,6 @@ const state = {
       // Product: Levels.ALTER,
       // Product: Levels.OWN,
 
-      // Example: Levels.NO_ACCESS,
-      Example: Levels.VIEW_ONLY,
-      // Example: Levels.COMMENT,
-      // Example: Levels.ALTER,
-      // Example: Levels.OWN,
     },
   },
   domains: collectDomains(),
