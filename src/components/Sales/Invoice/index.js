@@ -1,5 +1,8 @@
 import createCrudModule, { client } from 'vuex-crud';
+
 import { store as vuex } from '@/store';
+import { store as person } from '@/components/Admin/Person';
+import { store as product } from '@/components/Sales/Product';
 
 import { variablizeTitles } from '@/utils/strings';
 
@@ -73,32 +76,22 @@ client.interceptors.request.use((_payload) => {
   return Promise.reject(error);
 });
 
-
 const formatters = {
-  processPersonFK(pkg) {
-    LG(`
-
-        processPersonFK
-        ===============
-        ${pkg}
-`);
-    LG(pkg);
+  processPersonFK(fkPerson) {
+    const someone = person.state.entities[fkPerson];
+    if (someone) return someone.nombre;
+    return `Usuario #${fkPerson}`;
   },
 
   processDetailsJSON(_detail) {
+    if (!product.state.entities) return _detail;
+    if (Object.keys(product.state.entities).length < 1) return _detail;
+    LG(`product.state.entities.length = ${Object.keys(product.state.entities).length}`);
     try {
-      const detail = JSON.parse(_detail.replace(/'/g, '"')).details;
-      LG(`
-
-          processDetailsJSON
-          ===============
-          ${detail}
-`);
-      LG(detail);
-      return detail.filter((d) => {
-        LG(d[0]);
-        return d[0] > 0;
-      });
+      return JSON
+        .parse(_detail.replace(/'/g, '"')).details
+        .filter(d => d[0] > 0)
+        .map(d => [product.state.entities[d[0]], d[1], d[2]]);
     } catch (e) {
       return _detail;
     }
@@ -117,7 +110,7 @@ export const store = createCrudModule({
     columns,
     currentTab: 0,
     enums: {},
-    paginator: { s: 1, c: 100 },
+    paginator: { s: 1, c: 4 },
   },
   actions: {
     /* eslint-disable no-unused-vars */
@@ -271,23 +264,14 @@ export const store = createCrudModule({
         invoice[ix] = format[col.type](
           invoice[ix],
           {
-            foreignKey1: { fn: formatters.processPersonFK, vl: { a: 'aaa' } },
+            foreignKey1: { fn: formatters.processPersonFK, vl: invoice[ix] },
             JSON1: { fn: formatters.processDetailsJSON, vl: invoice[ix] },
           },
         );
       });
 
       invoice.forEach((vl, ix) => {
-        LG(`  ${vars[ix]} -->> ${vl} `);
-        // if (vars[ix] === 'retencion' || vars[ix] === 'distribuidor') {
-        //   mapping[vars[ix]] = vl === 'si';
-        // } else if (vars[ix] === 'permissions') {
-        // if (vars[ix] === 'permissions') {
-        //   mapping[vars[ix]] = vl ? JSON.parse(vl.replace(/'/g, '"')) : '';
-        // } else {
-        //   mapping[vars[ix]] = vl;
-        // }
-        // return vl;
+        // LG(`  ${vars[ix]} -->> ${vl} `);
         mapping[vars[ix]] = vl;
       });
 
@@ -302,12 +286,12 @@ export const store = createCrudModule({
     // LG(meta);
     // LG('enums');
     // LG(enums);
-    vuex.dispatch('invoice/setEnums', enums);
+    vuex.dispatch('invoice/setEnums', enums.StatusLookup);
     LG(' - - - - - - - - - -  Parsed invoice list  - - - - - - - - - - ');
     return Object.assign({}, response, {
       data: result, // expecting array of objects with IDs
       columns: meta,
-      enums,
+      enums: typeof enums,
     });
   },
 });

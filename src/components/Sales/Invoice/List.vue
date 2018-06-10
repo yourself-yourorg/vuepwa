@@ -6,13 +6,15 @@
       :columns="columns"
       :striped="true"
       paginated
-      :per-page="20"
+      :per-page="4"
       :current-page="1"
       :opened-detailed="defaultOpenedDetails"
       detailed
       detail-key="codigo"
       @details-open="(row, index) => $toast.open(`Expanded ${row.nombre}`)"
-      focusable>
+      focusable
+      :narrowed="true"
+      :mobile-cards="hasMobileCards">
 
       <template slot-scope="props" slot="header">
         <b-tooltip position="is-left" :active="!!props.column.meta" :label="props.column.meta" dashed>
@@ -34,10 +36,14 @@
       </template>
     </b-table>
 
+    <div class="control cardMode">
+        <b-switch v-model="hasMobileCards">Modo tarjeta <small>(filas estrechas)</small></b-switch>
+    </div>
+
     <div class="block">
         <button class="button is-small is-primary"
             @click="columnSelectorOpen = !columnSelectorOpen">
-            Column Selection
+            Escoger Columnas
         </button>
     </div>
 
@@ -64,9 +70,6 @@
 
   import { Perimeters as acl } from '@/accessControl';
 
-  // import config from '@/config';
-
-
   import InvoiceDetail from './RUDcards';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
@@ -87,9 +90,10 @@
       return {
         anObj: { tst: 'passed in as data' },
         isLoading: true,
+        hasMobileCards: false,
         isFullPage: false,
         isEmpty: false,
-        defaultOpenedDetails: [123],
+        defaultOpenedDetails: [4358],
         selected: invoices[1],
         columnSelectorOpen: false,
       };
@@ -193,3 +197,10 @@
 // }
 
 </script>
+
+
+<style>
+  div.cardMode {
+    padding-bottom: 25px;
+  }
+</style>

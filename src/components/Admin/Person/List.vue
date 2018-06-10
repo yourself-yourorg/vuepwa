@@ -170,23 +170,4 @@
     },
   };
 
-
-// const now = (new Date().getTime() + 90000) / 1000;// 2 * 60 * 60 * 1000
-// // const now = (new Date().getTime() + 7200000) / 1000; // 2 * 60 * 60 * 1000
-// const exp = this.accessExpiry;
-// const remaining = now - exp;
-// LG(remaining > 1 ? 'expired' : `remaining validity (secs): ${remaining}`);
-
-// LG(window.ls.storage);
-// if (this.loggedIn < 1) {
-//   this.logIn();
-// } else if (remaining > 1) {
-//   this.notifyUser({ txt: 'Your session expired. Logging you in again.', lvl: 'is-warning' });
-//   this.logIn();
-// } else {
-//   this.notifyUser({ txt: 'Not aauthorized.', lvl: 'is-danger' });
-//   window.ls.storage.removeItem(config.localStorageNameSpace + config.returnRouteName);
-//   this.$router.push({ path: '/' });
-// }
-
 </script>

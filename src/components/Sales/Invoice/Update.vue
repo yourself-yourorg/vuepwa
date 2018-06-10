@@ -7,7 +7,7 @@
       v-if="!values"
       @submit="saveForm"
 
-      :initial="pers"
+      :initial="invc"
     >
       <formulate-element
         name="codigo"
@@ -19,7 +19,7 @@
 
           <div class="columns is-mobile is-multiline is-centered">
 
-            <div class="column is-narrow">
+<!--             <div class="column is-narrow">
               <div class="control">
                 <label class="label">Nombre</label>
 
@@ -122,7 +122,7 @@
 
               </div>
             </div>
-
+ -->
             <div class="control">
 
               <formulate-element
@@ -150,7 +150,7 @@ import { mapGetters, mapActions, mapState } from 'vuex'; // eslint-disable-line 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
 export default {
-  props: ['pers'],
+  props: ['invc'],
   data() {
     return { values: false };
   },
@@ -162,7 +162,7 @@ export default {
       isUpdating: 'isUpdating',
     }),
     formUid() {
-      return `pers_${this.pers.codigo}`;
+      return `pers_${this.invc.codigo}`;
     },
     typesId() {
       // LG('UU %%%%%%%%%%%%%%%%%%');

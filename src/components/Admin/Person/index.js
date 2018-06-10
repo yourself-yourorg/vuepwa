@@ -90,13 +90,11 @@ const formatters = {
   },
 };
 
-
 const IDATTRIBUTE = 'codigo';
 const RESOURCE = 'person';
 export const store = createCrudModule({
   resource: RESOURCE, // The name of your CRUD resource (mandatory)
   idAttribute: IDATTRIBUTE, // What should be used as ID
-  // urlRoot: `${cfg.server}/api/${RESOURCE}`, // The url to fetch the resource
   urlRoot: `${cfg.server}`, // The url to fetch the resource person?s=1&c=3
   client,
   state: {
@@ -263,17 +261,8 @@ export const store = createCrudModule({
       });
 
       person.forEach((vl, ix) => {
-        LG(`  ${vars[ix]} -->> ${vl} `);
-        // if (vars[ix] === 'retencion' || vars[ix] === 'distribuidor') {
-        //   mapping[vars[ix]] = vl === 'si';
-        // } else if (vars[ix] === 'permissions') {
-        // if (vars[ix] === 'permissions') {
-        //   LG(vl);
-        //   mapping[vars[ix]] = vl ? JSON.parse(vl.replace(/'/g, '"')) : '';
-        // } else {
-        // }
+        // LG(`  ${vars[ix]} -->> ${vl} `);
         mapping[vars[ix]] = vl;
-        // return vl;
       });
 
       return mapping;

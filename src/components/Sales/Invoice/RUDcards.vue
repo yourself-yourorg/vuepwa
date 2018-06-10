@@ -11,7 +11,7 @@
               <b-icon icon="eye"></b-icon>
             </p>
           </template>
-          <invoice-record :pers="p(id)"/>
+          <invoice-record :invc="p(id)"/>
         </b-tab-item>
 
         <b-tab-item :visible="$isAllowed('allEdits')">
@@ -20,7 +20,7 @@
               <b-icon icon="edit"></b-icon>
             </p>
           </template>
-          <invoice-update :pers="p(id)"/>
+          <invoice-update :invc="p(id)"/>
         </b-tab-item>
 
         <b-tab-item :visible="$isAllowed('toChangeAuthorizations')">
@@ -29,7 +29,7 @@
               <b-icon icon="lock"></b-icon>
             </p>
           </template>
-          <invoice-auth :pers="p(id)"/>
+          <invoice-auth :invc="p(id)"/>
         </b-tab-item>
 
         <b-tab-item :visible="$isAllowed('toChangeAuthorizations')">
@@ -69,7 +69,7 @@
 
   export default {
     name: 'RUDcards',
-    props: ['id'],
+    props: ['id', 'distributor'],
     perimeters: [acl.invoiceDetailPerimeter],
     data() {
       return {

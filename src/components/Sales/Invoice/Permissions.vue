@@ -14,7 +14,7 @@
         placeholder="-1"
       />
         <article class="tile is-child box">
-          <h3>{{ pers.nombre }}</h3>
+          <h3>{{ invc.nombre }}</h3>
           <h5>Sus Permisos por Recurso</h5>
           <div class="columns is-mobile is-multiline is-centered">
 
@@ -62,7 +62,7 @@ import { Resources, Levels as accessLevels } from '@/accessControl';
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
 export default {
-  props: ['pers'],
+  props: ['invc'],
   data() {
     return { values: false };
   },
@@ -71,13 +71,13 @@ export default {
       enums: 'getEnums',
     }),
     permissionsField() {
-      LG('xxxxxxxxxxxxxxxxxxx this.pers xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
-      LG(this.pers);
-      LG(this.pers.permissions);
-      return this.pers.permissions ? this.pers.permissions : {};
+      LG('xxxxxxxxxxxxxxxxxxx this.invc xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+      LG(this.invc);
+      LG(this.invc.permissions);
+      return this.invc.permissions ? this.invc.permissions : {};
     },
     formUid() {
-      return `pers_${this.pers.codigo}`;
+      return `pers_${this.invc.codigo}`;
     },
     levels() {
       return accessLevels.options;
