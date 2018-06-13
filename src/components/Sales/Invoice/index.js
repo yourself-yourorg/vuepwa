@@ -27,12 +27,6 @@ const local = [{
   components: {
     invoicesList: List,
   },
-// }, {
-//   path: 'add',
-//   name: 'invoices/add',
-//   components: {
-//     invoicesAdd: Create,
-//   },
 }];
 
 const children = []
@@ -45,21 +39,11 @@ export const routes = [
     component: Invoice,
     children,
   },
-  // {
-  //   path: '/invoices',
-  //   name: 'invoices',
-  //   components: { default: List, hdr: Header },
-  // },
   {
     path: 'invoice/:id',
     name: 'invoice',
     component: Retrieve,
   },
-  // {
-  //   path: 'invoice/:id',
-  //   name: 'invoice',
-  //   components: { default: Retrieve, hdr: Header },
-  // },
 ];
 
 client.interceptors.request.use((_payload) => {
@@ -114,6 +98,28 @@ export const store = createCrudModule({
   },
   actions: {
     /* eslint-disable no-unused-vars */
+    fetchAll: ({ dispatch }) => {
+      LG('<<<<<< fetchAll >>>>>>');
+      dispatch('fetchList', { customUrlFnArgs: store.state.paginator })
+        .then((resp) => {
+          LG(' * * Fetched invoices * *');
+          LG(resp.columns);
+          dispatch('setColumns', (resp.columns));
+        })
+        .catch((e) => {
+          LG(`*** Error while fetching invoices :: >${e.message}<***`);
+          LG(e.message);
+          if (e.message.endsWith('401')) {
+            dispatch('handle401', null, { root: true });
+          } else {
+            dispatch('notifyUser', {
+              txt: `Error fetching invoices :: ${e.message}`,
+              lvl: 'is-danger',
+            }, { root: true });
+          }
+        });
+    },
+
     setColumns: ({ commit }, cols) => {
       window.lgr.info('Invoice.index --> actions.setColumns');
       LG(cols);

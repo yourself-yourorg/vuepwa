@@ -50,6 +50,28 @@ export const store = createCrudModule({
   },
   actions: {
     /* eslint-disable no-unused-vars */
+
+    fetchAll: ({ dispatch }) => {
+      LG('<<<<<< fetchAll >>>>>>');
+      dispatch('fetchList', { customUrlFnArgs: { s: 1, c: 100 } })
+        .then((resp) => {
+          LG(' * * Fetched products * *');
+          LG(resp.columns);
+          dispatch('setColumns', (resp.columns));
+        })
+        .catch((e) => {
+          LG(`*** Error while fetching products :: ${e}***`);
+          LG(e.message);
+          if (e.message.endsWith('401')) {
+            dispatch('handle401', null, { root: true });
+          } else {
+            dispatch('notifyUser', {
+              txt: `Error while fetching products :: ${e.message}`,
+              lvl: 'is-danger',
+            }, { root: true });
+          }
+        });
+    },
     setColumns: ({ commit }, cols) => {
       window.lgr.info('Product.index --> actions.setColumns');
       LG(cols);
@@ -121,14 +143,9 @@ export const store = createCrudModule({
 
     const vars = variablizeTitles(titles);
 
-    const result = data.map((product, idx) => {
+    const result = data.map((product) => {
       const newProd = product;
       meta.forEach((col, ix) => {
-        if (idx === 3) {
-          LG(` ?? ${col.field}`);
-          LG(` ?? ${newProd[ix]}`);
-          LG(` ==== ${format[col.type](newProd[ix])}`);
-        }
         newProd[ix] = format[col.type](newProd[ix]);
       });
       newProd.forEach((field, ix) => {
@@ -144,17 +161,10 @@ export const store = createCrudModule({
       });
       return newProd;
     });
-    LG(' * * Parsed persons data * * ');
-    // LG('store');
-    // LG(store);
-    LG('result');
-    LG(result);
-    // LG('meta');
-    // LG(meta);
-    // LG('enums');
-    // LG(enums);
+    // LG(' * * Parsed persons data * * ');
+    // LG('result');
+    // LG(result);
     vuex.dispatch('person/setEnums', enums);
-    // LG(' - - - - - - - - - - ');
     return Object.assign({}, response, {
       data: result, // expecting array of objects with IDs
       columns: meta,

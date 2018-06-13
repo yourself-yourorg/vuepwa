@@ -72,18 +72,26 @@ const mainVue = new Vue({
   i18n,
   router,
   store,
-  created() {
-    LG('<<<<<<<<<< created >>>>>>>>>>>');
+  beforeCreate() {
+    LG('<<<<<<<<<< beforeCreate >>>>>>>>>>>');
     window.lgr = this.$log;
     window.ls = this.$ls;
-    window.version = config.version;
-    this.$log.info(`microservice = ${config.server}`);
+
+    // LG(this.$store);
+    // LG(this.$route);
+    // LG(this.$ls);
 
     const tkn = this.$route.query.tkn ? this.$route.query.tkn : this.$ls.get(config.tokenName);
-    // this.$store.dispatch('refreshToken', tkn);
     LG('<<<<<<<<<< keeping token >>>>>>>>>>>');
     this.$store.dispatch('keepTkn', tkn);
 
+    this.$store.dispatch('person/fetchAll');
+    this.$store.dispatch('product/fetchAll');
+  },
+  created() {
+    LG('<<<<<<<<<< created >>>>>>>>>>>');
+    window.version = config.version;
+    this.$log.info(`microservice = ${config.server}`);
 
     LG(`
       !!!!!!!!!?  returnToExitPoint  ?!!!!!!!!!`);
@@ -100,16 +108,6 @@ const mainVue = new Vue({
         // nxt({ name: rr });
       }
     }
-
-    // if (this.$route.query.tkn) {
-    //   this.$store.dispatch('keepTkn', this.$route.query.tkn);
-    // } else {
-    //   LG('<<<<<<<<<<  >>>>>>>>>>>');
-    //   LG(this.$store);
-    //   LG(this.$ls);
-    //   LG(this.$ls.get(config.tokenName));
-    //   this.$store.dispatch('keepTkn', this.$ls.get(config.tokenName));
-    // }
   },
   render: site => site(App),
 });

@@ -66,9 +66,12 @@
 </template>
 
 <script>
+  import waitTil from 'wait-until';
   import { mapState, mapActions, mapGetters } from 'vuex';
 
   import { Perimeters as acl } from '@/accessControl';
+  import { store as person } from '@/components/Admin/Person';
+  import { store as product } from '@/components/Sales/Product';
 
   import InvoiceDetail from './RUDcards';
 
@@ -78,8 +81,72 @@
     name: 'InvoiceList',
     perimeters: [acl.invoiceDetailPerimeter],
     beforeMount() {
-      LG('\n * * Ready to fetch invoices * * \n');
-      this.onFetchInvoices();
+      LG(`
+
+
+                    * * Ready to fetch invoices * *
+
+
+        `);
+      LG(person.state.list.length);
+      LG(person.state.isFetchingList);
+      LG(this.$store);
+      let preload = 7;
+      if (person.state.list.length > 0 || person.state.isFetchingList) {
+        LG('Don\'t load persons');
+        preload -= 4;
+      }
+      if (product.state.list.length > 0 || product.state.isFetchingList) {
+        LG('Don\'t load products');
+        preload -= 2;
+      }
+      if (this.invoices.length > 0 || this.isLoadingList) {
+        LG('Don\'t load invoices');
+        preload -= 1;
+      }
+
+      switch (preload) {
+        case 7:
+        case 6:
+          LG('Load all');
+          this.$store.dispatch('person/fetchAll').then(() => {
+            LG('Loaded persons');
+            this.$store.dispatch('product/fetchAll').then(() => {
+              LG('Loaded products');
+              this.onFetchInvoices();
+            });
+          });
+          break;
+        case 5:
+        case 4:
+          LG('Person then invoices');
+          LG('Load all');
+          this.$store.dispatch('person/fetchAll').then(() => {
+            LG('Loaded persons');
+            this.onFetchInvoices();
+          });
+          break;
+        case 3:
+        case 2:
+          LG('Product then invoices');
+          LG('Load all');
+          this.$store.dispatch('product/fetchAll').then(() => {
+            LG('Loaded products');
+            this.onFetchInvoices();
+          });
+          break;
+        default:
+          this.onFetchInvoices();
+      }
+      // this.$store.dispatch('person/fetchAll').then((resp) => {
+      //   LG(`
+
+      //     ||||||||||||||||||||||||||||||||||||||||||||||||||`);
+      //   LG(resp);
+      // });
+
+      // if (this.isLoadingList || this.invoices.length > 0) return;
+      // this.onFetchInvoices();
     },
     props: {
       // anObj: { tst: 'passed in' },
@@ -89,7 +156,6 @@
       const invoices = [];
       return {
         anObj: { tst: 'passed in as data' },
-        isLoading: true,
         hasMobileCards: false,
         isFullPage: false,
         isEmpty: false,
@@ -127,74 +193,19 @@
       // ...mapActions(['logIn', 'handle401', 'notifyUser']),
       ...mapActions(['handle401', 'notifyUser']),
       ...mapActions('invoice', {
-        fetchInvoices: 'fetchList',
-        // createInvoice: 'create',
+        fetchInvoices: 'fetchAll',
         setColumns: 'setColumns',
-        // setTab: 'setCurrentTab',
       }),
       onFetchInvoices() {
         LG(' * * Try to fetch invoices * *');
-        this.fetchInvoices({ customUrlFnArgs: { s: 1, c: 100 } })
-          .then((resp) => {
-            LG(' * * Fetched invoices * *');
-            LG(resp.columns);
-            this.setColumns(resp.columns);
-          })
-          .catch((e) => {
-            LG(`*** Error while fetching invoices :: >${e.message}<***`);
-            LG(e.message);
-            if (e.message.endsWith('401')) {
-              this.handle401();
-            } else {
-              this.notifyUser({
-                txt: `Error fetching invoices :: ${e.message}`,
-                lvl: 'is-danger',
-              });
-            }
-          });
+        waitTil()
+          .interval(100)
+          .times(20)
+          .condition(() => !person.state.isFetchingList && !product.state.isFetchingList)
+          .done(() => this.fetchInvoices());
       },
-
-      // onCreateInvoice() {
-      //   this.createInvoice({
-      //     data: {
-      //       store: 'invoice',
-      //       mode: 'post',
-      //       data: {
-      //         ruc_cedula: '0708217086001',
-      //         nombre: 'Jesu Cristo',
-      //         direccion: '#1 Pearly Gates',
-      //         telefono: '099-444-4719',
-      //         distribuidor: 'si',
-      //         retencion: 'si',
-      //         tipo: '_04',
-      //         scabetti: '333',
-      //         tipo_de_documento: 'RUC',
-      //       },
-      //     },
-      //   });
-      // },
-
     },
   };
-
-
-// const now = (new Date().getTime() + 90000) / 1000;// 2 * 60 * 60 * 1000
-// // const now = (new Date().getTime() + 7200000) / 1000; // 2 * 60 * 60 * 1000
-// const exp = this.accessExpiry;
-// const remaining = now - exp;
-// LG(remaining > 1 ? 'expired' : `remaining validity (secs): ${remaining}`);
-
-// LG(window.ls.storage);
-// if (this.loggedIn < 1) {
-//   this.logIn();
-// } else if (remaining > 1) {
-//   this.notifyUser({ txt: 'Your session expired. Logging you in again.', lvl: 'is-warning' });
-//   this.logIn();
-// } else {
-//   this.notifyUser({ txt: 'Not aauthorized.', lvl: 'is-danger' });
-//   window.ls.storage.removeItem(config.localStorageNameSpace + config.returnRouteName);
-//   this.$router.push({ path: '/' });
-// }
 
 </script>
 

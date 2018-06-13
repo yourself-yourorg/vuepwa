@@ -23,6 +23,7 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
     isError: false,
     msgError: { txt: 'We got failure happening', lvl: 'is-warning' },
     axsRights: ['visitor'],
+    integrityCheck: { person: 9999, product: 8888, invoice: 7777 },
     ...formulateState()(),
   },
 
@@ -45,6 +46,10 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
       LG(state);
       state.msgError = pyld;
       state.isError = true;
+    },
+    updateIntegrityCheck: (state, pyld) => {
+      window.lgr.warn(pyld);
+      state.integrityCheck = pyld;
     },
     clearNotifyUser: (state) => {
       state.msgError = '';
@@ -84,6 +89,7 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
   },
 
   actions: {
+    updateIntegrityCheck: ({ commit }, pyld) => { commit('updateIntegrityCheck', pyld); },
     notifyUser: ({ commit }, pyld) => { commit('notifyUser', pyld); },
     clearNotifyUser: ({ commit }) => { commit('clearNotifyUser'); },
     setAxsRole: ({ commit }, pyld) => { commit('axsRole', pyld); },

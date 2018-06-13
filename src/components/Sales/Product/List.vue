@@ -76,17 +76,16 @@
     perimeters: [acl.productDetailPerimeter],
     beforeMount() {
       LG('\n * * Ready to fetch products * * \n');
+      if (this.isLoadingList || this.products.length > 0) return;
       this.onFetchProducts();
     },
     props: {
-      // anObj: { tst: 'passed in' },
       tst: { val: 'passed in with props' },
     },
     data() {
       const products = [];
       return {
         anObj: { tst: 'passed in as data' },
-        isLoading: true,
         isFullPage: false,
         isEmpty: false,
         defaultOpenedDetails: [123],
@@ -102,7 +101,6 @@
         products: 'list',
         prod: 'getProduct',
         columns: 'getColumns',
-        // currentTab: 'getCurrentTab',
       }),
       ...mapGetters({
         loggedIn: 'isAuthenticated',
@@ -118,58 +116,22 @@
       },
       prods() {
         const rslt = this.products;
-        LG('-----------------------');
-        LG(rslt);
-        LG('-----------------------');
-        // const rslt = this.products.map((_prod, idx) => {
-        // const newProd = _prod;
-        // this.columns.forEach((col) => {
-        //   if (idx === 4) {
-        //     LG(` ?? ${newProd[col.field]} ${newProd[col.field]}`);
-        //     LG(col);
-        //   }
-        // });
-        // return newProd;
-        // });
+        // LG('-----------------------');
+        // LG(rslt);
+        // LG('-----------------------');
         return rslt;
       },
     },
 
     methods: {
-      // ...mapActions(['logIn']),
       ...mapActions(['handle401', 'notifyUser']),
       ...mapActions('product', {
-        fetchProducts: 'fetchList',
-        // createProduct: 'create',
+        fetchProducts: 'fetchAll',
         setColumns: 'setColumns',
-        // setTab: 'setCurrentTab',
       }),
       onFetchProducts() {
         LG(' * * Try to fetch products * *');
-        this.fetchProducts({ customUrlFnArgs: { s: 1, c: 100 } })
-          .then((resp) => {
-            LG(' * * Fetched products * *');
-            LG(resp.columns);
-            this.setColumns(resp.columns);
-          })
-          .catch((e) => {
-            LG(`*** Error while fetching products :: ${e}***`);
-            LG(e.message);
-            if (e.message.endsWith('401')) {
-              this.handle401();
-            } else {
-              this.notifyUser({ txt: `Error while fetching products :: ${e.message}`, lvl: 'is-danger' });
-            }
-
-            // LG(this);
-            // LG(window.ls.storage);
-            // if (this.loggedIn < 1) {
-            //   this.logIn();
-            // } else {
-            //   window.ls.storage.removeItem(config.localStorageNameSpace + config.returnRouteName);
-            //   this.$router.push({ path: '/' });
-            // }
-          });
+        this.fetchProducts();
       },
     },
   };

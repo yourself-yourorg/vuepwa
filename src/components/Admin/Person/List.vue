@@ -76,6 +76,7 @@
     perimeters: [acl.personDetailPerimeter],
     beforeMount() {
       LG('\n * * Ready to fetch persons * * \n');
+      if (this.isLoading || this.persons.length > 0) return;
       this.onFetchPersons();
     },
     props: {
@@ -102,11 +103,6 @@
       ...mapGetters('person', {
         persons: 'list',
         columns: 'getColumns',
-        // currentTab: 'getCurrentTab',
-      }),
-      ...mapGetters({
-        loggedIn: 'isAuthenticated',
-        // accessExpiry: 'accessExpiry',
       }),
 
       ...mapState('person', {
@@ -120,53 +116,13 @@
     },
 
     methods: {
-      // ...mapActions(['logIn', 'handle401', 'notifyUser']),
-      ...mapActions(['handle401', 'notifyUser']),
       ...mapActions('person', {
-        fetchPersons: 'fetchList',
-        // createPerson: 'create',
-        setColumns: 'setColumns',
-        // setTab: 'setCurrentTab',
+        fetchPersons: 'fetchAll',
       }),
       onFetchPersons() {
         LG(' * * Try to fetch persons * *');
-        this.fetchPersons({ customUrlFnArgs: { s: 1, c: 100 } })
-          .then((resp) => {
-            LG(' * * Fetched persons * *');
-            LG(resp.columns);
-            this.setColumns(resp.columns);
-          })
-          .catch((e) => {
-            LG(`*** Error while fetching persons :: >${e.message}<***`);
-            LG(e.message);
-            if (e.message.endsWith('401')) {
-              this.handle401();
-            } else {
-              this.notifyUser({ txt: `Error while fetching persons :: ${e.message}`, lvl: 'is-danger' });
-            }
-          });
+        this.fetchPersons();
       },
-
-      // onCreatePerson() {
-      //   this.createPerson({
-      //     data: {
-      //       store: 'person',
-      //       mode: 'post',
-      //       data: {
-      //         ruc_cedula: '0708217086001',
-      //         nombre: 'Jesu Cristo',
-      //         direccion: '#1 Pearly Gates',
-      //         telefono: '099-444-4719',
-      //         distribuidor: 'si',
-      //         retencion: 'si',
-      //         tipo: '_04',
-      //         scabetti: '333',
-      //         tipo_de_documento: 'RUC',
-      //       },
-      //     },
-      //   });
-      // },
-
     },
   };
 

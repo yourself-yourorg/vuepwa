@@ -24,12 +24,6 @@ const local = [{
   components: {
     personsList: List,
   },
-// }, {
-//   path: 'add',
-//   name: 'persons/add',
-//   components: {
-//     personsAdd: Create,
-//   },
 }];
 
 const children = []
@@ -42,21 +36,11 @@ export const routes = [
     component: Person,
     children,
   },
-  // {
-  //   path: '/persons',
-  //   name: 'persons',
-  //   components: { default: List, hdr: Header },
-  // },
   {
     path: 'person/:id',
     name: 'person',
     component: Retrieve,
   },
-  // {
-  //   path: 'person/:id',
-  //   name: 'person',
-  //   components: { default: Retrieve, hdr: Header },
-  // },
 ];
 
 client.interceptors.request.use((_payload) => {
@@ -76,12 +60,6 @@ client.interceptors.request.use((_payload) => {
 
 const formatters = {
   processPermissions(pkg) {
-    LG(`
-
-        processPermissions
-        ==================
-        ${pkg}
-`);
     try {
       return JSON.parse(pkg.replace(/'/g, '"'));
     } catch (e) {
@@ -105,6 +83,27 @@ export const store = createCrudModule({
   },
   actions: {
     /* eslint-disable no-unused-vars */
+    fetchAll: ({ dispatch }) => {
+      LG('<<<<<< fetchAll >>>>>>');
+      dispatch('fetchList', { customUrlFnArgs: store.state.paginator })
+        .then((resp) => {
+          LG(' * * Fetched persons * *');
+          LG(resp.columns);
+          dispatch('setColumns', (resp.columns));
+        })
+        .catch((e) => {
+          LG(`*** Error while fetching persons :: >${e.message}<***`);
+          LG(e.message);
+          if (e.message.endsWith('401')) {
+            dispatch('handle401', null, { root: true });
+          } else {
+            dispatch('notifyUser', {
+              txt: `Error while fetching persons :: ${e.message}`,
+              lvl: 'is-danger',
+            }, { root: true });
+          }
+        });
+    },
     setColumns: ({ commit }, cols) => {
       window.lgr.info('Person.index --> actions.setColumns');
       LG(cols);
@@ -268,32 +267,10 @@ export const store = createCrudModule({
       return mapping;
     });
 
-    // const result = data.map((itm) => {
-    //   const mapping = {};
-    //   itm.forEach((vl, ix) => {
-    //     // LG(`  ${vars[ix]} -->> ${vl} `);
-    //     if (vars[ix] === 'retencion' || vars[ix] === 'distribuidor') {
-    //       mapping[vars[ix]] = vl === 'si';
-    //     } else if (vars[ix] === 'permissions') {
-    //       mapping[vars[ix]] = vl ? JSON.parse(vl.replace(/'/g, '"')) : '';
-    //     } else {
-    //       mapping[vars[ix]] = vl;
-    //     }
-    //     return vl;
-    //   });
-    //   return mapping;
-    // });
     LG(' * * Parsed persons data * * ');
-    // LG('store');
-    // LG(store);
-    LG('result');
-    LG(result);
-    // LG('meta');
-    // LG(meta);
-    // LG('enums');
-    // LG(enums);
+    // LG('result');
+    // LG(result);
     vuex.dispatch('person/setEnums', enums);
-    // LG(' - - - - - - - - - - ');
     return Object.assign({}, response, {
       data: result, // expecting array of objects with IDs
       columns: meta,
