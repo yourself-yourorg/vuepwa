@@ -1,11 +1,11 @@
 <template>
   <section>
     <b-tabs v-model="activeTab">
-      <b-tab-item label="Persons">
-        <router-view name="personsList"/>
-      </b-tab-item>
-      <b-tab-item :visible="$isAllowed('minorEdits')" label="Add Person">
+      <b-tab-item label="Add Person">
         <Create/>
+      </b-tab-item>
+      <b-tab-item :visible="canEdit()" label="Persons">
+        <router-view name="personsList"/>
       </b-tab-item>
     </b-tabs>
 
@@ -19,7 +19,6 @@
 <script>
   import { mapState, mapActions, mapGetters } from 'vuex'; // eslint-disable-line no-unused-vars
 
-  import { Perimeters as acl } from '@/accessControl';
   import { store } from '@/store';
 
   import Create from './Create';
@@ -28,7 +27,6 @@
 
   export default {
     name: 'Person',
-    perimeters: [acl.personDetailPerimeter],
     components: {
       Create,
     },
@@ -45,6 +43,9 @@
       qtst() {
         LG(' ------- Quick Test -------');
         this.onCreatePerson();
+      },
+      canEdit() {
+        return this.$can('comment', 'persons/list');
       },
       onCreatePerson() {
         this.createPerson({

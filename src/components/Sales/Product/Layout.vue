@@ -16,13 +16,9 @@
 <script>
   import { mapState, mapActions, mapGetters } from 'vuex'; // eslint-disable-line no-unused-vars
 
-  import { Perimeters as acl } from '@/accessControl';
-  // import { store } from '@/store';
-
   const LG = console.log; // eslint-disable-line no-unused-vars, no-console
 
   export default {
     name: 'Product',
-    perimeters: [acl.productDetailPerimeter],
   };
 </script>

@@ -12,12 +12,13 @@ import List from './List';
 import Product from './Layout';
 // import Retrieve from './Retrieve';
 import columns from './column_specs';
+import { PRODUCTS, PRODUCTS_LIST } from './accessGroups';
 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
 const local = [{
+  name: PRODUCTS_LIST,
   path: 'list',
-  name: 'products/list',
   components: {
     productsList: List,
   },
@@ -28,8 +29,8 @@ const children = []
 
 export const routes = [
   {
+    name: PRODUCTS,
     path: 'products',
-    name: 'products',
     component: Product,
     children,
   },

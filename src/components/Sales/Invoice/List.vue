@@ -69,7 +69,6 @@
   import waitTil from 'wait-until';
   import { mapState, mapActions, mapGetters } from 'vuex';
 
-  import { Perimeters as acl } from '@/accessControl';
   import { store as person } from '@/components/Admin/Person';
   import { store as product } from '@/components/Sales/Product';
 
@@ -79,7 +78,6 @@
 
   export default {
     name: 'InvoiceList',
-    perimeters: [acl.invoiceDetailPerimeter],
     beforeMount() {
       LG(`
 

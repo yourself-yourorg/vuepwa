@@ -62,18 +62,12 @@
 <script>
   import { mapState, mapActions, mapGetters } from 'vuex';
 
-  import { Perimeters as acl } from '@/accessControl';
-
-  // import config from '@/config';
-
-
   import PersonDetail from './RUDcards';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
   export default {
     name: 'PersonList',
-    perimeters: [acl.personDetailPerimeter],
     beforeMount() {
       LG('\n * * Ready to fetch persons * * \n');
       if (this.isLoading || this.persons.length > 0) return;

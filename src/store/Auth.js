@@ -77,20 +77,23 @@ const mutations = {
 };
 
 const actions = {
-  keepTkn: (ctx, token) => {
+  keepTkn: (ctx, args) => {
+    const { token, ability } = args;
     const payload = jwt.decode(token);
     if (payload) {
-      LG(`
-        keepTkn:`);
-      const txtPrms = payload.permissions.replace(/'/g, '"');
-      const prms = JSON.parse(txtPrms);
+      // LG(`
+      //   keepTkn:`);
 
-      Object.keys(prms).forEach((permission) => {
-        ctx.dispatch('a12n/changePermissions', {
-          resource: permission,
-          setting: prms[permission],
-        });
-      });
+      // const txtPrms = payload.permissions.replace(/'/g, '"');
+      // const prms = JSON.parse(txtPrms);
+
+      ctx.dispatch('a12n/resetPermissions', { payload, ability });
+      // Object.keys(prms).forEach((permission) => {
+      //   ctx.dispatch('a12n/changePermissions', {
+      //     resource: permission,
+      //     setting: prms[permission],
+      //   });
+      // });
       ctx.commit('saveToken', { token, payload });
     }
   },

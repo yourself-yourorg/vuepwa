@@ -35,7 +35,6 @@
 
 <script>
 
-  // import { responsivity, shutBurgerMenu } from './responsive';
   import { shutBurgerMenu } from '@/utils/responsive';
   import Authentication from '@/accessControl/Authentication';
 
@@ -46,8 +45,6 @@
 
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
-
-  // document.addEventListener('DOMContentLoaded', responsivity);
 
   export default {
     components: {

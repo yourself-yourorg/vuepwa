@@ -14,7 +14,7 @@
           <invoice-record :invc="p(id)"/>
         </b-tab-item>
 
-        <b-tab-item :visible="$isAllowed('allEdits')">
+        <b-tab-item :visible="canAlter()">
           <template slot="header">
             <p class="button is-small is-info is-outlined">
               <b-icon icon="edit"></b-icon>
@@ -23,7 +23,7 @@
           <invoice-update :invc="p(id)"/>
         </b-tab-item>
 
-        <b-tab-item :visible="$isAllowed('toChangeAuthorizations')">
+        <b-tab-item :visible="canAssign()">
           <template slot="header">
             <p class="button is-small is-warning has-text-weight-bold is-outlined">
               <b-icon icon="lock"></b-icon>
@@ -32,7 +32,7 @@
           <invoice-auth :invc="p(id)"/>
         </b-tab-item>
 
-        <b-tab-item :visible="$isAllowed('toChangeAuthorizations')">
+        <b-tab-item :visible="canAssign()">
           <template slot="header">
             <p class="button is-small is-danger is-outlined">
               <b-icon icon="trash"></b-icon>
@@ -60,8 +60,6 @@
 </template>
 
 <script>
-  import { Perimeters as acl } from '@/accessControl';
-
   import { mapGetters } from 'vuex';
   import Retrieve from './Retrieve';
   import Update from './Update';
@@ -70,20 +68,23 @@
   export default {
     name: 'RUDcards',
     props: ['id', 'distributor'],
-    perimeters: [acl.invoiceDetailPerimeter],
     data() {
       return {
         activeSubTab: 0,
       };
     },
-    // methods: {
-    //   switvh() { return 99; },
-    //   q() { return { codigo: 125 }; },
-    // },
     components: {
       'invoice-record': Retrieve, // eslint-disable-line no-undef
       'invoice-update': Update, // eslint-disable-line no-undef
       'invoice-auth': Permissions, // eslint-disable-line no-undef
+    },
+    methods: {
+      canAlter() {
+        return this.$can('alter', 'invoice');
+      },
+      canAssign() {
+        return this.$can('assign', 'invoice');
+      },
     },
     computed: {
       ...mapGetters('invoice', {

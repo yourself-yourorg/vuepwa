@@ -60,11 +60,11 @@
       });
 
       this.axStkn = window.ls.get(cfg.tokenName, 0);
-      window.ls.on(cfg.tokenName, (pyld) => {
-        window.lgr.warn(`Auth.vue :: New token value in local store :: ${pyld}`);
+      window.ls.on(cfg.tokenName, (token) => {
+        window.lgr.warn(`Auth.vue :: New token value in local store :: ${token}`);
 
         // self.refreshToken(pyld);
-        self.keepTkn(pyld);
+        self.keepTkn({ token, ability: self.$ability });
 
         // this.axStkn = pyld;
         // self.sentinel = !self.sentinel;

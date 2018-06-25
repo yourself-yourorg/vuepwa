@@ -19,11 +19,13 @@ import Invoice from './Layout';
 import Retrieve from './Retrieve';
 import columns from './column_specs';
 
+import { INVOICES, INVOICE, INVOICES_LIST } from './accessGroups';
+
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
 const local = [{
+  name: INVOICES_LIST,
   path: 'list',
-  name: 'invoices/list',
   components: {
     invoicesList: List,
   },
@@ -34,14 +36,14 @@ const children = []
 
 export const routes = [
   {
+    name: INVOICES,
     path: 'invoices',
-    name: 'invoices',
     component: Invoice,
     children,
   },
   {
+    name: INVOICE,
     path: 'invoice/:id',
-    name: 'invoice',
     component: Retrieve,
   },
 ];

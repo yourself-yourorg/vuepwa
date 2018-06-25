@@ -165,10 +165,10 @@ export default {
       return `pers_${this.pers.codigo}`;
     },
     typesId() {
+      const ret = [];
       // LG('UU %%%%%%%%%%%%%%%%%%');
       // LG(this);
-      const types = this.enums.DocTypeLookup;
-      const ret = [];
+      const types = this.enums.DocTypeLookup || {};
       Object.keys(types).forEach((value) => {
         const name = types[value];
         ret.push({

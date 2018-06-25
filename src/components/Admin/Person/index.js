@@ -6,15 +6,16 @@ import { variablizeTitles } from '@/utils/strings';
 import { Resources } from '@/accessControl';
 
 
-// import Header from '@/components/Header';
 import cfg from '@/config';
 import format from '@/utils/format';
 
 import List from './List';
-// import Create from './Create';
+
 import Person from './Layout';
 import Retrieve from './Retrieve';
 import columns from './column_specs';
+
+import { PERSON, PERSONS } from './accessGroups';
 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
@@ -31,14 +32,14 @@ const children = []
 
 export const routes = [
   {
+    name: PERSONS,
     path: 'persons',
-    name: 'persons',
     component: Person,
     children,
   },
   {
+    name: PERSON,
     path: 'person/:id',
-    name: 'person',
     component: Retrieve,
   },
 ];

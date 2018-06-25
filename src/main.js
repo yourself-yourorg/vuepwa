@@ -3,7 +3,8 @@
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import VueLocalStore from 'vue-ls';
-import VueKindergarten from 'vue-kindergarten';
+
+import { Can, abilitiesPlugin } from '@casl/vue';
 
 import VueLogger from 'vuejs-logger';
 import 'vue-awesome/icons';
@@ -28,20 +29,20 @@ import config from './config';
 
 // import HomeView from './components/HomeView';
 
-import { currentUser } from './accessControl'; // eslint-disable-line no-unused-vars
+import { currentUser, abilities } from './accessControl'; // eslint-disable-line no-unused-vars
+
 import router from './router';
 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
+
+Vue.use(abilitiesPlugin, abilities);
+Vue.component('Can', Can);
+
 
 Vue.use(VueLogger, config.logger);
 
 Vue.use(VueI18n);
 Vue.use(VueLocalStore, { namespace: 'vuesppwa-' });
-
-Vue.use(VueKindergarten, currentUser);
-
-// Vue.use(Acl, { router, init: ['visitor', 'member'] });
-// Vue.use(Acl, { router, init: ['visitor'] });
 
 Vue.use(Buefy, {
   defaultIconPack: 'fa',
@@ -76,14 +77,11 @@ const mainVue = new Vue({
     LG('<<<<<<<<<< beforeCreate >>>>>>>>>>>');
     window.lgr = this.$log;
     window.ls = this.$ls;
+    window.ability = this.$ability;
 
-    // LG(this.$store);
-    // LG(this.$route);
-    // LG(this.$ls);
-
-    const tkn = this.$route.query.tkn ? this.$route.query.tkn : this.$ls.get(config.tokenName);
+    const token = this.$route.query.tkn ? this.$route.query.tkn : this.$ls.get(config.tokenName);
     LG('<<<<<<<<<< keeping token >>>>>>>>>>>');
-    this.$store.dispatch('keepTkn', tkn);
+    this.$store.dispatch('keepTkn', { token, ability: this.$ability });
 
     this.$store.dispatch('person/fetchAll');
     this.$store.dispatch('product/fetchAll');

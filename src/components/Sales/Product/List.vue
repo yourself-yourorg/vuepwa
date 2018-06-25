@@ -63,17 +63,12 @@
 <script>
   import { mapState, mapActions, mapGetters } from 'vuex';
 
-  import { Perimeters as acl } from '@/accessControl';
-
-  // import config from '@/config';
-
   import ProductDetail from './Retrieve';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
   export default {
     name: 'ProductList',
-    perimeters: [acl.productDetailPerimeter],
     beforeMount() {
       LG('\n * * Ready to fetch products * * \n');
       if (this.isLoadingList || this.products.length > 0) return;

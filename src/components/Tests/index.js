@@ -1,6 +1,6 @@
-import PersonAccessGroups from './Person/accessGroups';
+import TestAccessGroups from './Component/accessGroups';
 
 export const accessGroups = Object.assign( // eslint-disable-line import/prefer-default-export
   {},
-  PersonAccessGroups,
+  TestAccessGroups,
 );

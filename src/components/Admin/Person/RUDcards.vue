@@ -14,7 +14,7 @@
           <person-record :pers="p(id)"/>
         </b-tab-item>
 
-        <b-tab-item :visible="$isAllowed('allEdits')">
+        <b-tab-item :visible="canAlter()">
           <template slot="header">
             <p class="button is-small is-info is-outlined">
               <b-icon icon="edit"></b-icon>
@@ -23,7 +23,7 @@
           <person-update :pers="p(id)"/>
         </b-tab-item>
 
-        <b-tab-item :visible="$isAllowed('toChangeAuthorizations')">
+        <b-tab-item :visible="canAssign()">
           <template slot="header">
             <p class="button is-small is-warning has-text-weight-bold is-outlined">
               <b-icon icon="lock"></b-icon>
@@ -32,7 +32,7 @@
           <person-auth :pers="p(id)"/>
         </b-tab-item>
 
-        <b-tab-item :visible="$isAllowed('toChangeAuthorizations')">
+        <b-tab-item :visible="canAssign()">
           <template slot="header">
             <p class="button is-small is-danger is-outlined">
               <b-icon icon="trash"></b-icon>
@@ -60,26 +60,22 @@
 </template>
 
 <script>
-  import { Perimeters as acl } from '@/accessControl';
 
   import { mapGetters } from 'vuex';
   import Retrieve from './Retrieve';
   import Update from './Update';
   import Permissions from './Permissions';
 
+  const LG = console.log; // eslint-disable-line no-unused-vars, no-console
+
   export default {
     name: 'RUDcards',
     props: ['id'],
-    perimeters: [acl.personDetailPerimeter],
     data() {
       return {
         activeSubTab: 0,
       };
     },
-    // methods: {
-    //   switvh() { return 99; },
-    //   q() { return { codigo: 125 }; },
-    // },
     components: {
       'person-record': Retrieve, // eslint-disable-line no-undef
       'person-update': Update, // eslint-disable-line no-undef
@@ -89,6 +85,14 @@
       ...mapGetters('person', {
         p: 'getPerson',
       }),
+    },
+    methods: {
+      canAlter() {
+        return this.$can('alter', 'person');
+      },
+      canAssign() {
+        return this.$can('assign', 'person');
+      },
     },
   };
 

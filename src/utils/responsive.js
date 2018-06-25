@@ -57,7 +57,6 @@ export function responsivity() {
   }
 }
 
-// document.addEventListener('DOMContentLoaded', responsivity);
 export function shutBurgerMenu() {
   getAll('.burger').forEach(burger => burger.classList.remove('is-active'));
   getAll('.burger-bar').forEach(bar => bar.classList.remove('is-active'));

@@ -1,14 +1,15 @@
 <template>
   <section>
     <b-tabs v-model="activeTab">
+
       <b-tab-item label="Invoices">
         <router-view name="invoicesList"/>
       </b-tab-item>
-<!--
-      <b-tab-item :visible="$isAllowed('minorEdits')" label="Add Invoice">
+
+      <b-tab-item :visible="canEdit()" label="Add Invoice">
         <Create/>
       </b-tab-item>
- -->
+
     </b-tabs>
 
     <router-link class="button is-small is-link is-outlined" v-bind:to="{name: 'home'}">
@@ -21,19 +22,17 @@
 <script>
   import { mapState, mapActions, mapGetters } from 'vuex'; // eslint-disable-line no-unused-vars
 
-  import { Perimeters as acl } from '@/accessControl';
   import { store } from '@/store';
 
-  // import Create from './Create';
+  import Create from './Create';
 
   const LG = console.log; // eslint-disable-line no-unused-vars, no-console
 
   export default {
     name: 'Invoice',
-    perimeters: [acl.invoiceDetailPerimeter],
-    // components: {
-    //   Create,
-    // },
+    components: {
+      Create,
+    },
     computed: {
       ...mapGetters('invoice', {
         currentTab: 'getCurrentTab',
@@ -44,6 +43,9 @@
       },
     },
     methods: {
+      canEdit() {
+        return this.$can('comment', 'invoices/list');
+      },
       qtst() {
         LG(' ------- Quick Test -------');
         this.onCreateInvoice();

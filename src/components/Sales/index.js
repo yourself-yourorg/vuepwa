@@ -1,8 +1,8 @@
-import ProductPerimeters from './Product/perimeters';
-import InvoicePerimeters from './Invoice/perimeters';
+import ProductAccessGroups from './Product/accessGroups';
+import InvoiceAccessGroups from './Invoice/accessGroups';
 
-export const perimeters = Object.assign( // eslint-disable-line import/prefer-default-export
+export const accessGroups = Object.assign( // eslint-disable-line import/prefer-default-export
   {},
-  ProductPerimeters,
-  InvoicePerimeters,
+  ProductAccessGroups,
+  InvoiceAccessGroups,
 );

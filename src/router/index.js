@@ -78,7 +78,9 @@ const routes = baseRoutes
   .concat(blog);
 
 const processServerSideChanges = (t, f, n) => { // eslint-disable-line no-unused-vars
-  // LG(store);
+  if (window.lgr) {
+    window.lgr.info('Guard: processServerSideChanges.');
+  }
   if (store && store.state && store.state.Auth && store.state.Auth.accessToken.length > 10) {
     const url = `${cfg.server}/api/metadata`;
 
@@ -96,12 +98,12 @@ const processServerSideChanges = (t, f, n) => { // eslint-disable-line no-unused
       .then((response) => {
         const srvrChks = response.data.metadata.checks;
         const lclChks = store.state.integrityCheck;
-//         LG(`
-// ???????????????????????????
-//   processServerSideChanges
-// ???????????????????????????`);
-//         LG(`Checks are ${srvrChks}`);
-//         LG(srvrChks);
+        //         LG(`
+        // ???????????????????????????
+        //   processServerSideChanges
+        // ???????????????????????????`);
+        //         LG(`Checks are ${srvrChks}`);
+        //         LG(srvrChks);
 
         Object.keys(srvrChks).forEach((chk) => {
           // LG(`Check ${chk} is ${srvrChks[chk]}`);
@@ -127,34 +129,39 @@ const processServerSideChanges = (t, f, n) => { // eslint-disable-line no-unused
         }
       });
   }
+  return null;
 };
 
 const clearErrorNotification = (t, f, n) => { // eslint-disable-line no-unused-vars
-  store.dispatch('clearNotifyUser').then(() => n());
-};
-
-const keepToken = (t, f, n) => {
   if (window.lgr) {
-    window.lgr.debug(`Routing from '${f.name}' to '${t.name}'.`);
-    if (t.query.tkn) {
-      LG(`
-???????????????????
- Do we ever get here?
-???????????????????`);
-      window.lgr.info(`Query has '${t.query.tkn}'.`);
-      store.dispatch('keepTkn', t.query.tkn).then(() => n());
-    }
+    window.lgr.info('Guard: clearErrorNotification.');
   }
+  store.dispatch('clearNotifyUser');
+  return null;
 };
 
-let beforeEachTasks = [
-  keepToken,
-  clearErrorNotification,
-  processServerSideChanges,
-  (t, f) => { LG(`TSK 0 ${t}, ${f}`); },
-];
+// const keepToken = (t, f, n) => {
+//   if (window.lgr) {
+//     window.lgr.debug(`Guard: keepToken -- Routing from '${f.name}' to '${t.name}'.`);
+//     if (t.query.tkn) {
+//       LG(`
+// ???????????????????
+//  Do we ever get here?
+// ???????????????????`);
+//       window.lgr.info(`Query has '${t.query.tkn}'.`);
+//       store.dispatch('keepTkn', t.query.tkn).then(() => n());
+//     }
+//   }
+// };
 
-beforeEachTasks = beforeEachTasks.concat(beforeEachTaskAcl);
+let beforeEachTasks = [];
+// (t, f) => { LG(`TSK 0 ${t}, ${f}`); },
+
+beforeEachTasks = beforeEachTasks
+  // .concat(keepToken)
+  .concat(processServerSideChanges)
+  .concat(clearErrorNotification)
+  .concat(beforeEachTaskAcl);
 
 const router = new Router({
   routes,
@@ -167,10 +174,17 @@ router.beforeEach((_to, _from, _next) => {
   LG(`beforeEachTasks.length ${beforeEachTasks.length}`);
   LG(beforeEachTasks);
 
+  let blockRoute = null;
   beforeEachTasks.forEach((tsk) => {
-    tsk(_to, _from, _next);
+    if (blockRoute === null) {
+      blockRoute = tsk(_to, _from, _next);
+    }
   });
 
+  if (blockRoute !== null) {
+    _next(blockRoute);
+    return;
+  }
   _next();
 });
 

@@ -124,8 +124,11 @@
       },
       updPermissions(e) {
         this.changePermissions({
-          resource: e.target.id,
-          setting: e.target.value,
+          change: {
+            resource: e.target.id,
+            setting: e.target.value,
+          },
+          ability: this.$ability,
         });
       },
     },
