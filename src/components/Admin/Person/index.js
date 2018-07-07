@@ -80,7 +80,7 @@ export const store = createCrudModule({
     columns,
     currentTab: 0,
     enums: {},
-    paginator: { s: 1, c: 100 },
+    paginator: { s: 1, c: 1000 },
   },
   actions: {
     /* eslint-disable no-unused-vars */

@@ -96,7 +96,20 @@ export const store = createCrudModule({
     columns,
     currentTab: 0,
     enums: {},
-    paginator: { s: 1, c: 4 },
+    paginator: { s: 1, c: 10000 },
+    formRows: {
+      row: [
+        { code: 1010, qty: 1 }, { code: 997, qty: 2 },
+        { code: 5001, qty: 3 }, { code: 4000, qty: 4 },
+      ],
+    },
+    formVals: {
+      row: [
+        { code: 1010, qty: 1 }, { code: 997, qty: 2 },
+        { code: 5001, qty: 3 }, { code: 4000, qty: 4 },
+      ],
+    },
+    // formRows: { row: [{ code: -1, qty: -1 }] },
   },
   actions: {
     /* eslint-disable no-unused-vars */
@@ -144,6 +157,16 @@ export const store = createCrudModule({
     newLocal: ({ dispatch }, record) => {
       LG('uuuuuuu Append new local record uuuuuuuuuu');
       LG(`${record.data.mode} ${record.data.store}`);
+    },
+    saveRow: (ctx, _rowSpec) => {
+      LG(`
+
+        Saving row......................`);
+      const item = ctx.rootGetters['product/getProduct'](_rowSpec.values.code);
+
+      LG(item);
+      LG(_rowSpec.values);
+      ctx.commit('appendItemRow', _rowSpec.values);
     },
     saveForm: ({ dispatch }, _form) => {
       window.lgr.info('Invoice.index --> actions.saveForm');
@@ -205,6 +228,12 @@ export const store = createCrudModule({
       LG(`${payload.id} = ${payload.data.codigo}/${payload.data.nombre}`);
       vx.entities[payload.id] = payload.data;
     },
+    appendItemRow: (vx, _row) => {
+      if (!vx.formRows.row || !vx.formRows.row[0] || vx.formRows.row[0].code < 0) {
+        vx.formRows.row = [];
+      }
+      vx.formRows.row.push(_row);
+    },
     enums: (vx, enums) => {
       vx.enums = enums;
     },
@@ -263,12 +292,15 @@ export const store = createCrudModule({
     const result = data.map((_invoice, idx) => {
       const invoice = _invoice;
       const mapping = {};
+      if (idx === 486) {
+        // LG(invoice);
+      }
       meta.forEach((col, ix) => {
-        if (idx === 3) {
-          // LG(` ?? ${col.field}`);
-          // LG(` ?? ${invoice[ix]}`);
-          // LG(` ==== ${format[col.type](invoice[ix])}`);
-        }
+        // if (idx > 485) {
+        //   LG(` ?? ${col.field}`);
+        //   LG(` ?? ${invoice[ix]}`);
+        //   LG(` ==== ${format[col.type](invoice[ix])}`);
+        // }
         invoice[ix] = format[col.type](
           invoice[ix],
           {

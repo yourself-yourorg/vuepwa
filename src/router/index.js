@@ -110,7 +110,7 @@ const processServerSideChanges = (t, f, n) => { // eslint-disable-line no-unused
           // LG(`Local ${chk} is ${lclChks[chk]}`);
           if (srvrChks[chk] !== lclChks[chk]) {
             lclChks[chk] = srvrChks[chk];
-            // LG(`will call -- store.dispatch('${chk}/fetchAll')`);
+            LG(`will call -- store.dispatch('${chk}/fetchAll')`);
             store.dispatch(`${chk}/fetchAll`);
             store.dispatch('updateIntegrityCheck', lclChks);
           }

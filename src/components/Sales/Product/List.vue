@@ -2,7 +2,7 @@
   <section>
     <b-loading :is-full-page="false" :active.sync="isBusy" :canCancel="true"></b-loading>
     <b-table
-      :data="isEmpty ? [] : products"
+      :data="isEmpty ? [] : prods"
       :columns="columns"
       :striped="true"
       paginated
@@ -110,11 +110,30 @@
         return this.isLoadingList || this.isUpdating || this.isCreating;
       },
       prods() {
-        const rslt = this.products;
-        // LG('-----------------------');
-        // LG(rslt);
-        // LG('-----------------------');
-        return rslt;
+        return this.products.map((prod) => {
+          // LG('>>>>>>>>>>>>>');
+          const aProd = prod;
+          Object.keys(aProd).forEach((attr) => {
+            // LG('>>>>>>');
+            // LG(attr);
+            // LG(aProd[attr]);
+            aProd[attr] = aProd[attr].str || aProd[attr];
+          });
+          // if (aProd[0] === 997) {
+          //   LG('>>>>>>');
+          //   LG(aProd);
+
+          //   Object.keys(aProd).forEach((attr) => {
+          //     LG('>>>>>>');
+          //     LG(attr);
+          //     LG(aProd[attr]);
+          //     aProd[attr] = aProd[attr].str || aProd[attr];
+          //   });
+          //   LG(aProd);
+          //   LG(prod);
+          // }
+          return aProd;
+        });
       },
     },
 

@@ -2,11 +2,11 @@
   <section>
     <b-loading :is-full-page="false" :active.sync="isBusy" :canCancel="true"></b-loading>
     <b-table
-      :data="isEmpty ? [] : invoices"
+      :data="isEmpty ? [] : formattedInvoices"
       :columns="columns"
       :striped="true"
       paginated
-      :per-page="4"
+      :per-page="20"
       :current-page="1"
       :opened-detailed="defaultOpenedDetails"
       detailed
@@ -41,10 +41,10 @@
     </div>
 
     <div class="block">
-        <button class="button is-small is-primary"
-            @click="columnSelectorOpen = !columnSelectorOpen">
-            Escoger Columnas
-        </button>
+      <button class="button is-small is-primary"
+          @click="columnSelectorOpen = !columnSelectorOpen">
+          Escoger Columnas
+      </button>
     </div>
 
     <b-collapse class="panel" :open.sync="columnSelectorOpen">
@@ -133,8 +133,12 @@
             this.onFetchInvoices();
           });
           break;
-        default:
+        case 1:
+          LG('Load invoices');
           this.onFetchInvoices();
+          break;
+        default:
+          LG('No loading needed');
       }
       // this.$store.dispatch('person/fetchAll').then((resp) => {
       //   LG(`
@@ -182,6 +186,15 @@
         isUpdating: 'isUpdating',
         isCreating: 'isCreating',
       }),
+      formattedInvoices() {
+        return this.invoices.map((inv) => {
+          const invoice = {};
+          Object.entries(inv).forEach(([key, value]) => {
+            invoice[key] = value.str || value;
+          });
+          return invoice;
+        });
+      },
       isBusy() {
         return this.isLoadingList || this.isUpdating || this.isCreating;
       },

@@ -47,18 +47,17 @@
 
 <script>
 
-  // import { mapMutations, mapState, mapGetters } from 'vuex';
-  import { mapGetters } from 'vuex';
+  import { mapGetters, mapActions, mapState } from 'vuex'; // eslint-disable-line no-unused-vars
   import jwt from 'jsonwebtoken';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
   export default {
-    data() {
-      return {
-        aclDebug: false,
-        // aclDebug: true,
-      };
-    },
+    // data() {
+    //   return {
+    //     aclDebug: false,
+    //     // aclDebug: true,
+    //   };
+    // },
     methods: {
       getExpiry() {
         try {
@@ -74,6 +73,13 @@
       },
     },
     computed: {
+      aclDebug: {
+        get() { return (this.$store && this.$store.state && this.$store.state.isDebug) || false; },
+        set() {
+          LG(this);
+          this.$store.dispatch('debugMode', this.$store.state.isDebug = !this.$store.state.isDebug);
+        },
+      },
       theVersion() {
         return window.version;
       },
@@ -82,6 +88,7 @@
         isHere: 'isActive',
         isKnown: 'isAuthenticated',
         isError: 'isError',
+        // isDebug: 'isDebug',
         msgError: 'msgError',
       }),
     },

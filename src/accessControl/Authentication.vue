@@ -84,7 +84,7 @@
       }),
     },
     methods: {
-      ...mapActions(['refreshToken', 'keepTkn', 'logIn', 'logOut', 'setActivity', 'setAuth']),
+      ...mapActions(['keepTkn', 'logIn', 'logOut', 'setActivity', 'setAuth']),
       signOut() {
         this.logOut();
         this.$router.push({ name: 'home' });

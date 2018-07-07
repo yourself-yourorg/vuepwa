@@ -20,6 +20,12 @@ import { sync } from 'vuex-router-sync';
 import Buefy from 'buefy';
 import 'buefy/lib/buefy.css';
 
+// import { setupCalendar, DatePicker } from 'v-calendar';
+import VCalendar from 'v-calendar';
+import 'v-calendar/lib/v-calendar.min.css';
+
+import _ from 'lodash';
+
 import App from './App';
 import { store } from './store';
 
@@ -48,7 +54,29 @@ Vue.use(Buefy, {
   defaultIconPack: 'fa',
 });
 
-Vue.use(formulate);
+
+// Remember to setup calendar (passing in defaults if needed)
+// setupCalendar({
+//   firstDayOfWeek: 1, // Sunday,
+//   formats: {
+//     title: 'MMMM / YYYY',
+//     weekdays: 'W',
+//     navMonths: 'MMM',
+//     input: ['L', 'YYYY-MM-DD', 'YYYY/MM/DD'], // Only for `v-date-picker`
+//     dayPopover: 'L', // Only for `v-date-picker`
+//     data: ['L', 'YYYY-MM-DD', 'YYYY/MM/DD'], // For attribute dates
+//   },
+// });
+// Vue.component('v-date-picker', DatePicker);
+Vue.use(VCalendar);
+
+Vue.use(formulate, {
+  rules: {
+    isPct({ value }) {
+      return _.inRange(value, -1, 101) ? false : `Value ${value} is not between 0 and 100.`;
+    },
+  },
+});
 
 // Vue.component('home', HomeView);
 Vue.component('icon', Icon);

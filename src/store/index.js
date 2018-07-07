@@ -20,6 +20,7 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({ // eslint-disable-line new-cap
   state: {
     counter: 0,
+    isDebug: false,
     isError: false,
     msgError: { txt: 'We got failure happening', lvl: 'is-warning' },
     axsRights: ['visitor'],
@@ -28,6 +29,7 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
   },
 
   getters: {
+    isDebug: state => state.isDebug,
     isError: state => state.isError,
     msgError: state => state.msgError,
     theRoles: (state) => {
@@ -46,6 +48,9 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
       LG(state);
       state.msgError = pyld;
       state.isError = true;
+    },
+    debugMode: (state, pyld) => {
+      state.isDebug = pyld;
     },
     updateIntegrityCheck: (state, pyld) => {
       window.lgr.warn(pyld);
@@ -92,6 +97,7 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
     updateIntegrityCheck: ({ commit }, pyld) => { commit('updateIntegrityCheck', pyld); },
     notifyUser: ({ commit }, pyld) => { commit('notifyUser', pyld); },
     clearNotifyUser: ({ commit }) => { commit('clearNotifyUser'); },
+    debugMode: ({ commit }, pyld) => { commit('debugMode', pyld); },
     setAxsRole: ({ commit }, pyld) => { commit('axsRole', pyld); },
     increment: (ctx) => {
       LG('QQQQQ  increment QQQQQQ');

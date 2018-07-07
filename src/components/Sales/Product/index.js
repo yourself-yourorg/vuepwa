@@ -47,6 +47,7 @@ export const store = createCrudModule({
   state: {
     columns,
     enums: {},
+    productsMap: {},
     paginator: { s: 1, c: 100 },
   },
   actions: {
@@ -82,6 +83,10 @@ export const store = createCrudModule({
       window.lgr.info('Product.index --> actions.setEnums');
       commit('enums', enums);
     },
+    setMap: ({ commit }, prodMap) => {
+      window.lgr.info('Product.index --> actions.setProdMap');
+      commit('prodMap', prodMap);
+    },
     /* eslint-enable no-unused-vars */
   },
 
@@ -89,18 +94,22 @@ export const store = createCrudModule({
     getColumns: vx => vx.columns,
     getProducts: vx => vx.list,
     getEnums: vx => vx.enums,
+    getProductsMap: vx => vx.productsMap,
     getPaginator: vx => vx.paginator,
     getProduct: vx => id => vx.entities[id],
   },
 
   mutations: {
     /* eslint-disable no-param-reassign */
-    person: (vx, payload) => {
+    products: (vx, payload) => {
       LG(`${payload.id} = ${payload.data.codigo}/${payload.data.nombre}`);
       vx.entities[payload.id] = payload.data;
     },
     enums: (vx, enums) => {
       vx.enums = enums;
+    },
+    prodMap: (vx, productsMap) => {
+      vx.productsMap = productsMap;
     },
     tableColumns: (vx, cols) => {
       window.lgr.debug('Product.index --> mutation.tableColumns');
@@ -125,7 +134,7 @@ export const store = createCrudModule({
   parseSingle(response) {
     LG('parseSingle');
     LG(response.data);
-    LG(vuex.state.person.entities[response.data.itemID]);
+    LG(vuex.state.products.entities[response.data.itemID]);
 
     const objID = {};
     objID[IDATTRIBUTE] = response.data.itemID;
@@ -144,6 +153,7 @@ export const store = createCrudModule({
 
     const vars = variablizeTitles(titles);
 
+    const prodMap = {};
     const result = data.map((product) => {
       const newProd = product;
       meta.forEach((col, ix) => {
@@ -160,12 +170,14 @@ export const store = createCrudModule({
         }
         return field;
       });
+      prodMap[product.codigo] = product;
       return newProd;
     });
-    // LG(' * * Parsed persons data * * ');
-    // LG('result');
-    // LG(result);
-    vuex.dispatch('person/setEnums', enums);
+    LG(' * * Parsed products data * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *');
+    LG('prodMap');
+    LG(prodMap);
+    vuex.dispatch('product/setEnums', enums);
+    vuex.dispatch('product/setMap', prodMap);
     return Object.assign({}, response, {
       data: result, // expecting array of objects with IDs
       columns: meta,
