@@ -21,12 +21,35 @@
               <div class="control">
                 <label class="label">Cliente</label>
                 <formulate-element
+                  name="Persona"
+                  validation="required"
+                >
+                  <autocomplete-input
+                    v-model="Persona"
+                    :options="personsId || null"
+                  />
+                </formulate-element>
+<!--
+{ list: ['Html', 'CSS', 'Javascript', 'PHP'] }
+ -->
+
+<!--
+                  :options="{ list: [
+                    { label: 'Belarus', value: 'BY' },
+                    { label: 'China', value: 'CN' },
+                    { label: 'United States', value: 'US' }
+                  ] }"
+ -->
+
+<!--
+                <formulate-element
                   class="select is-small"
-                  name="personCode"
+                  name="Nombre de persona"
                   type="select"
-                  initial="_05"
+                  validation="required"
                   :options="personsId || null"
                 />
+ -->
               </div>
 
             </div>
@@ -169,6 +192,10 @@
 <script>
 
   import { mapGetters, mapActions, mapState } from 'vuex'; // eslint-disable-line no-unused-vars
+  import { mapModels } from 'vue-formulate'; // eslint-disable-line no-unused-vars
+
+  import Awesomplete from 'awesomplete'; // eslint-disable-line no-unused-vars
+  import AutoComplete from '@/components/MultiUse/AutoComplete';
 
   import format from '@/utils/format';
 
@@ -186,6 +213,7 @@
     props: ['pers'],
     components: {
       detailsForm: Details,
+      'autocomplete-input': AutoComplete,
     },
     // created() {
     //   this.$on('child-data', (formData) => {
@@ -228,6 +256,9 @@
         isCreating: 'isCreating',
         formRows: 'formRows',
       }),
+      ...mapModels({
+        Persona: 'createInvoice/Persona',
+      }),
       tableData() {
         const dummy = [{
           codigo: 'codigo',
@@ -245,8 +276,10 @@
         let pers = null;
         if (
           this.$store.state.values.createInvoice &&
-          this.$store.state.values.createInvoice.personCode) {
-          pers = this.getPerson(this.$store.state.values.createInvoice.personCode);
+          this.$store.state.values.createInvoice.Persona) {
+          // LG(this.$store.state.values.createInvoice.Persona.match(/\(([^)]+)\)/)[1]);
+          // LG(this.getPerson(126));
+          pers = this.getPerson(this.$store.state.values.createInvoice.Persona.match(/\(([^)]+)\)/)[1]);
         }
         this.retention = (pers && pers.retencion) || null;
         this.distributor = (pers && pers.distribuidor) || null;
@@ -342,9 +375,9 @@
           Object.keys(prsns).forEach((value) => {
             const person = prsns[value];
             ret.push({
-              name: person.nombre,
+              // name: person.nombre,
               value: person.codigo,
-              id: person.codigo,
+              // id: person.codigo,
               label: `${person.nombre}`,
             });
           });
@@ -357,7 +390,28 @@
           });
         }
         LG(ret);
-        return ret;
+        return {
+          list: ret,
+          // list: [
+          //   'aol.com', 'att.net', 'comcast.net', 'facebook.com',
+          //   'gmail.com', 'gmx.com', 'googlemail.com', 'google.com',
+          //   'hotmail.com', 'hotmail.co.uk', 'mac.com', 'me.com',
+          //   'mail.com', 'msn.com', 'live.com', 'sbcglobal.net',
+          //   'verizon.net', 'yahoo.com', 'yahoo.co.uk',
+          // ],
+          data(text, input) {
+            LG(`data vs ${input}`);
+            LG(this);
+            // return `${input.slice(0, input.indexOf('@'))}@${text}`;
+            return `(${text.value}) ${text.label}`;
+            // return text.label;
+          },
+          // replace(text) {
+          //   // LG(`replace ${text}`);
+          //   this.input.value = text.label;
+          // },
+          // filter: Awesomplete.FILTER_STARTSWITH,
+        };
       },
     },
     // events: {
@@ -398,7 +452,7 @@
         LG(this.$store.state);
         LG(this.$store.state.values);
         LG(this.$store.state.values.createInvoice);
-        LG(this.$store.state.values.createInvoice.desc);
+        LG(this.$store.state.values.createInvoice.Persona);
       },
       setItem(item) {
         LG(`Item ${item.qty} of ${item.code}`);

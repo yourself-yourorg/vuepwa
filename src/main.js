@@ -24,6 +24,8 @@ import 'buefy/lib/buefy.css';
 import VCalendar from 'v-calendar';
 import 'v-calendar/lib/v-calendar.min.css';
 
+import 'awesomplete/awesomplete.css';
+
 import _ from 'lodash';
 
 import App from './App';
@@ -72,9 +74,7 @@ Vue.use(VCalendar);
 
 Vue.use(formulate, {
   rules: {
-    isPct({ value }) {
-      return _.inRange(value, -1, 101) ? false : `Value ${value} is not between 0 and 100.`;
-    },
+    isPct: ({ value }) => (_.inRange(value || 0, 0, 101) ? false : `Value ${value} is not in range 0 to 100.`),
   },
 });
 
