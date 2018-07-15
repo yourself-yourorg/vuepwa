@@ -269,8 +269,8 @@ export const store = createCrudModule({
     });
 
     LG(' * * Parsed persons data * * ');
-    // LG('result');
-    // LG(result);
+    LG('result');
+    LG(result);
     vuex.dispatch('person/setEnums', enums);
     return Object.assign({}, response, {
       data: result, // expecting array of objects with IDs

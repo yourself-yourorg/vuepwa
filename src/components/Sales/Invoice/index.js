@@ -6,7 +6,7 @@ import { store as product } from '@/components/Sales/Product';
 
 import { variablizeTitles } from '@/utils/strings';
 
-import { Resources } from '@/accessControl';
+// import { Resources } from '@/accessControl';
 
 
 // import Header from '@/components/Header';
@@ -77,7 +77,11 @@ const formatters = {
       return JSON
         .parse(_detail.replace(/'/g, '"')).details
         .filter(d => d[0] > 0)
-        .map(d => [product.state.entities[d[0]], d[1], d[2]]);
+        .map(d => [
+          product.state.entities[d[0]], // product
+          d[1], // quantity
+          d[2], // discount percentage of normal price, eg .85 = 15% discount
+        ]);
     } catch (e) {
       return _detail;
     }
@@ -99,16 +103,16 @@ export const store = createCrudModule({
     paginator: { s: 1, c: 10 },
     formRows: {
       row: [
-        { code: 1010, qty: 1 }, { code: 997, qty: 2 },
-        { code: 5001, qty: 3 }, { code: 4000, qty: 4 },
+        // { code: 5000, qty: 2 }, { code: 5001, qty: 4 },
+        // { code: 999, qty: 2 },
       ],
     },
-    formVals: {
-      row: [
-        { code: 1010, qty: 1 }, { code: 997, qty: 2 },
-        { code: 5001, qty: 3 }, { code: 4000, qty: 4 },
-      ],
-    },
+    // formVals: {
+    //   row: [
+    //     { code: 5000, qty: 2 }, { code: 5001, qty: 4 },
+    //     { code: 999.0, qty: 2 },
+    //   ],
+    // },
     // formRows: { row: [{ code: -1, qty: -1 }] },
   },
   actions: {
@@ -170,37 +174,42 @@ export const store = createCrudModule({
     },
     saveForm: ({ dispatch }, _form) => {
       window.lgr.info('Invoice.index --> actions.saveForm');
-      const model = _form;
-      const pkge = {};
-
-      model.retencion = _form.retencion ? 'si' : 'no';
-      model.distribuidor = _form.distribuidor ? 'si' : 'no';
-
       LG('unununu save form ununununun');
-      const permissions = {};
-      Resources.map((rsrc) => {
-        LG(`${rsrc} => ${model[rsrc]}`);
-        permissions[rsrc] = model[rsrc];
-        delete model[rsrc];
-        return permissions[rsrc];
-      });
-      model.permissions = JSON.stringify(permissions).split('"').join("'");
+      LG(_form);
+      LG(this);
+      // LG('_form.summation.discountPct');
+      // LG(_form.summation.discountPct);
+      const details = _form.items.map(item => [
+        item.codigo,
+        parseInt(item.cantidad, 10),
+        item.discount.raw,
+      ]);
 
-      LG('model');
-      LG(model);
-      if (_form.codigo) {
-        pkge.id = model.codigo;
-        pkge.data = { mode: 'patch', data: model, store: 'invoice' };
-        dispatch('update', pkge);
-        // dispatch('updLocal', pkge);
-        LG('store');
-        LG(store);
-      } else {
-        delete model.codigo;
-        pkge.data = { mode: 'post', data: model, store: 'invoice' };
-        dispatch('newLocal', pkge);
-        dispatch('create', pkge);
-      }
+      const pkge = {
+        data: {
+          mode: 'post',
+          store: 'invoice',
+          data: {
+            fecha: format.date(_form.InvoiceDate),
+            estado: 'REG',
+            codigo_cliente: _form.summation.person,
+            distribuidor: _form.summation.distributor,
+            descuento_especial: format.percent(_form.summation.discountPct / 100).raw,
+            lista_de_items: JSON.stringify({ details }).split('"').join("'"),
+            subtotal_iva_12: format.usd(_form.summation.iva12).raw,
+            subtotal_iva_0: format.usd(_form.summation.iva0).raw,
+            subtotal_descontado: format.usd(_form.summation.valor).raw,
+            total_calculado: format.usd(_form.summation.total).raw,
+            retenido: format.usd(_form.summation.retention).raw,
+            monto_final: format.usd(_form.summation.final).raw,
+            total_cobrado: 0.00,
+          },
+        },
+      };
+      LG('@@@@@@@@@@ pkge @@@@@@@@');
+      LG(pkge);
+      dispatch('newLocal', pkge);
+      dispatch('create', pkge);
     },
     backToListTab: ({ getters, dispatch }) => {
       vuex.dispatch('invoice/fetchList', { customUrlFnArgs: getters.getPaginator });

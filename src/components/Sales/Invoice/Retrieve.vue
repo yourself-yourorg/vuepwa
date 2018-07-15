@@ -23,21 +23,15 @@
             <p class="is-size-5">{{ invc.fecha }}</p>
           </div>
         </div>
-        <div class="level-item has-text-centered">
-          <div>
-            <p class="heading">Estado</p>
-            <p class="is-size-5">{{ enums[invc.estado] }}</p>
-          </div>
-        </div>
       </div>
 
       <div class="level-item has-text-centered">
-        <div v-bind:class="[invc.distribuidor ? '' : 'price--line-through']">
-          Distribuidor
-        </div>
         <div>
           <p class="heading">Cliente</p>
           <p class="is-size-5">{{ invc.codigo_cliente }}</p>
+          <p v-bind:class="[invc.distribuidor === 'si' ? 'has-text-info' : 'is-invisible']">
+            Distribuidor
+          </p>
         </div>
       </div>
 
@@ -52,28 +46,57 @@
     </nav>
     <nav class="level">
       <div class="level-item has-text-centered">
-        <div>
-          <p class="heading">Items</p>
-          <b-table
-              :data="detail"
-              :narrowed="true">
-              <template slot-scope="props">
-                  <b-table-column field="cant" label="Cantidad" width="5" numeric>
-                      {{ props.row.cantidad }}
-                  </b-table-column>
-                  <b-table-column field="nombre" label="Nombre">
-                      ({{ props.row.codigo }}) {{ props.row.nombre }}
-                  </b-table-column>
-                  <b-table-column field="nombre" label="Unidades" width="30">
-                      {{ props.row.unidad }}
-                  </b-table-column>
-                  <b-table-column field="descuento" label="Descuento Especial" width="5">
-                      {{ props.row.descuento }}%
-                  </b-table-column>
-              </template>
-          </b-table>
-        </div>
+        <b-table
+          :data="detail"
+          :narrowed="true">
+          <template slot-scope="props">
+              <b-table-column field="cant" label="Cantidad" width="10" numeric>
+                  {{ props.row.cantidad }}
+              </b-table-column>
+              <b-table-column field="nombre" label="Nombre" width="400">
+                  ({{ props.row.codigo }}) {{ props.row.nombre }}
+              </b-table-column>
+              <b-table-column field="nombre" label="Unidades">
+                  {{ props.row.unidad }}
+              </b-table-column>
+              <b-table-column field="precio" label="Precio" width="100">
+                  {{ props.row.precio }}
+              </b-table-column>
+              <b-table-column field="descuento" label="Descuento Especial" width="10">
+                  {{ props.row.descuento }}
+              </b-table-column>
+              <b-table-column field="total" label="Total" width="100">
+                  {{ props.row.total }}
+              </b-table-column>
+          </template>
+        </b-table>
       </div>
+    </nav>
+    <nav class="level">
+        <div class="level-left has-text-centered">
+          <div>
+            <p class="heading">Estado</p>
+            <p class="is-size-5">{{ enums[invc.estado] }}</p>
+          </div>
+        </div>
+      <div class="level-item has-text-centered">
+        <b-table
+          :data="totals || []"
+          :bordered=true
+          :narrowed=true
+          :mobile-cards=true>
+
+          <template slot-scope="props">
+              <b-table-column field="title">
+                  {{ props.row.title }}
+              </b-table-column>
+              <b-table-column field="value" numeric>
+                  {{ props.row.value }}
+              </b-table-column>
+          </template>
+        </b-table>
+      </div>
+
     </nav>
   </div>
 </template>
@@ -81,10 +104,18 @@
 <script>
 
   import { mapState, mapActions, mapGetters } from 'vuex'; // eslint-disable-line no-unused-vars
+  import format from '@/utils/format';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
   export default {
+    data() {
+      const totals = [];
+
+      return {
+        totals,
+      };
+    },
 
     computed: {
       ...mapGetters('invoice', {
@@ -92,41 +123,43 @@
       }),
       detail() {
         LG(`  *************** INVC **********************
-`);
-        let items = this.invc.lista_de_items;
+        `);
+        const inv = this.invc;
+        const items = inv.lista_de_items;
+        const distributor = inv.distribuidor === 'si';
+        LG(this);
         const rslt = [];
-        if (typeof items === 'string') {
-          LG('items string');
-          items = JSON
-            .parse(items)
-            .details
-            .filter(itm => itm[0] > 0);
-
-          LG(items);
-          for (let ii = 0; ii < items.length; ii += 1) {
-            rslt.push({
-              codigo: items[ii][0],
-              nombre: '',
-              unidad: '',
-              cantidad: items[ii][1],
-              descuento: 100 - (items[ii][2] * 100),
-            });
-          }
-          return rslt;
-        }
-        items = this.invc.lista_de_items;
         LG('items object');
         LG(items);
         for (let ii = 0; ii < items.length; ii += 1) {
-          LG(`At ${ii} -- ${items[ii][0].unidad} (${items[ii][0].codigo}) ${items[ii][0].nombre}`);
+          const item = items[ii];
+          const price = distributor ? item[0].valor_distribuidor : item[0].valor;
+          const qty = item[1];
+          const discount = format.percent(item[2], 0);
+          LG(`At ${ii} -- ${item[0].unidad} (${item[0].codigo}) ${item[0].nombre}`);
           rslt.push({
-            codigo: items[ii][0].codigo,
-            nombre: items[ii][0].nombre,
-            unidad: items[ii][0].unidad,
-            cantidad: items[ii][1],
-            descuento: 100 - (items[ii][2] * 100),
+            codigo: item[0].codigo,
+            nombre: item[0].nombre,
+            unidad: item[0].unidad,
+            cantidad: qty,
+            precio: price.str,
+            descuento: format.percent(1 - discount.raw, 0).str,
+            total: format.usd((price.raw * qty) - discount.raw).str,
           });
         }
+
+        this.totals = [];
+        this.totals.push({ title: 'Subtotal IVA 12%', value: inv.subtotal_iva_12.str });
+        this.totals.push({ title: 'Descuento Especial', value: inv.descuento_especial.str });
+        this.totals.push({ title: 'Valor', value: inv.subtotal_descontado.str });
+        this.totals.push({
+          title: 'IVA',
+          value: format.usd(inv.total_calculado.raw - inv.subtotal_descontado.raw).str,
+        });
+        this.totals.push({ title: 'Valor Total', value: inv.total_calculado.str });
+        this.totals.push({ title: 'Retenido', value: inv.retenido.str });
+        this.totals.push({ title: 'Total Final', value: inv.monto_final.str });
+
         return rslt;
       },
     },

@@ -7,7 +7,13 @@
       name="createInvoice"
     >
       <formulate-element
-        name="codigo"
+        name="summation"
+        type="hidden"
+        placeholder="-1"
+      />
+
+      <formulate-element
+        name="items"
         type="hidden"
         placeholder="-1"
       />
@@ -29,43 +35,34 @@
                     :options="personsId || null"
                   />
                 </formulate-element>
-<!--
-{ list: ['Html', 'CSS', 'Javascript', 'PHP'] }
- -->
-
-<!--
-                  :options="{ list: [
-                    { label: 'Belarus', value: 'BY' },
-                    { label: 'China', value: 'CN' },
-                    { label: 'United States', value: 'US' }
-                  ] }"
- -->
-
-<!--
-                <formulate-element
-                  class="select is-small"
-                  name="Nombre de persona"
-                  type="select"
-                  validation="required"
-                  :options="personsId || null"
-                />
- -->
               </div>
 
             </div>
 
             <div class="column is-centered">
-
               <div class="control">
                 <label class="label">Fecha</label>
-                <v-date-picker
-                  :formats='formats'
-                  mode='single'
-                  v-model='myDate'>
-                </v-date-picker>
-
+                <formulate-element
+                  name="InvoiceDate"
+                  validation="required"
+                >
+                  <dateselect-input
+                    v-model="InvoiceDate"
+                  />
+                </formulate-element>
               </div>
+            </div>
 
+            <div class="column is-centered">
+              <div class="control">
+                <label class="label">Descuento</label>
+                <formulate-element
+                  name="desc"
+                  placeholder=0
+                  element-classes="resizedTextbox"
+                  validation="isPct(desc)"
+                />
+              </div>
             </div>
 
           </div>
@@ -140,6 +137,7 @@
                           </b-table-column>
 
                           <b-table-column numeric>
+<!--
                             <div v-if="props.row.label.startsWith('Descuento')">
                               <formulate-element
                                 name="desc"
@@ -151,6 +149,9 @@
                             <div v-else>
                               {{ props.row.value }}
                             </div>
+ -->
+                            {{ props.row.value }}
+
                           </b-table-column>
                         </template>
                       </b-table>
@@ -196,6 +197,7 @@
 
   import Awesomplete from 'awesomplete'; // eslint-disable-line no-unused-vars
   import AutoComplete from '@/components/MultiUse/AutoComplete';
+  import DateSelect from '@/components/MultiUse/DateSelect';
 
   import format from '@/utils/format';
 
@@ -214,12 +216,20 @@
     components: {
       detailsForm: Details,
       'autocomplete-input': AutoComplete,
+      'dateselect-input': DateSelect,
     },
-    // created() {
-    //   this.$on('child-data', (formData) => {
-    //     LG(`Event received : ${formData}`);
-    //   });
-    // },
+    created() {
+      if (
+        (this.persons && this.persons.length > 0) &&
+        (this.productsMap && Object.keys(this.productsMap).length > 0) &&
+        (this.products && this.products.length > 0)
+      ) {
+        // LG('@@@@@@@@@@@@@@@@@@@@@@ CREATED @@@@@@@@@@@@@@@@@@@@@@');
+        // LG(this.products[5]);
+        return;
+      }
+      this.$router.push({ name: 'home' });
+    },
     data() {
       const totals = [];
       return {
@@ -258,120 +268,146 @@
       }),
       ...mapModels({
         Persona: 'createInvoice/Persona',
+        InvoiceDate: 'createInvoice/InvoiceDate',
       }),
       tableData() {
-        const dummy = [{
-          codigo: 'codigo',
-          nombre: 'nombre',
-          unidad: 'unidad',
-          iva: 'iva',
-          valor: '$0.00',
-          cantidad: 0,
-          total: '$0.00',
-        }];
-        LG(this.products);
-        LG(this.productsMap);
-        LG(this.formRows);
-
-        let pers = null;
-        if (
-          this.$store.state.values.createInvoice &&
-          this.$store.state.values.createInvoice.Persona) {
-          // LG(this.$store.state.values.createInvoice.Persona.match(/\(([^)]+)\)/)[1]);
-          // LG(this.getPerson(126));
-          pers = this.getPerson(this.$store.state.values.createInvoice.Persona.match(/\(([^)]+)\)/)[1]);
-        }
-        this.retention = (pers && pers.retencion) || null;
-        this.distributor = (pers && pers.distribuidor) || null;
-
-        LG(`
-
-
-          tableData() ----------------------------`);
-        this.totals = [];
-
-        let strPrice = 0;
-        let price = 0;
-        let iva0 = 0;
-        let iva12 = 0;
-        let subtotal = 0;
-        let discountPct = 0;
-        let discount = 0;
-        let retention = 0;
-        let total = 0;
-
-        if (this.products.length < 1) return dummy;
-        if (this.formRows.row.length < 1) return dummy;
-        if (this.formRows.row[0].code < 0) return dummy;
-
-
         const rows = [];
-        this.formRows.row.forEach((row) => {
-          LG('row');
-          LG(row);
-          const prd = this.productsMap[row.code];
-          strPrice = (this.distributor && this.distributor === 'si') ?
-            prd.valor_distribuidor.str :
-            prd.valor.str;
-          price = (this.distributor && this.distributor === 'si') ?
-            prd.valor_distribuidor.raw :
-            prd.valor.raw;
-          const rowval = price * row.qty;
-          LG(prd.iva);
-          const i0 = (prd.iva.raw === 0) ? rowval : 0;
-          const i12 = (prd.iva.raw > 0) ? (1 + prd.iva.raw) * rowval : 0;
+        const { state } = this.$store;
+        if (state.values.createInvoice) {
+          const accum = state.values.createInvoice;
+          accum.Persona = accum.Persona || '(0) no one';
+          accum.InvoiceDate = accum.InvoiceDate || new Date();
+          const dummy = [{
+            codigo: 'codigo',
+            nombre: 'nombre',
+            unidad: 'unidad',
+            iva: 'iva',
+            valor: '$0.00',
+            cantidad: 0,
+            total: '$0.00',
+          }];
+          LG(`
 
-          iva0 += i0;
-          iva12 += i12;
-          subtotal += i0 + i12;
 
-          rows.push({
-            codigo: row.code,
-            nombre: prd.nombre,
-            unidad: prd.unidad,
-            iva: prd.iva,
-            valor: strPrice,
-            cantidad: row.qty,
-            total: format.usd(price * row.qty).str,
+            tableData() ----------------------------`);
+          LG(this.productsMap);
+
+          const personCode = accum.Persona.match(/\(([^)]+)\)/)[1]; // '(123) some one' => 123
+          const personRecord = this.getPerson(personCode);
+
+          this.retention = (personRecord && personRecord.retencion) || null;
+          this.distributor = (personRecord && personRecord.distribuidor) || null;
+
+          this.totals = [];
+
+          let strPrice = 0;
+          let price = 0;
+          let pctDistributorDiscount = 0;
+
+          const summation = {
+            distributor: this.distributor,
+            person: personCode,
+            discountPct: 0,
+            iva0: 0,
+            iva12: 0,
+            subtotal: 0,
+            discount: 0,
+            retention: 0,
+            total: 0,
+          };
+
+          if (this.products.length < 1) return dummy;
+          if (this.formRows.row.length < 1) return dummy;
+          if (this.formRows.row[0].code < 0) return dummy;
+
+
+          this.formRows.row.forEach((row) => {
+            LG('row');
+            LG(row);
+            const prd = this.productsMap[row.code];
+            LG(prd.porcentaje.raw);
+            if (this.distributor && this.distributor === 'si') {
+              strPrice = prd.valor_distribuidor.str;
+              price = prd.valor_distribuidor.raw;
+              pctDistributorDiscount = format.percent(prd.valor_distribuidor.raw / prd.valor.raw);
+            } else {
+              strPrice = prd.valor.str;
+              price = prd.valor.raw;
+              pctDistributorDiscount = format.percent(1);
+            }
+            const rowval = price * row.qty;
+            LG(prd.iva);
+            const i0 = (prd.iva.raw === 0) ? rowval : 0;
+            const i12 = (prd.iva.raw > 0) ? rowval : 0;
+
+            summation.iva0 += i0;
+            summation.iva12 += i12;
+            summation.subtotal += i0 + i12;
+
+            rows.push({
+              codigo: row.code,
+              nombre: prd.nombre,
+              unidad: prd.unidad,
+              discount: pctDistributorDiscount,
+              iva: prd.iva,
+              valor: strPrice,
+              cantidad: row.qty,
+              total: format.usd(price * row.qty).str,
+            });
           });
-        });
-        LG('rows');
-        LG(rows);
-        discountPct = (
-          this.$store.state.values.createInvoice &&
-          this.$store.state.values.createInvoice.desc
-        ) || 0;
-        discount = (discountPct / 100) * subtotal;
-        total = subtotal - discount;
+          LG('rows');
+          LG(rows);
+          summation.discountPct = (accum && accum.desc) || 0;
+          summation.discount = (summation.discountPct / 100) * summation.subtotal;
+          summation.valor = summation.subtotal - summation.discount;
+          summation.iva = summation.valor * 0.12;
+          summation.total = summation.valor + summation.iva;
+          summation.final = summation.total;
 
-        this.totals.push({ label: 'Subtotal IVA  0%', value: format.usd(iva0).str });
-        this.totals.push({ label: 'Subtotal IVA 12%', value: format.usd(iva12).str });
-        this.totals.push({ label: 'Subtotal', value: format.usd(subtotal).str });
-        this.totals.push({ label: 'Descuento', value: format.usd(discount).str });
-        if (this.retention) {
-          retention = total * 0.01;
-          total -= retention;
-          this.totals.push({ label: 'Retencion', value: format.usd(retention).str });
+          if (summation.iva0 > 0) {
+            this.totals.push({ label: 'Subtotal IVA  0%', value: format.usd(summation.iva0).str });
+          }
+          this.totals.push({ label: 'Subtotal IVA 12%', value: format.usd(summation.iva12).str });
+          this.totals.push({ label: 'Descuento Especial', value: format.usd(summation.discount).str });
+          this.totals.push({ label: 'Valor', value: format.usd(summation.valor).str });
+          this.totals.push({ label: 'IVA', value: format.usd(summation.iva).str });
+          this.totals.push({ label: 'Valor Total', value: format.usd(summation.total).str });
+          summation.final = summation.total;
+
+          if (this.retention === 'si') {
+            summation.retention = summation.total * 0.01;
+            summation.final = summation.total - summation.retention;
+            this.totals.push({ label: 'Retenido', value: format.usd(summation.retention).str });
+          }
+          this.totals.push({ label: 'Total Final', value: format.usd(summation.final).str });
+
+          LG(`summation.iva0 ${summation.iva0}`);
+          LG(`summation.iva12 ${summation.iva12}`);
+          LG(`summation.discountPct ${summation.discountPct}`);
+          LG(`summation.discount ${summation.discount}`);
+          LG(`summation.valor ${summation.valor}`);
+          LG(`summation.iva ${summation.iva}`);
+          LG(`summation.total ${summation.total}`);
+          LG(`summation.retention ${summation.retention}`);
+          LG(`summation.final ${summation.final}`);
+
+          accum.summation = summation;
+          accum.items = rows;
+
+          LG(accum);
+          LG(this.$store);
+          LG(rows);
         }
-        this.totals.push({ label: 'Total', value: format.usd(total).str });
 
-        //         this.totals[SUBTOTALIVA12].value = format.usd(iva12).str;
-        //         this.totals[SUBTOTAL].value = format.usd(subtotal).str;
-        //         this.totals[DESCUENTO].value = format.usd(discount).str;
-        //         this.totals[TOTAL].value = format.usd(total).str;
-
-        LG('VALS');
-        LG(`${iva0} : ${iva12} : ${subtotal}`);
-        LG(this.$store.state.values.createInvoice);
-        LG(this.$store);
         return rows;
       },
       personsId() {
-        LG('CC %%%%%%%%%%%%%%%%%%');
+        LG('%%%%%%%%%%%%%%%% personsId %%%%%%%%%%%%%%%%%% ');
         LG(this);
         const ret = [];
         const prsns = this.persons;
         if (prsns) {
+          LG('prsns');
           Object.keys(prsns).forEach((value) => {
             const person = prsns[value];
             ret.push({
@@ -381,46 +417,16 @@
               label: `${person.nombre}`,
             });
           });
-        } else {
-          ret.push({
-            name: 'aa',
-            value: 'AA',
-            id: 'AA-',
-            label: 'aa-',
-          });
         }
         LG(ret);
         return {
           list: ret,
-          // list: [
-          //   'aol.com', 'att.net', 'comcast.net', 'facebook.com',
-          //   'gmail.com', 'gmx.com', 'googlemail.com', 'google.com',
-          //   'hotmail.com', 'hotmail.co.uk', 'mac.com', 'me.com',
-          //   'mail.com', 'msn.com', 'live.com', 'sbcglobal.net',
-          //   'verizon.net', 'yahoo.com', 'yahoo.co.uk',
-          // ],
-          data(text, input) {
-            LG(`data vs ${input}`);
-            LG(this);
-            // return `${input.slice(0, input.indexOf('@'))}@${text}`;
+          data(text) {
             return `(${text.value}) ${text.label}`;
-            // return text.label;
           },
-          // replace(text) {
-          //   // LG(`replace ${text}`);
-          //   this.input.value = text.label;
-          // },
-          // filter: Awesomplete.FILTER_STARTSWITH,
         };
       },
     },
-    // events: {
-    //   childIsCalling: function (payload) { // eslint-disable-line func-names, object-shorthand
-    //     LG('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    //     LG(payload);
-    //     return true;
-    //   },
-    // },
     methods: {
       ...mapActions('invoice', {
         saveForm: 'saveForm',
@@ -445,14 +451,14 @@
         LG(this.checkedRows);
         event.preventDefault();
       },
-      commitForm() {
-        LG('Commit form');
-        LG(this);
-        LG(this.$store);
-        LG(this.$store.state);
-        LG(this.$store.state.values);
-        LG(this.$store.state.values.createInvoice);
-        LG(this.$store.state.values.createInvoice.Persona);
+      commitForm(_form) {
+        // LG('Commit form');
+        // LG(this);
+        // LG(_form);
+        // LG(this.$store.state.values.createInvoice);
+        // LG(this.$store.state.values.createInvoice.InvoiceDate);
+        // LG(this.$store.state.values.createInvoice.Persona);
+        this.saveForm(_form);
       },
       setItem(item) {
         LG(`Item ${item.qty} of ${item.code}`);

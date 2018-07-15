@@ -158,16 +158,18 @@ export const store = createCrudModule({
       const newProd = product;
       meta.forEach((col, ix) => {
         newProd[ix] = format[col.type](newProd[ix]);
+        // LG(`  ${newProd[ix]} -->> ${col.type} `);
       });
       newProd.forEach((field, ix) => {
         // LG(`  ${vars[ix]} -->> ${field} `);
-        if (vars[ix] === 'retencion' || vars[ix] === 'distribuidor') {
-          newProd[vars[ix]] = field === 'si';
-        } else if (vars[ix] === 'permissions') {
-          newProd[vars[ix]] = field ? JSON.parse(field.replace(/'/g, '"')) : '';
-        } else {
-          newProd[vars[ix]] = field;
-        }
+        // if (vars[ix] === 'retencion' || vars[ix] === 'distribuidor') {
+        //   newProd[vars[ix]] = field === 'si';
+        // } else if (vars[ix] === 'permissions') {
+        //   newProd[vars[ix]] = field ? JSON.parse(field.replace(/'/g, '"')) : '';
+        // } else {
+        //   newProd[vars[ix]] = field;
+        // }
+        newProd[vars[ix]] = field;
         return field;
       });
       prodMap[product.codigo] = product;
