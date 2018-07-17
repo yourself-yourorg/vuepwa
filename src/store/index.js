@@ -4,6 +4,8 @@ import Vue from 'vue';
 import { formulateState, formulateGetters, formulateMutations } from 'vue-formulate';
 
 import { store as person } from '@/components/Admin/Person';
+import { store as product } from '@/components/Sales/Product';
+import { store as invoice } from '@/components/Sales/Invoice';
 import { store as articles } from '@/components/Attic/Blog';
 
 // import articles from './articles';
@@ -18,11 +20,18 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({ // eslint-disable-line new-cap
   state: {
     counter: 0,
+    isDebug: false,
+    isError: false,
+    msgError: { txt: 'We got failure happening', lvl: 'is-warning' },
     axsRights: ['visitor'],
+    integrityCheck: { person: 9999, product: 8888, invoice: 7777 },
     ...formulateState()(),
   },
 
   getters: {
+    isDebug: state => state.isDebug,
+    isError: state => state.isError,
+    msgError: state => state.msgError,
     theRoles: (state) => {
       window.lgr.debug(state.axsRights);
       return state.axsRights;
@@ -34,9 +43,25 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
 
   mutations: {
     /* eslint-disable no-param-reassign */
+    notifyUser: (state, pyld) => {
+      window.lgr.warn(pyld.txt);
+      LG(state);
+      state.msgError = pyld;
+      state.isError = true;
+    },
+    debugMode: (state, pyld) => {
+      state.isDebug = pyld;
+    },
+    updateIntegrityCheck: (state, pyld) => {
+      window.lgr.warn(pyld);
+      state.integrityCheck = pyld;
+    },
+    clearNotifyUser: (state) => {
+      state.msgError = '';
+      state.isError = false;
+    },
     axsRole: (state, pyld) => {
       window.lgr.debug(pyld.roles);
-      // this.access = pyld.roles;
       state.axsRights = pyld.roles;
     },
     increment: (state) => {
@@ -69,8 +94,16 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
   },
 
   actions: {
+    updateIntegrityCheck: ({ commit }, pyld) => { commit('updateIntegrityCheck', pyld); },
+    notifyUser: ({ commit }, pyld) => { commit('notifyUser', pyld); },
+    clearNotifyUser: ({ commit }) => { commit('clearNotifyUser'); },
+    debugMode: ({ commit }, pyld) => { commit('debugMode', pyld); },
     setAxsRole: ({ commit }, pyld) => { commit('axsRole', pyld); },
-    increment: ({ commit }) => { commit('increment'); },
+    increment: (ctx) => {
+      LG('QQQQQ  increment QQQQQQ');
+      LG(ctx);
+      return ctx.commit('increment');
+    },
     decrement: ({ commit }) => { commit('decrement'); },
     fillForm: ({ commit }) => { commit('fillForm'); },
   },
@@ -80,6 +113,8 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
     a12n,
     articles,
     person,
+    product,
+    invoice,
   },
 });
 

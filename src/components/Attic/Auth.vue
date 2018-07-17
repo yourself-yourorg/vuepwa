@@ -2,13 +2,16 @@
   <div>
     <div v-if="isKnown && isHere">
       <a class="button is-small" v-bind:class="highLightAdmin" data-cyp="logOut" @click="signOut">
-        <span name="icon"><icon name="sign-out-alt" /></span>&nbsp;{{ $t('label.signout') }}, {{ user }}
+        <span name="icon">
+          <icon name="sign-out-alt" />
+        </span>&nbsp;{{ $t('label.signout') }}, {{ user }}
       </a>
     </div>
     <div v-else="isKnown && isHere">
       &nbsp;
       <a class="button is-small" data-cyp="logIn" @click="logIn">
-        <icon name="sign-in-alt" />&nbsp;{{ $t('label.signin') }}
+        <icon name="sign-in-alt" />
+        &nbsp;{{ $t('label.signin') }}
       </a>
     </div>
   </div>
@@ -18,7 +21,7 @@
 
   import { mapGetters, mapActions } from 'vuex';
 
-  import cfg from '../config';
+  import cfg from '@/config';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
@@ -50,22 +53,14 @@
       });
 
       window.ls.on(cfg.authName, (pyld) => {
-        LG(`
-  ???????????????????
-   Do we ever get here?
-   Authentication vm.created() localStore onChange event
-  ???????????????????`);
         window.lgr.warn(`Auth.vue :: Auth updated :: ${pyld}`);
         self.setAuth(pyld);
       });
 
       this.axStkn = window.ls.get(cfg.tokenName, 0);
-      window.ls.on(cfg.tokenName, (token) => {
-        window.lgr.warn(`Auth.vue :: New token value in local store :: ${token}`);
-
-        // self.refreshToken(pyld);
-        self.keepTkn({ token, ability: self.$ability });
-
+      window.ls.on(cfg.tokenName, (pyld) => {
+        window.lgr.warn(`Auth.vue :: New token value in local store :: ${pyld}`);
+        self.keepTkn(pyld);
         // this.axStkn = pyld;
         // self.sentinel = !self.sentinel;
       });
@@ -91,7 +86,7 @@
       },
       signIn() {
         this.logIn();
-        // this.$router.push({ name: 'home' });
+        this.$router.push({ name: 'home' });
         window.lgr.info(`Auth.vue :: signin '[${this.access}]'`);
       },
     },

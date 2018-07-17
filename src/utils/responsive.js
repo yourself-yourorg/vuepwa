@@ -44,10 +44,10 @@ export function responsivity() {
       $el.addEventListener('click', () => {
         const { target } = $el.dataset;
         const $target = document.getElementById(target);
-        LG('------');
-        LG($el.classList);
-        LG($target.classList);
-        LG('------');
+        // LG('------');
+        // LG($el.classList);
+        // LG($target.classList);
+        // LG('------');
         $el.classList.toggle('is-active');
         $target.classList.toggle('is-active');
       });
@@ -57,7 +57,6 @@ export function responsivity() {
   }
 }
 
-// document.addEventListener('DOMContentLoaded', responsivity);
 export function shutBurgerMenu() {
   getAll('.burger').forEach(burger => burger.classList.remove('is-active'));
   getAll('.burger-bar').forEach(bar => bar.classList.remove('is-active'));

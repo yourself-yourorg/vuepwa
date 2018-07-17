@@ -2,11 +2,11 @@
   <section>
     <b-loading :is-full-page="false" :active.sync="isBusy" :canCancel="true"></b-loading>
     <b-table
-      :data="isEmpty ? [] : persons"
+      :data="isEmpty ? [] : prods"
       :columns="columns"
       :striped="true"
       paginated
-      :per-page="5"
+      :per-page="20"
       :current-page="1"
       :opened-detailed="defaultOpenedDetails"
       detailed
@@ -21,8 +21,9 @@
       </template>
 
       <template slot="detail" slot-scope="{ row }">
-        <person-detail :id="row.codigo" />
-      </template>
+
+        <product-detail :id="row.codigo" />
+       </template>
 
       <template slot="empty">
         <section class="section">
@@ -62,44 +63,45 @@
 <script>
   import { mapState, mapActions, mapGetters } from 'vuex';
 
-  import PersonDetail from './RUDcards';
+  import ProductDetail from './Retrieve';
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
   export default {
-    name: 'PersonList',
+    name: 'ProductList',
     beforeMount() {
-      LG('\n * * Ready to fetch persons * * \n');
-      if (this.isLoading || this.persons.length > 0) return;
-      this.onFetchPersons();
+      LG('\n * * Ready to fetch products * * \n');
+      if (this.isLoadingList || this.products.length > 0) return;
+      this.onFetchProducts();
     },
     props: {
-      // anObj: { tst: 'passed in' },
-      tst: 'passed in with props',
+      tst: { val: 'passed in with props' },
     },
     data() {
-      const persons = [];
+      const products = [];
       return {
         anObj: { tst: 'passed in as data' },
-        isLoading: true,
         isFullPage: false,
         isEmpty: false,
         defaultOpenedDetails: [123],
-        selected: persons[1],
+        selected: products[1],
         columnSelectorOpen: false,
       };
     },
     components: {
-      'person-detail': PersonDetail, // eslint-disable-line no-undef
+      'product-detail': ProductDetail, // eslint-disable-line no-undef
     },
-
     computed: {
-      ...mapGetters('person', {
-        persons: 'list',
+      ...mapGetters('product', {
+        products: 'list',
+        prod: 'getProduct',
         columns: 'getColumns',
       }),
+      ...mapGetters({
+        loggedIn: 'isAuthenticated',
+      }),
 
-      ...mapState('person', {
+      ...mapState('product', {
         isLoadingList: 'isFetchingList',
         isUpdating: 'isUpdating',
         isCreating: 'isCreating',
@@ -107,17 +109,44 @@
       isBusy() {
         return this.isLoadingList || this.isUpdating || this.isCreating;
       },
+      prods() {
+        return this.products.map((prod) => {
+          // LG('>>>>>>>>>>>>>');
+          const aProd = prod;
+          Object.keys(aProd).forEach((attr) => {
+            // LG('>>>>>>');
+            // LG(attr);
+            // LG(aProd[attr]);
+            aProd[attr] = aProd[attr].str || aProd[attr];
+          });
+          // if (aProd[0] === 997) {
+          //   LG('>>>>>>');
+          //   LG(aProd);
+
+          //   Object.keys(aProd).forEach((attr) => {
+          //     LG('>>>>>>');
+          //     LG(attr);
+          //     LG(aProd[attr]);
+          //     aProd[attr] = aProd[attr].str || aProd[attr];
+          //   });
+          //   LG(aProd);
+          //   LG(prod);
+          // }
+          return aProd;
+        });
+      },
     },
 
     methods: {
-      ...mapActions('person', {
-        fetchPersons: 'fetchAll',
+      ...mapActions(['handle401', 'notifyUser']),
+      ...mapActions('product', {
+        fetchProducts: 'fetchAll',
+        setColumns: 'setColumns',
       }),
-      onFetchPersons() {
-        LG(' * * Try to fetch persons * *');
-        this.fetchPersons();
+      onFetchProducts() {
+        LG(' * * Try to fetch products * *');
+        this.fetchProducts();
       },
     },
   };
-
 </script>

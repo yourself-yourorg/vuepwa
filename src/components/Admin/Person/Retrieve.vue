@@ -38,14 +38,22 @@
           </div>
         </div>
       </div>
+      <div class="level-right">
+        <div class="level-item has-text-centered">
+          <div>
+          <p class="heading">Mail</p>
+          <p class="is-size-5">{{ pers.email }}</p>
+          </div>
+        </div>
+      </div>
       <div class="level-left">
         <div class="level-item has-text-centered">
-          <div v-bind:class="[pers.distribuidor === 'no' ? 'price--line-through' : '']">
+          <div v-bind:class="[pers.distribuidor === 'si' ? '' : 'strike-out']">
             Distribuidor
           </div>
         </div>
         <div class="level-item has-text-centered">
-          <div v-bind:class="[pers.retencion === 'no' ? 'price--line-through' : '']">
+          <div v-bind:class="[pers.retencion === 'si' ? '' : 'strike-out']">
             Retencion
           </div>
         </div>
@@ -79,7 +87,7 @@
 </script>
 
 <style scoped>
-  div.price--line-through {
+  div.strike-out {
     background-color: transparent;
     background-image: -webkit-gradient(linear, 19.1% -7.9%, 81% 107.9%, color-stop(0, #fff), color-stop(.48, #fff), color-stop(.5, #000), color-stop(.52, #fff), color-stop(1, #fff));
     background-image: -webkit-repeating-linear-gradient(287deg, #fff 0%, #fff 48%, #000 50%, #fff 52%, #fff 100%);

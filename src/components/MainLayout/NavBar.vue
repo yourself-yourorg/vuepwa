@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar is-transparent" style="background-color: transparent;">
     <div class="navbar-brand">
-      <router-link v-bind:to="{name: 'root'}">
+      <router-link v-bind:to="{name: 'home'}">
         <img
           src="static/img/WaterDrop_50.png"
           alt="Iridium Blue Logo">
@@ -35,7 +35,6 @@
 
 <script>
 
-  // import { responsivity, shutBurgerMenu } from './responsive';
   import { shutBurgerMenu } from '@/utils/responsive';
   import Authentication from '@/accessControl/Authentication';
 
@@ -46,8 +45,6 @@
 
 
   const LG = console.log; // eslint-disable-line no-console, no-unused-vars
-
-  // document.addEventListener('DOMContentLoaded', responsivity);
 
   export default {
     components: {

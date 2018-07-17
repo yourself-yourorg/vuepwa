@@ -7,7 +7,7 @@
       v-if="!values"
       @submit="saveForm"
 
-      :initial="pers"
+      :initial="invc"
     >
       <formulate-element
         name="codigo"
@@ -15,11 +15,11 @@
         placeholder="-1"
       />
         <article class="tile is-child box">
-          <h3 class="title">Person</h3>
+          <h3 class="title">Invoice</h3>
 
           <div class="columns is-mobile is-multiline is-centered">
 
-            <div class="column is-narrow">
+<!--             <div class="column is-narrow">
               <div class="control">
                 <label class="label">Nombre</label>
 
@@ -122,7 +122,7 @@
 
               </div>
             </div>
-
+ -->
             <div class="control">
 
               <formulate-element
@@ -150,25 +150,25 @@ import { mapGetters, mapActions, mapState } from 'vuex'; // eslint-disable-line 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
 export default {
-  props: ['pers'],
+  props: ['invc'],
   data() {
     return { values: false };
   },
   computed: {
-    ...mapGetters('person', {
+    ...mapGetters('invoice', {
       enums: 'getEnums',
     }),
-    ...mapState('person', {
+    ...mapState('invoice', {
       isUpdating: 'isUpdating',
     }),
     formUid() {
-      return `pers_${this.pers.codigo}`;
+      return `pers_${this.invc.codigo}`;
     },
     typesId() {
-      const ret = [];
       // LG('UU %%%%%%%%%%%%%%%%%%');
       // LG(this);
-      const types = this.enums.DocTypeLookup || {};
+      const types = this.enums.DocTypeLookup;
+      const ret = [];
       Object.keys(types).forEach((value) => {
         const name = types[value];
         ret.push({
@@ -183,7 +183,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('person', {
+    ...mapActions('invoice', {
       saveForm: 'saveForm',
     }),
   },
