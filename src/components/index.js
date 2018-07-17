@@ -1,6 +1,10 @@
-import { perimeters as AdminPerimeters } from './Admin';
+import { accessGroups as AdminAccessGroups } from './Admin';
+import { accessGroups as SalesAccessGroups } from './Sales';
+import { accessGroups as TestAccessGroups } from './Tests';
 
-export const perimeters = Object.assign( // eslint-disable-line import/prefer-default-export
+export const accessGroups = Object.assign( // eslint-disable-line import/prefer-default-export
   {},
-  AdminPerimeters,
+  AdminAccessGroups,
+  SalesAccessGroups,
+  TestAccessGroups,
 );

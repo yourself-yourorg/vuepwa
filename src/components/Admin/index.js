@@ -1,6 +1,6 @@
-import PersonPerimeters from './Person/perimeters';
+import PersonAccessGroups from './Person/accessGroups';
 
-export const perimeters = Object.assign( // eslint-disable-line import/prefer-default-export
+export const accessGroups = Object.assign( // eslint-disable-line import/prefer-default-export
   {},
-  PersonPerimeters,
+  PersonAccessGroups,
 );

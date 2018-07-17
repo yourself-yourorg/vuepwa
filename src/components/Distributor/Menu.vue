@@ -4,13 +4,13 @@
       Distributor
     </router-link>
     <div class="navbar-dropdown is-boxed">
-      <router-link class="navbar-item"  :to="{ name: 'profile' }">
+      <router-link class="navbar-item"  :style="canOpen('profile')" :to="{ name: 'profile' }">
         Sales
       </router-link>
-      <router-link class="navbar-item"  :to="{ name: 'profile' }">
+      <router-link class="navbar-item"  :style="canOpen('profile')" :to="{ name: 'profile' }">
         Bonus
       </router-link>
-      <router-link class="navbar-item"  :to="{ name: 'profile' }">
+      <router-link class="navbar-item"  :style="canOpen('profile')" :to="{ name: 'profile' }">
         Bottle Inventory
       </router-link>
     </div>
@@ -25,9 +25,10 @@
 
   export default {
     methods: {
-      shutBurger() {
-        shutBurgerMenu();
+      canOpen(path) {
+        return this.$can('only_view', path) ? '' : 'color: bisque;';
       },
+      shutBurger() { shutBurgerMenu(); },
     },
   };
 </script>

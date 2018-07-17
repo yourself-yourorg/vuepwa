@@ -6,6 +6,7 @@ export default {
   tokenName: 'tkn',
   activityName: 'actv',
   authName: 'authd',
+  returnRouteName: 'retRoute',
   localStorageNameSpace: 'vuesppwa-',
   productionTip: false,
   testAuthUrlEnvVar: 'AUTH_TEST_URL', // 'env.process.TEST_TOKEN'
@@ -24,5 +25,5 @@ export default {
     // optional: defaults to false if not specified
     showConsoleColors: true,
   },
-  version: '0.0.34',
+  version: '0.0.72',
 };

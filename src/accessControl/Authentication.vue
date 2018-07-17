@@ -50,14 +50,22 @@
       });
 
       window.ls.on(cfg.authName, (pyld) => {
+        LG(`
+  ???????????????????
+   Do we ever get here?
+   Authentication vm.created() localStore onChange event
+  ???????????????????`);
         window.lgr.warn(`Auth.vue :: Auth updated :: ${pyld}`);
         self.setAuth(pyld);
       });
 
       this.axStkn = window.ls.get(cfg.tokenName, 0);
-      window.ls.on(cfg.tokenName, (pyld) => {
-        window.lgr.warn(`Auth.vue :: New token value in local store :: ${pyld}`);
-        self.keepTkn(pyld);
+      window.ls.on(cfg.tokenName, (token) => {
+        window.lgr.warn(`Auth.vue :: New token value in local store :: ${token}`);
+
+        // self.refreshToken(pyld);
+        self.keepTkn({ token, ability: self.$ability });
+
         // this.axStkn = pyld;
         // self.sentinel = !self.sentinel;
       });
@@ -79,11 +87,11 @@
       ...mapActions(['keepTkn', 'logIn', 'logOut', 'setActivity', 'setAuth']),
       signOut() {
         this.logOut();
-        this.$router.push({ name: 'root' });
+        this.$router.push({ name: 'home' });
       },
       signIn() {
         this.logIn();
-        this.$router.push({ name: 'root' });
+        // this.$router.push({ name: 'home' });
         window.lgr.info(`Auth.vue :: signin '[${this.access}]'`);
       },
     },

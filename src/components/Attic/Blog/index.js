@@ -1,6 +1,6 @@
 import createCrudModule, { client } from 'vuex-crud';
 
-import Header from '@/components/Header';
+import Header from '@/components/Attic/Header';
 import cfg from '@/config';
 
 import Articles from './Articles';
