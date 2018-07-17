@@ -100,7 +100,7 @@ export const store = createCrudModule({
     columns,
     currentTab: 0,
     enums: {},
-    paginator: { s: 1, c: 10 },
+    paginator: { s: 1, c: 10000 },
     formRows: {
       row: [
         // { code: 5000, qty: 2 }, { code: 5001, qty: 4 },
