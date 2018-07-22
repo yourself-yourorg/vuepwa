@@ -125,8 +125,58 @@
                 </template>
 
                 <template slot="footer">
-                  <th colspan="5">
+
+                  <div class="columns">
+                    <div class="column is-offset-2 is-narrow-mobile">
+                      <div class="box" style="width: 125px;">
+                        <div v-if="retention" v-bind:class="[retention === 'si' ? '' : 'strike-out']">
+                          Retencion
+                        </div>
+                        <div v-if="distributor" v-bind:class="[distributor === 'si' ? '' : 'strike-out']">
+                          Distribuidor
+                        </div>
+                      </div>
+                    </div>
+                    <div class="column is-5">
+                      <div class="box">
+                        <b-table :data="totals">
+                          <template slot-scope="props">
+                            <b-table-column width="180">
+                                {{ props.row.label }}
+                            </b-table-column>
+
+                            <b-table-column numeric>
+                              {{ props.row.value }}
+                            </b-table-column>
+                          </template>
+                        </b-table>
+                      </div>
+                    </div>
+                    <div class="column is-1"></div>
+                  </div>
+
+<!--              <th colspan="4">
                     <div class="th-wrap is-numeric">  </div>
+                  </th>
+                  <th>
+                    <nav class="level">
+                      <div class="level-left">
+                        <div class="level-item has-text-centered">
+                          <div v-if="retention" v-bind:class="[distributor === 'si' ? '' : 'strike-out']">
+                            Retencion
+                          </div>
+                        </div>
+                      </div>
+                    </nav>
+                    <nav class="level">
+                      <div class="level-left">
+                        <div class="level-item has-text-centered">
+                          <div v-if="distributor" v-bind:class="[distributor === 'si' ? '' : 'strike-out']">
+                            Distribuidor
+                          </div>
+                        </div>
+                      </div>
+                    </nav>
                   </th>
                   <th colspan="2">
                     <div class="is-numeric">
@@ -137,37 +187,13 @@
                           </b-table-column>
 
                           <b-table-column numeric>
-<!--
-                            <div v-if="props.row.label.startsWith('Descuento')">
-                              <formulate-element
-                                name="desc"
-                                placeholder=0
-                                element-classes="resizedTextbox"
-                                validation="isPct(desc)"
-                              />
-                            </div>
-                            <div v-else>
-                              {{ props.row.value }}
-                            </div>
- -->
                             {{ props.row.value }}
-
                           </b-table-column>
                         </template>
                       </b-table>
                     </div>
                   </th>
-                  <th>
-                    <div class="text-right">
-                      <div class="push-down">  </div>
-                      <div v-if="retention" v-bind:class="[retention === 'si' ? '' : 'strike-out']">
-                        Retencion
-                      </div>
-                      <div v-if="distributor" v-bind:class="[distributor === 'si' ? '' : 'strike-out']">
-                        Distribuidor
-                      </div>
-                    </div>
-                  </th>
+ -->
                 </template>
 
               </b-table>

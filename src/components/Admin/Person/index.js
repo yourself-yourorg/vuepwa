@@ -150,7 +150,14 @@ export const store = createCrudModule({
       LG(model);
       if (_form.codigo) {
         pkge.id = model.codigo;
-        pkge.data = { mode: 'patch', data: model, store: 'person' };
+        pkge.data = {
+          mode: 'patch',
+          data: {
+            key_column: 'codigo',
+            data: model,
+          },
+          store: 'person',
+        };
         dispatch('update', pkge);
         // dispatch('updLocal', pkge);
         LG('store');
