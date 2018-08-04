@@ -2,6 +2,7 @@ import { routes as example } from '@/components/Tests/Component';
 import { routes as person } from '@/components/Admin/Person';
 import { routes as product } from '@/components/Sales/Product';
 import { routes as invoice } from '@/components/Sales/Invoice';
+import { routes as bottle } from '@/components/Distributor/Bottle';
 
 // import cfg from '@/config'; // eslint-disable-line no-unused-vars
 
@@ -43,6 +44,7 @@ const children = baseRoutes
   .concat(person)
   .concat(product)
   .concat(invoice)
+  .concat(bottle)
   .concat(local);
 
 // LG('............');

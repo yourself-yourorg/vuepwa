@@ -10,8 +10,11 @@
       <router-link class="navbar-item"  :style="canOpen('profile')" :to="{ name: 'profile' }">
         Bonus
       </router-link>
-      <router-link class="navbar-item"  :style="canOpen('profile')" :to="{ name: 'profile' }">
+      <router-link class="navbar-item" :style="canOpen('bottles/list')" :to="{ name: 'bottles/list' }">
         Bottle Inventory
+      </router-link>
+      <router-link class="navbar-item" :style="canOpen('bottles/test')" :to="{ name: 'bottles/test' }">
+        Bottle test
       </router-link>
     </div>
   </div>

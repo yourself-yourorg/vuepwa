@@ -69,6 +69,13 @@ const state = {
       // Product: Levels.COMMENT,
       // Product: Levels.ALTER,
       // Product: Levels.OWN,
+      // Example: Levels.NO_ACCESS,
+
+      Bottle: Levels.VIEW_ONLY,
+      // Example: Levels.COMMENT,
+      // Example: Levels.ALTER,
+      // Example: Levels.OWN,
+
     },
   },
 };

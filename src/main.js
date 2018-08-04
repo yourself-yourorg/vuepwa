@@ -28,8 +28,13 @@ import 'awesomplete/awesomplete.css';
 
 import _ from 'lodash';
 
+import VueVirtualScroller from 'vue-virtual-scroller';
+
+
 import App from './App';
 import { store } from './store';
+
+import VuePouchDB from './store/vuejs-pouchdb';
 
 import xlate from './internationalization';
 
@@ -77,6 +82,14 @@ Vue.use(formulate, {
     isPct: ({ value }) => (_.inRange(value || 0, 0, 101) ? false : `Value ${value} is not in range 0 to 100.`),
   },
 });
+
+
+Vue.use(VuePouchDB, {
+  localDatabaseName: 'iriblu',
+  remoteDatabaseURI: 'https://yourdb.yourpublic.work/iriblu',
+});
+
+Vue.use(VueVirtualScroller);
 
 // Vue.component('home', HomeView);
 Vue.component('icon', Icon);

@@ -7,6 +7,7 @@ import { store as person } from '@/components/Admin/Person';
 import { store as product } from '@/components/Sales/Product';
 import { store as invoice } from '@/components/Sales/Invoice';
 import { store as articles } from '@/components/Attic/Blog';
+import { store as bottle } from '@/components/Distributor/Bottle';
 
 // import articles from './articles';
 
@@ -115,6 +116,7 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
     person,
     product,
     invoice,
+    bottle,
   },
 });
 
