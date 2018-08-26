@@ -1,6 +1,6 @@
 {
   "name": "vuepwa",
-  "version": "0.0.77",
+  "version": "0.0.88",
   "description": "A Vue.js Progresive Web App",
   "author": "Yourself Yourorg <yourself.yourorg@gmail.com>",
   "private": true,
@@ -44,7 +44,9 @@
     "vue-formulate": "^0.9.1",
     "vue-i18n": "^7.4.2",
     "vue-ls": "^3.0.0",
+    "vue-qrcode-reader": "^0.8.5",
     "vue-router": "^3.0.1",
+    "vue-smooth-dnd": "^0.2.5",
     "vue-virtual-scroller": "^0.12.0",
     "vuejs-logger": "^1.3.4",
     "vuex": "^3.0.1",
