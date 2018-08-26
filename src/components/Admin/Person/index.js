@@ -106,16 +106,16 @@ export const store = createCrudModule({
         });
     },
     setColumns: ({ commit }, cols) => {
-      window.lgr.info('Person.index --> actions.setColumns');
-      LG(cols);
+      window.lgr.debug('Person.index --> actions.setColumns');
+      // LG(cols);
       commit('tableColumns', cols);
     },
     setCurrentTab: ({ commit }, numTab) => {
-      window.lgr.info(`Person.index --> actions.setCurrentTab -- ${numTab}`);
+      window.lgr.debug(`Person.index --> actions.setCurrentTab -- ${numTab}`);
       commit('tab', numTab);
     },
     setEnums: ({ commit }, enums) => {
-      window.lgr.info('Person.index --> actions.setEnums');
+      window.lgr.debug('Person.index --> actions.setEnums');
       commit('enums', enums);
     },
     updLocal: ({ commit }, record) => {
@@ -275,9 +275,9 @@ export const store = createCrudModule({
       return mapping;
     });
 
-    LG(' * * Parsed persons data * * ');
-    LG('result');
-    LG(result);
+    // LG(' * * Parsed persons data * * ');
+    // LG('result');
+    // LG(result);
     vuex.dispatch('person/setEnums', enums);
     return Object.assign({}, response, {
       data: result, // expecting array of objects with IDs

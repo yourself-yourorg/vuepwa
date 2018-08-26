@@ -1,0 +1,6 @@
+{
+  "_id": "_design/full_range",
+  "filters": {
+    "all_bottles": "function(doc, req) { if(doc.data && doc.data.type == 'bottle') { return true; } return false; }"
+  }
+}

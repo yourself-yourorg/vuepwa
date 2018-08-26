@@ -80,7 +80,7 @@ const formatters = {
   processDetailsJSON(_detail) {
     if (!product.state.entities) return _detail;
     if (Object.keys(product.state.entities).length < 1) return _detail;
-    LG(`product.state.entities.length = ${Object.keys(product.state.entities).length}`);
+    // LG(`product.state.entities.length = ${Object.keys(product.state.entities).length}`);
     try {
       return JSON
         .parse(_detail.replace(/'/g, '"')).details

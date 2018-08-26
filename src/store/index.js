@@ -8,11 +8,14 @@ import { store as product } from '@/components/Sales/Product';
 import { store as invoice } from '@/components/Sales/Invoice';
 import { store as articles } from '@/components/Attic/Blog';
 import { store as bottle } from '@/components/Distributor/Bottle';
+import { store as movement } from '@/components/Distributor/Movement';
 
 // import articles from './articles';
 
 import Auth from './Auth';
 import a12n from '../accessControl'; // eslint-disable-line no-unused-vars
+import dbmgr from '../database'; // eslint-disable-line no-unused-vars
+
 
 const LG = console.log; // eslint-disable-line no-console, no-unused-vars
 
@@ -112,11 +115,13 @@ export const store = new Vuex.Store({ // eslint-disable-line new-cap
   modules: {
     Auth,
     a12n,
+    dbmgr,
     articles,
     person,
     product,
     invoice,
     bottle,
+    movement,
   },
 });
 

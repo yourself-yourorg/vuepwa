@@ -1,6 +1,6 @@
 <template>
   <div @click="shutBurger" class="navbar-item has-dropdown is-hoverable">
-    <router-link class="navbar-item" :to="{ name: 'profile' }">
+    <router-link class="navbar-item" :to="{ name: 'start' }">
       Shop
     </router-link>
     <div class="navbar-dropdown is-boxed">
@@ -10,10 +10,10 @@
       <router-link class="navbar-item" :style="canOpen('products/list')" :to="{ name: 'products/list' }">
         Products
       </router-link>
-      <router-link class="navbar-item" :style="canOpen('profile')" :to="{ name: 'profile' }" event="">
+      <router-link class="navbar-item" :style="canOpen('start')" :to="{ name: 'start' }" event="">
         Payment
       </router-link>
-      <router-link class="navbar-item" :style="canOpen('profile')" :to="{ name: 'profile' }">
+      <router-link class="navbar-item" :style="canOpen('start')" :to="{ name: 'start' }">
         Bottle Returns
       </router-link>
     </div>

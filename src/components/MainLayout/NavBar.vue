@@ -44,7 +44,7 @@
   import Distributor from '../Distributor/Menu';
 
 
-  const LG = console.log; // eslint-disable-line no-console, no-unused-vars
+  const LG = console.log; // eslint-disable-line no-unused-vars, no-console
 
   export default {
     components: {

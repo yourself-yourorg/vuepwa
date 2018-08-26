@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 #
+SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )";
+
 export COUCH_DATABASE=${1:-$COUCH_DATABASE};
 export CONFIG_FILE="${HOME}/.ssh/secrets/vuesppwa.config";
 
 function usage() {
-  echo "Usage: ./DropCreateDatabase.sh \$COUCH_DATABASE";
+  echo "Usage: ./DropCreateSecurity.sh \$COUCH_DATABASE";
   echo "       ALSO: 'COUCH_URL' must be specified in ${CONFIG_FILE}";
   exit 1;
 }
@@ -22,7 +24,6 @@ fi;
 
 ##
 echo -e "
-Recreating database: ${COUCH_DATABASE}";
+Setting database security: ${COUCH_DATABASE}";
 
-curl -X DELETE ${COUCH_URL}/${COUCH_DATABASE};
-curl -X PUT ${COUCH_URL}/${COUCH_DATABASE};
+curl -H "Content-type: application/json" -X PUT "${COUCH_URL}/${COUCH_DATABASE}/_security" -d @${SCRIPT_DIR}/databases/${COUCH_DATABASE_NAME}/security.json;

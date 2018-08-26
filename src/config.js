@@ -9,7 +9,7 @@ export default {
   returnRouteName: 'retRoute',
   localStorageNameSpace: 'vuesppwa-',
   productionTip: false,
-  testAuthUrlEnvVar: 'AUTH_TEST_URL', // 'env.process.TEST_TOKEN'
+  testAuthUrlEnvVar: 'AUTH_TEST_URL', // 'process.env.TEST_TOKEN'
   logger: {
     // required ['debug', 'info', 'warn', 'error', 'fatal']
     // logLevel: 'debug',
@@ -25,5 +25,8 @@ export default {
     // optional: defaults to false if not specified
     showConsoleColors: true,
   },
-  version: '0.0.77',
+  version: '0.0.88',
+  dbServerProtocol: 'https',
+  dbServerURI: 'yourdb.yourpublic.work',
+  databaseName: 'iriblu_6',
 };

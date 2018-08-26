@@ -175,9 +175,9 @@ export const store = createCrudModule({
       prodMap[product.codigo] = product;
       return newProd;
     });
-    LG(' * * Parsed products data * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *');
-    LG('prodMap');
-    LG(prodMap);
+    // LG(' * * Parsed products data * * * * * * * * * * * * * * * ');
+    // LG('prodMap');
+    // LG(prodMap);
     vuex.dispatch('product/setEnums', enums);
     vuex.dispatch('product/setMap', prodMap);
     return Object.assign({}, response, {

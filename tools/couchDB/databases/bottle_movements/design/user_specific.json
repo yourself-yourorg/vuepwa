@@ -1,0 +1,8 @@
+{
+  "_id": "_design/user_specific",
+  "filters": {
+    "by_vendor_agent": "function(doc, req) { if(doc.data && doc.data.vendor == req.userCtx.name) { return true; } return false; }",
+    "by_buyer_agent": "function(doc, req) { if(doc.data && doc.data.buyer == req.userCtx.name) { return true; } return false; }",
+    "personal_record": "function(doc, req) { if(doc.data && doc.data.type == 'person' && doc.data.id ==req.userCtx.name) { return true; } return false; }"
+  }
+}

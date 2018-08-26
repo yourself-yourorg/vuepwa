@@ -3,6 +3,7 @@ import { routes as person } from '@/components/Admin/Person';
 import { routes as product } from '@/components/Sales/Product';
 import { routes as invoice } from '@/components/Sales/Invoice';
 import { routes as bottle } from '@/components/Distributor/Bottle';
+import { routes as movement } from '@/components/Distributor/Movement';
 
 // import cfg from '@/config'; // eslint-disable-line no-unused-vars
 
@@ -12,14 +13,20 @@ import BaseLayer from './BaseLayer';
 import NavBar from './NavBar';
 
 import UserEmailsSubscriptions from './UserEmailsSubscriptions';
-import UserProfile from './UserProfile';
-import UserProfilePreview from './UserProfilePreview';
 
 const LG = console.log; // eslint-disable-line no-unused-vars, no-console
 
 const baseRoutes = [];
 
 const local = [{
+//   path: '',
+//   name: 'home',
+//   components: {
+//     nav_bar: NavBar,
+//     default: BottleTasks,
+//     helper: BottleTasksHelper,
+//   },
+// }, {
   path: 'emails',
   name: 'emails',
   components: {
@@ -29,14 +36,6 @@ const local = [{
   props: {
     nav_bar: { setTab: 'Admin' },
   },
-}, {
-  path: 'profile',
-  name: 'profile',
-  components: {
-    nav_bar: NavBar,
-    default: UserProfile,
-    helper: UserProfilePreview,
-  },
 }];
 
 const children = baseRoutes
@@ -45,6 +44,7 @@ const children = baseRoutes
   .concat(product)
   .concat(invoice)
   .concat(bottle)
+  .concat(movement)
   .concat(local);
 
 // LG('............');
@@ -54,7 +54,7 @@ const children = baseRoutes
 export const routes = [ // eslint-disable-line import/prefer-default-export
   {
     path: '',
-    name: 'home',
+    name: 'start',
     component: BaseLayer,
     children,
   },

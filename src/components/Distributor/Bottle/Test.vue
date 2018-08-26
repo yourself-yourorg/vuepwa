@@ -30,24 +30,8 @@
 
         <div class="level-right">
           <p class="level-item"><strong>{{ items.length }}</strong></p>
-<!--
-          <p class="level-item"><a>Published</a></p>
-          <p class="level-item"><a>Drafts</a></p>
-          <p class="level-item"><a>Deleted</a></p>
-          <p class="level-item"><a class="button is-success">New</a></p>
- -->
+          <p class="level-item"><a v-on:click="purge"class="button is-danger">Purge</a></p>
         </div>
-<!--
-        <div class="level-right">
-          <p class="level-item"><strong>{{ persons && persons.nombre }}</strong></p>
-
-          <p class="level-item"><a>Published</a></p>
-          <p class="level-item"><a>Drafts</a></p>
-          <p class="level-item"><a>Deleted</a></p>
-          <p class="level-item"><a class="button is-success">New</a></p>
-
-        </div>
- -->
       </nav>
     </div>
 
@@ -60,19 +44,20 @@
         content-tag="ul">
         <template slot-scope="props">
 
-          <li v-if="props.item.ubicacion.toLowerCase() === 'planta'" :key="props.itemKey">
-            {{props.item.codigo}} - ubicacion: Planta
+          <li v-if="props.item.data.ubicacion.toLowerCase() === 'planta'" :key="props.itemKey">
+            {{props.item.data.codigo}}: Movimientos {{props.item.data.movements && props.item.data.movements.length || '_'}} - ubicacion: Planta
           </li>
 
           <li v-else :key="props.itemKey">
-            {{props.item.codigo}} - ubicacion: <strong>{{props.item.ultimo}}</strong>
+            {{props.item.data.codigo}}: Movimientos {{props.item.data.movements && props.item.data.movements.length || '_'}} - ubicacion: <strong>{{props.item.data.ultimo}}</strong>
             <!-- <strong>{{person(props.item.ultimo)}}</strong> -->
           </li>
-
         </template>
       </virtual-scroller>
 
     </div>
+    >{{ getRelational }}<
+    {{ relationalData }}
   </div>
 </template>
 
@@ -87,6 +72,8 @@
 
   const hintId = 'codigo de envase';
   const loader = (vm, seekCode) => {
+    LG(`
+      ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::`);
     let seekCodigo = new RegExp('^.*', 'gi');
 
     if (seekCode !== hintId) seekCodigo = new RegExp(`^${seekCode}.*`, 'gi');
@@ -95,11 +82,11 @@
     return vm.$pouch.liveFind({
       selector: {
         // _id: { $regex: new RegExp('bottle_.*', 'gi') },
-        codigo: { $regex: seekCodigo },
-        type: 'bottle',
+        'data.codigo': { $regex: seekCodigo },
+        'data.type': 'bottle',
         // ent: { $gt: 0 },
       },
-      sort: [{ codigo: 'asc' }],
+      sort: [{ 'data.codigo': 'asc' }],
       // aggregate: true,
     })
 
@@ -109,19 +96,20 @@
         // update also contains id, rev, and doc
         // aggregate is an array of docs containing the latest state of the query
         const update = upDate;
-        // LG(`######### Updating. ${update.id} ${update.doc.ultimo}`);
-        if (update.doc.ultimo === 0) {
+        // LG(`######### Updating. ${update.id} ${update.doc.data.ultimo}`);
+        if (update.doc.data.ultimo === 0) {
           vm.getItems(update);
         } else {
-          // LG(`######### Updated. ${update.id} ${update.doc.codigo}`);
-          vm.$pouch.find({
-            selector: {
-              _id: update.doc.ultimo,
-            },
-          }).then((rslt) => {
-            // LG(`rslt for ${update.doc.ultimo}  ${update.doc._id}`);
-            update.doc.ultimo = (rslt.docs[0] && rslt.docs[0].nombre) || update.doc.ultimo;
-            // LG(update.doc);
+          // LG(`######### Updated. ${update.id} ${update.doc.data.codigo}`);
+          vm.$pouch.rel.find('aPerson', update.doc.data.ultimo).then((rslt) => {
+            // LG(`rslt for ${update.doc.data.ultimo} --`);
+            // LG(rslt);
+            // LG(rslt.allPersons);
+            // LG(rslt.allPersons[0].nombre);
+            update.doc.data.ultimo =
+              (rslt.allPersons[0] && rslt.allPersons[0].nombre) || update.doc.data.ultimo;
+            update.doc.data.extra = rslt;
+            // LG(update.doc.data);
             vm.getItems(update);
           });
         }
@@ -132,13 +120,21 @@
 
       // Called when the initial query is complete
       .on('ready', () => {
-        // LG('###############   Initial query complete.   ##############');
+        LG('###############   Initial query complete.   ##############');
+        vm.$pouch.rel.find('aPerson', 12357).then((prsn) => {
+          LG('prsn 12357');
+          LG(prsn);
+        });
+        // vm.$pouch.rel.find('aPerson', 'aPerson_1_0000000000012344').then((prsn) => {
+        //   LG('prsna Person_1_0000000000012344');
+        //   LG(prsn);
+        // });
         vm.liveFeedStatus = 'listening'; // eslint-disable-line no-param-reassign
       })
 
       // Called when you invoke `liveFeed.cancel()`
       .on('cancelled', () => {
-        // LG('###############   LiveFind cancelled.   ##############');
+        LG('###############   LiveFind cancelled.   ##############');
         vm.liveFeedStatus = 'idle'; // eslint-disable-line no-param-reassign
         vm.newSearch();
       })
@@ -160,7 +156,7 @@
         seekCodigoIsDirty: false,
         seeking: false,
 
-        pouchData: null,
+        relationalData: 'none',
 
       };
     },
@@ -168,9 +164,29 @@
       this.liveFeed = loader(this, hintId);
     },
     computed: {
+      getRelational() {
+        LG('###############   getRelational   ##############');
+
+        this.$pouch.allDocs({ include_docs: true })
+          .then((val) => {
+            LG('====== all Docs ======');
+            LG(val);
+          });
+
+        // this.$pouch.rel.findHasMany('aBottle', 'aPerson', 'aPerson_14577.612095809644')
+        // this.$pouch.rel.find('aPerson', 'aPerson_13015.605307960835')
+        this.$pouch.rel.find('aPerson', 12347)
+        // this.$pouch.rel.findHasMany('aBottle', 'aPerson')
+          .then((val) => {
+            LG('====== Person 12347 ======');
+            LG(val);
+            // this.relationalData =
+            //    `Bottle ${val.allBottles[0].codigo} at ${val.allBottles[0].ubicacion}`;
+          });
+      },
       seekIndicator() {
-        // LG('###############   seekIndicator   ##############');
-        // LG(this.seekCodigo);
+        LG('###############   seekIndicator   ##############');
+        LG(this.seekCodigo);
         if (this.seeking) {
           return '⟳ Fetching new results';
         } else if (this.seekCodigoIsDirty) {
@@ -181,25 +197,33 @@
     },
     watch: {
       seekCodigo() {
-        // LG('###############   seekCodigo   ##############');
-        // LG(this.seekCodigo);
+        LG('###############   seekCodigo   ##############');
+        LG(this.seekCodigo);
         this.seekCodigoIsDirty = true;
 
         this.items = [];
+        LG(this.liveFeedStatus);
         this.liveFeedStatus = 'cancelling';
         this.liveFeed.cancel();
         // loader(this, val);
       },
     },
     methods: {
+      purge() {
+        LG('###############   purge   ##############');
+        this.$pouch.rel.find('aPerson')
+          .then((persons) => {
+            LG(persons);
+          });
+      },
       newSearch: debounce(function restrain() {
         if (this.seekCodigo === hintId) return;
-        // LG('###############   newSearch   ##############');
+        LG('###############   newSearch   ##############');
 
         this.seeking = true;
         setTimeout(function delay() { // eslint-disable-line prefer-arrow-callback
-          // LG('setTimeout');
-          // LG(this.seekCodigo);
+          LG('setTimeout');
+          LG(this.seekCodigo);
           this.seeking = false;
           this.seekCodigoIsDirty = false;
         }.bind(this), 2000);
@@ -216,9 +240,9 @@
             LG('###############   LiveFind remove not implemented   ##############');
             break;
           case 'UPDATE':
-            // LG('###############   LiveFind update   ##############');
             idx = this.items.findIndex(elem => elem._id === pouchData.id);
-            // LG(this.items[idx]);
+            LG('###############   LiveFind update   ##############');
+            LG(this.items[idx]);
             this.items[idx] = pouchData.doc;
             this.items = this.items.slice();
             break;

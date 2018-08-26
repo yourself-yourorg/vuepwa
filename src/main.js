@@ -34,7 +34,7 @@ import VueVirtualScroller from 'vue-virtual-scroller';
 import App from './App';
 import { store } from './store';
 
-import VuePouchDB from './store/vuejs-pouchdb';
+import VuePouchDB from './database/vuejs-pouchdb';
 
 import xlate from './internationalization';
 
@@ -83,11 +83,7 @@ Vue.use(formulate, {
   },
 });
 
-
-Vue.use(VuePouchDB, {
-  localDatabaseName: 'iriblu',
-  remoteDatabaseURI: 'https://yourdb.yourpublic.work/iriblu',
-});
+Vue.use(VuePouchDB);
 
 Vue.use(VueVirtualScroller);
 
@@ -119,6 +115,8 @@ const mainVue = new Vue({
     window.lgr = this.$log;
     window.ls = this.$ls;
     window.ability = this.$ability;
+
+    this.$store.dispatch('dbmgr/rememberDbMgr', { dbmgr: this.$pouch });
 
     const token = this.$route.query.tkn ? this.$route.query.tkn : this.$ls.get(config.tokenName);
     LG('<<<<<<<<<< keeping token >>>>>>>>>>>');

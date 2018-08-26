@@ -1,13 +1,13 @@
 <template>
   <div @click="shutBurger" class="navbar-item has-dropdown is-hoverable">
-    <router-link class="navbar-item"  :to="{ name: 'profile' }">
+    <router-link class="navbar-item"  :to="{ name: 'start' }">
       Tests
     </router-link>
     <div class="navbar-dropdown is-boxed">
-      <router-link class="navbar-item"  :style="canOpen('profile')" :to="{ name: 'emails' }">
+      <router-link class="navbar-item"  :style="canOpen('start')" :to="{ name: 'start' }">
         Emails
       </router-link>
-      <router-link class="navbar-item"  :style="canOpen('profile')" :to="{ name: 'profile' }">
+      <router-link class="navbar-item"  :style="canOpen('start')" :to="{ name: 'start' }">
         Profile
       </router-link>
       <router-link class="navbar-item"  :style="canOpen('protected')" :to="{ name: 'protected' }">

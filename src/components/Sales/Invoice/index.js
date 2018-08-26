@@ -72,7 +72,7 @@ const formatters = {
   processDetailsJSON(_detail) {
     if (!product.state.entities) return _detail;
     if (Object.keys(product.state.entities).length < 1) return _detail;
-    LG(`product.state.entities.length = ${Object.keys(product.state.entities).length}`);
+    // LG(`product.state.entities.length = ${Object.keys(product.state.entities).length}`);
     try {
       return JSON
         .parse(_detail.replace(/'/g, '"')).details
@@ -326,17 +326,17 @@ export const store = createCrudModule({
 
       return mapping;
     });
-    LG(' * * Parsed invoices data * * ');
+    // LG(' * * Parsed invoices data * * ');
     // LG('store');
     // LG(store);
-    LG('result');
-    LG(result);
+    // LG('result');
+    // LG(result);
     // LG('meta');
     // LG(meta);
     // LG('enums');
     // LG(enums);
     vuex.dispatch('invoice/setEnums', enums.StatusLookup);
-    LG(' - - - - - - - - - -  Parsed invoice list  - - - - - - - - - - ');
+    // LG(' - - - - - - - - - -  Parsed invoice list  - - - - - - - - - - ');
     return Object.assign({}, response, {
       data: result, // expecting array of objects with IDs
       columns: meta,

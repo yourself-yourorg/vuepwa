@@ -83,17 +83,9 @@ const actions = {
     if (payload) {
       // LG(`
       //   keepTkn:`);
-
-      // const txtPrms = payload.permissions.replace(/'/g, '"');
-      // const prms = JSON.parse(txtPrms);
-
+      ctx.dispatch('dbmgr/setUserCredentials', { payload });
+      ctx.dispatch('dbmgr/connectToRemoteService', { payload });
       ctx.dispatch('a12n/resetPermissions', { payload, ability });
-      // Object.keys(prms).forEach((permission) => {
-      //   ctx.dispatch('a12n/changePermissions', {
-      //     resource: permission,
-      //     setting: prms[permission],
-      //   });
-      // });
       ctx.commit('saveToken', { token, payload });
     }
   },

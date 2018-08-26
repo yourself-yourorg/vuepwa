@@ -230,6 +230,7 @@
   import Details from './Details';
 
   const LG = console.log; // eslint-disable-line no-unused-vars, no-console
+  const LGERR = console.error; // eslint-disable-line no-unused-vars, no-console
 
   // const SUBTOTALIVA0 = 0;
   // const SUBTOTALIVA12 = SUBTOTALIVA0 + 1;

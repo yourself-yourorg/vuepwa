@@ -140,20 +140,6 @@ const clearErrorNotification = (t, f, n) => { // eslint-disable-line no-unused-v
   return null;
 };
 
-// const keepToken = (t, f, n) => {
-//   if (window.lgr) {
-//     window.lgr.debug(`Guard: keepToken -- Routing from '${f.name}' to '${t.name}'.`);
-//     if (t.query.tkn) {
-//       LG(`
-// ???????????????????
-//  Do we ever get here?
-// ???????????????????`);
-//       window.lgr.info(`Query has '${t.query.tkn}'.`);
-//       store.dispatch('keepTkn', t.query.tkn).then(() => n());
-//     }
-//   }
-// };
-
 let beforeEachTasks = [];
 // (t, f) => { LG(`TSK 0 ${t}, ${f}`); },
 
